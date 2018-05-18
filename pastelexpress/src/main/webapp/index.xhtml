@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+<f:metadata>
+	<f:viewAction action="#{catalogo.init()}" />
+</f:metadata>
+
+<ui:composition template="/WEB-INF/templates/_componentes_basico.xhtml">
+
+	<ui:define name="title">
+		Item list
+	</ui:define>
+
+	<ui:define name="content">
+		<h:outputScript name="locale-primefaces.js" library="js" />
+
+		<p:growl id="idMessages" showDetail="true" severity="info" />
+
+		<h:form>
+			<p:growl id="messages" showDetail="true" />
+
+			<p:toolbar>
+				<f:facet name="left">
+					<p:graphicImage library="img" name="pasteloko.png" height="75px"/>
+
+				</f:facet>
+
+				<f:facet name="right">
+					<p:menuButton icon="fa fa-user-circle">
+						<p:menuitem value="Save" actionListener="#{toolbarView.save}"
+							update="messages" icon="ui-icon-disk" />
+						<p:menuitem value="Update" update="messages"
+							icon="ui-icon-arrowrefresh-1-w" />
+						<p:menuitem value="Delete" ajax="false" icon="ui-icon-close" />
+						<p:menuitem value="Homepage" url="http://www.primefaces.org"
+							icon="ui-icon-extlink" />
+					</p:menuButton>
+				</f:facet>
+
+			</p:toolbar>
+		</h:form>
+
+
+
+		<h:panelGrid columns="2">
+
+			<p:fieldset legend="Menu" style="height:500px">
+				<h:form>
+					<p:growl id="messages" showDetail="true" />
+					<p:tieredMenu>
+						<p:submenu label="Items" icon="ui-icon-refresh">
+							<p:menuitem id="submenuActionsItemAddItem" value="Add Item"
+								actionListener="#{editItem.setItem(null)}"
+								action="#{editItem.init()}"
+								oncomplete="if (!args.validationFailed) { PF('editItemDialog').show() }"
+								update="edtiItemDialogId" icon="fa fa-fw fa-user"
+								rendered="#{true}">
+								<p:resetInput target="edtiItemDialogId" />
+							</p:menuitem>
+						</p:submenu>
+					</p:tieredMenu>
+				</h:form>
+			</p:fieldset>
+
+			<p:dataGrid var="item" value="#{catalogo.items}" columns="7"
+				layout="grid" rows="15" paginator="true" id="dataItems"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="15,30,45">
+				<p:panel header="#{item.nome}"
+					style="text-align:center ; font-size: 20px; font-weight:bolder ;">
+					<h:panelGrid columns="1">
+
+						<p:graphicImage library="img" name="erro.jpg"
+							style="text-align:center" />
+
+						<br />
+						<h:outputText value="R$#{item.valor}"
+							style="color:red ; font-size: 20px; font-weight:bolder ;" />
+
+
+						<p:commandButton id="editItemDialogCommand" icon="fa fa-edit"
+							action="#{editItem.init()}"
+							oncomplete="if (!args.validationFailed) { PF('editItemDialog').show() }"
+							update=":edtiItemDialogId" >
+							<f:setPropertyActionListener value="#{item}"
+								target="#{editItem.item}" />
+							<p:resetInput target="edtiItemDialogId" />
+						</p:commandButton>
+
+						<p:tooltip id="toolTipEdittemDialog" for="editItemDialogCommand"
+							value="Editar Item" position="down" />
+
+					</h:panelGrid>
+				</p:panel>
+			</p:dataGrid>
+		</h:panelGrid>
+
+
+
+		<p:dialog id="edtiItemDialogId" widgetVar="editItemDialog"
+			header="Editar Item" modal="true" dynamic="true" closeOnEscape="true">
+
+			<p:messages id="idMessagesErrorsItemEdit" showDetail="true"
+				closable="true" autoUpdate="true" severity="error" />
+
+			<h:form id="formEdit">
+
+				<ui:include src="/WEB-INF/templates/_edit_item.xhtml" />
+
+				<h:panelGrid columns="2" styleClass="ui-noborder">
+					<p:commandButton id="botaoSubmeter" action="#{editItem.saveItem}"
+						value="Submit" update="@form"
+						oncomplete="if (!args.validationFailed) { PF('editItemDialog').hide(); }"
+						icon="fa fa-save" />
+					<p:commandButton id="botaoCancelar" value="Cancel"
+						oncomplete="PF('editItemDialog').hide();" icon="fa fa-remove" />
+				</h:panelGrid>
+
+				<p:defaultCommand target="formEdit:botaoSubmeter" />
+
+			</h:form>
+
+		</p:dialog>
+
+	</ui:define>
+
+
+
+</ui:composition>
+</html>
