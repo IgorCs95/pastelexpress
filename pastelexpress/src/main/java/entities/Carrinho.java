@@ -4,10 +4,14 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -23,6 +27,8 @@ public class Carrinho implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinColumn(name = "id_carrinho")
 	private ArrayList<ItemPedido> items;
 	
 	private Date data;
@@ -58,6 +64,16 @@ public class Carrinho implements Serializable{
 	public void setData(Date data) {
 		this.data = data;
 	}
+	
+	public float total() {
+		float soma = 0;
+		for (ItemPedido itemPedido : items) {
+			soma +=itemPedido.subTotal();
+		}
+		return soma;
+	}
+	
+	
 
 	@Override
 	public int hashCode() {

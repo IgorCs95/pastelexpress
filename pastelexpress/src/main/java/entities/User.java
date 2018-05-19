@@ -39,12 +39,8 @@ public class User implements Cloneable {
 	@Column(unique = true)
 	private String cpf;
 
-	@Column
-	private Endereco enderecos;
-
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "city_fk", foreignKey = @ForeignKey(name = "fk__tb_user__tb_city"))
-	private City city;
+	@JoinColumn(name = "endereco_fk", foreignKey = @ForeignKey(name = "fk__tb_user__tb_endereco"))
+	private Endereco endereco;
 
 	@Enumerated(EnumType.STRING)
 	private TipoUser tipo;
@@ -97,13 +93,6 @@ public class User implements Cloneable {
 		this.cpf = cpf;
 	}
 
-	public Endereco getEnderecos() {
-		return enderecos;
-	}
-
-	public void setEnderecos(Endereco enderecos) {
-		this.enderecos = enderecos;
-	}
 
 	public TipoUser getTipo() {
 		return tipo;
@@ -113,26 +102,22 @@ public class User implements Cloneable {
 		this.tipo = tipo;
 	}
 	
-	
-
-	public City getCity() {
-		return city;
+	public Endereco getEndereco() {
+		return endereco;
 	}
 
-	public void setCity(City city) {
-		this.city = city;
+	public void setEndereco(Endereco endereco) {
+		this.endereco = endereco;
 	}
-
 	
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((city == null) ? 0 : city.hashCode());
 		result = prime * result + ((cpf == null) ? 0 : cpf.hashCode());
 		result = prime * result + ((dataDeNascimento == null) ? 0 : dataDeNascimento.hashCode());
-		result = prime * result + ((enderecos == null) ? 0 : enderecos.hashCode());
+		result = prime * result + ((endereco == null) ? 0 : endereco.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((login == null) ? 0 : login.hashCode());
 		result = prime * result + ((nome == null) ? 0 : nome.hashCode());
@@ -150,11 +135,6 @@ public class User implements Cloneable {
 		if (getClass() != obj.getClass())
 			return false;
 		User other = (User) obj;
-		if (city == null) {
-			if (other.city != null)
-				return false;
-		} else if (!city.equals(other.city))
-			return false;
 		if (cpf == null) {
 			if (other.cpf != null)
 				return false;
@@ -165,10 +145,10 @@ public class User implements Cloneable {
 				return false;
 		} else if (!dataDeNascimento.equals(other.dataDeNascimento))
 			return false;
-		if (enderecos == null) {
-			if (other.enderecos != null)
+		if (endereco == null) {
+			if (other.endereco != null)
 				return false;
-		} else if (!enderecos.equals(other.enderecos))
+		} else if (!endereco.equals(other.endereco))
 			return false;
 		if (id == null) {
 			if (other.id != null)
@@ -195,14 +175,6 @@ public class User implements Cloneable {
 		return true;
 	}
 
-
-	@Override
-	public String toString() {
-		return "User [id=" + id + ", nome=" + nome + ", login=" + login + ", senha=" + senha + ", dataDeNascimento="
-				+ dataDeNascimento + ", cpf=" + cpf + ", enderecos=" + enderecos + ", city=" + city + ", tipo=" + tipo
-				+ "]";
-	}
-
 	@Override
 	public User clone() {
 		User clone = new User();
@@ -212,8 +184,7 @@ public class User implements Cloneable {
 		clone.setSenha(senha);
 		clone.setDataDeNascimento(dataDeNascimento);
 		clone.setCpf(cpf);
-		clone.setEnderecos(enderecos);
-		clone.setCity(city != null ? city.clone() : null);
+		clone.setEndereco(endereco);
 		clone.setTipo(tipo);
 
 		return clone;

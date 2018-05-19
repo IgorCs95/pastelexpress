@@ -3,10 +3,16 @@ package entities;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import ennum.StatusCompra;
@@ -25,6 +31,12 @@ public class Pedido implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
+	@SequenceGenerator(name="codigopedido",sequenceName="HIB_SEQ")
+	@GeneratedValue(strategy=GenerationType.SEQUENCE)
+	private long codigo;
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "pedido_fk", foreignKey = @ForeignKey(name = "fk__tb_pedido__tb_carrinho"))
 	private Carrinho carrinho;
 	
 	private Date data;

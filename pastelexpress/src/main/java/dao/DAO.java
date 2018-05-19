@@ -34,7 +34,6 @@ static EntityManagerFactory emf;
 	public abstract void save(t obj) throws PersistenciaDacException;
 	
 	public abstract t update(t obj) throws PersistenciaDacException;
-	
 
 	public abstract void delete(t obj) throws PersistenciaDacException ;
 

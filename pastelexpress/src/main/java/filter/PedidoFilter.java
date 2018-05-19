@@ -15,17 +15,11 @@ public class PedidoFilter implements Serializable,Filter{
 	 */
 	private static final long serialVersionUID = -5459543345042621500L;
 
-	private Integer id;
-
+	private long codigo;
+	
 	private Date dataPedidoInicio, dataPedidoFim;
 
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
+	
 
 	public Date getDataPedidoInicio() {
 		return dataPedidoInicio;
@@ -43,8 +37,16 @@ public class PedidoFilter implements Serializable,Filter{
 		this.dataPedidoFim = dataPedidoFim;
 	}
 
+	public long getCodigo() {
+		return codigo;
+	}
+
+	public void setCodigo(long codigo) {
+		this.codigo = codigo;
+	}
+
 	public boolean isEmpty() {
-		if (this.id != 0) {
+		if (this.codigo != 0) {
 			return false;
 		}
 

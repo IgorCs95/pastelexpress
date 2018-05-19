@@ -81,18 +81,7 @@ public class CarrinhoDAO extends DAO<Carrinho> {
 	}
 
 	public List<Carrinho> getAll() throws PersistenciaDacException {
-		EntityManager em = getEntityManager();
-		List<Carrinho> resultado = null;
-		try {
-			TypedQuery<Carrinho> query = em.createQuery("SELECT u FROM Carrinho u", Carrinho.class);
-			resultado = query.getResultList();
-		} catch (PersistenceException pe) {
-			pe.printStackTrace();
-			throw new PersistenciaDacException("Ocorreu algum erro ao tentar recuperar todos os Carrinho.", pe);
-		} finally {
-			em.close();
-		}
-		return resultado;
+		return findBy(null);
 	}
 	
 	

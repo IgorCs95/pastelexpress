@@ -3,9 +3,13 @@ package entities;
 import java.io.Serializable;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -18,9 +22,10 @@ public class Endereco implements Serializable {
 	private static final long serialVersionUID = -7177009460864792238L;
 
 	private String rua, bairro, cep, numero;
-
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "city_fk", foreignKey = @ForeignKey(name = "fk__tb_endereco__tb_city"))
 	private City cidade;
-
 	
 	private State estado;
 
