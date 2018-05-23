@@ -1,0 +1,89 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<title>Carrinho</title>
+
+</h:head>
+
+<ui:composition template="/WEB-INF/templates/_componentes_basico.xhtml">
+
+	<ui:define name="title">
+		Item list
+	</ui:define>
+	<ui:define name="content">
+
+		<h:form>
+			<p:dataScroller value="#{teste.lista}" var="item" chunkSize="5">
+				<f:facet name="header">
+           			 Items no Carrinho
+       			</f:facet>
+
+				<h:panelGrid columns="4" style="width:100% ; align:center"
+					columnClasses="logo,detail">
+					<p:graphicImage library="img" name="logo.png" style="width:10%" />
+
+					<h:outputText value="#{item.nome}" style="font-weight: bold ;text-align: left" />
+
+					<p:outputPanel style="align:center">
+						<h:panelGrid cellpadding="5" style="align-items:center">
+							<h:outputLabel for="basic" value="Basic Spinner: " />
+							<p:spinner id="basic" />
+						</h:panelGrid>
+						
+						<p:commandButton id="botaoRemover"	value="Submit" icon="fa fa-save" />
+						
+					</p:outputPanel>
+					
+					<p:commandButton id="editItemDialogCommand" icon="fa fa-edit"
+							oncomplete="if (!args.validationFailed) { PF('editItemDialog').show() }"
+							update=":edtiItemDialogId" >
+							<f:setPropertyActionListener value="#{item}"
+								target="#{teste.item}" />
+							<p:resetInput target="edtiItemDialogId" />
+						</p:commandButton>
+					
+					
+				</h:panelGrid>
+			</p:dataScroller>
+		</h:form>
+
+		<p:panelGrid>
+			<p:commandButton value="Finalizar Compra" />
+
+		</p:panelGrid>
+
+		<p:dialog id="edtiItemDialogId" widgetVar="editItemDialog"
+			header="Editar Item" modal="true" dynamic="true" closeOnEscape="true">
+
+			<p:messages id="idMessagesErrorsItemEdit" showDetail="true"
+				closable="true" autoUpdate="true" severity="error" />
+
+			<h:form id="formEdit">
+
+				<ui:include src="/WEB-INF/templates/_edit_item.xhtml" />
+
+				<h:panelGrid columns="2" styleClass="ui-noborder">
+					<p:commandButton id="botaoSubmeter" action="#{teste.salvarItem}"
+						value="Submit"
+						oncomplete="if (!args.validationFailed) { PF('editItemDialog').hide(); }"
+						icon="fa fa-save" />
+					<p:commandButton id="botaoCancelar" value="Cancel"
+						oncomplete="PF('editItemDialog').hide();" icon="fa fa-remove" />
+				</h:panelGrid>
+
+				<p:defaultCommand target="formEdit:botaoSubmeter" />
+
+			</h:form>
+
+		</p:dialog>
+
+
+	</ui:define>
+</ui:composition>
+</html>

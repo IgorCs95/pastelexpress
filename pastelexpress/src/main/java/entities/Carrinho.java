@@ -1,14 +1,13 @@
 package entities;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
@@ -24,12 +23,11 @@ public class Carrinho implements Serializable{
 	private static final long serialVersionUID = -23214071235699839L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@JoinColumn(name = "id_carrinho")
-	private ArrayList<ItemPedido> items;
+	@JoinColumn(name = "carrinho_id")
+	private Collection<ItemPedido> items;
 	
 	private Date data;
 	
@@ -41,16 +39,16 @@ public class Carrinho implements Serializable{
 		this.id = id;
 	}
 
-	public ArrayList<ItemPedido> getItems() {
+	public Collection<ItemPedido> getItems() {
 		return items;
 	}
 
-	public void setItems(ArrayList<ItemPedido> items) {
+	public void setItems(Collection<ItemPedido> items) {
 		this.items = items;
 	}
-	
+
 	public void addItemPedido(Item item,int qtd) {
-		items.add(new ItemPedido(item,qtd));
+		items.add(new ItemPedido(item, qtd));
 	}
 	
 	public void removerItem(ItemPedido item) {

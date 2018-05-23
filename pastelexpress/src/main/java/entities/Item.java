@@ -138,6 +138,14 @@ public class Item implements Serializable{
 		return clone;
 		
 	}
+
+	@Override
+	public String toString() {
+		return "Item [id=" + id + ", codigo=" + codigo + ", nome=" + nome + ", valor=" + valor + ", descricao="
+				+ descricao + "]";
+	}
+	
+	
 	
 	
 

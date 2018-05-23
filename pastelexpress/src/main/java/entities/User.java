@@ -29,7 +29,6 @@ public class User implements Cloneable {
 
 	private String nome;
 
-	@Column(unique = true)
 	private String login;
 
 	private String senha;

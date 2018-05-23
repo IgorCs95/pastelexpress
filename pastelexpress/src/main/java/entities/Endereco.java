@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -22,12 +23,10 @@ public class Endereco implements Serializable {
 	private static final long serialVersionUID = -7177009460864792238L;
 
 	private String rua, bairro, cep, numero;
-	
+
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "city_fk", foreignKey = @ForeignKey(name = "fk__tb_endereco__tb_city"))
 	private City cidade;
-	
-	private State estado;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -73,14 +72,6 @@ public class Endereco implements Serializable {
 		this.cidade = cidade;
 	}
 
-	public State getEstado() {
-		return estado;
-	}
-
-	public void setEstado(State estado) {
-		this.estado = estado;
-	}
-
 	public Integer getId() {
 		return id;
 	}
@@ -89,8 +80,6 @@ public class Endereco implements Serializable {
 		this.id = id;
 	}
 
-	
-	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -98,7 +87,6 @@ public class Endereco implements Serializable {
 		result = prime * result + ((bairro == null) ? 0 : bairro.hashCode());
 		result = prime * result + ((cep == null) ? 0 : cep.hashCode());
 		result = prime * result + ((cidade == null) ? 0 : cidade.hashCode());
-		result = prime * result + ((estado == null) ? 0 : estado.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((numero == null) ? 0 : numero.hashCode());
 		result = prime * result + ((rua == null) ? 0 : rua.hashCode());
@@ -129,11 +117,6 @@ public class Endereco implements Serializable {
 				return false;
 		} else if (!cidade.equals(other.cidade))
 			return false;
-		if (estado == null) {
-			if (other.estado != null)
-				return false;
-		} else if (!estado.equals(other.estado))
-			return false;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -157,7 +140,6 @@ public class Endereco implements Serializable {
 		clone.setBairro(bairro);
 		clone.setCep(cep);
 		clone.setCidade(cidade);
-		clone.setEstado(estado);
 		clone.setId(id);
 		clone.setNumero(numero);
 		clone.setNumero(numero);
