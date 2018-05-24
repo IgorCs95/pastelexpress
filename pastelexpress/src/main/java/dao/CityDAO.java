@@ -12,7 +12,7 @@ import entities.State;
 import exception.PersistenciaDacException;
 
 
-public class CityDAO extends DAO<City> {
+public class CityDAO extends DAO {
 
 	public void save(City obj) throws PersistenciaDacException {
 		EntityManager em = getEntityManager();

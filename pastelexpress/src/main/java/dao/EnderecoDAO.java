@@ -12,7 +12,7 @@ import entities.Endereco;
 import exception.PersistenciaDacException;
 import filter.EnderecoFilter;
 
-public class EnderecoDAO extends DAO<Endereco> {
+public class EnderecoDAO extends DAO {
 
 
 	

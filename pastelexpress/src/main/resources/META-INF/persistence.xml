@@ -10,9 +10,13 @@
 		<non-jta-data-source>java:/pastelexpress_PostgreSQL</non-jta-data-source>
 		<!-- <non-jta-data-source>java:/DACA_MySQL</non-jta-data-source> -->
 		
+		<class>entities.Carrinho</class>
+		<class>entities.City</class>
 		<class>entities.Endereco</class>
 		<class>entities.Item</class>
+		<class>entities.ItemPedido</class>
 		<class>entities.Pedido</class>
+		<class>entities.State</class>
 		<class>entities.User</class>
 
 		<properties>

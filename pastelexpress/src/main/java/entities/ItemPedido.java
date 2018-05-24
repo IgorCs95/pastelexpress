@@ -19,7 +19,6 @@ public class ItemPedido {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	@OneToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "item_fk", foreignKey = @ForeignKey(name = "fk__tb_itempedido__tb_item"))
 	private Item item;
 

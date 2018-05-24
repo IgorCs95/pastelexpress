@@ -13,7 +13,7 @@ import exception.PersistenciaDacException;
 import filter.PedidoFilter;
 
 
-public class PedidoDAO extends DAO<Pedido>{
+public class PedidoDAO extends DAO{
 	
 
 	public void save(Pedido obj) throws PersistenciaDacException {

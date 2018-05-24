@@ -12,7 +12,7 @@ import entities.Carrinho;
 import exception.PersistenciaDacException;
 import filter.CarrinhoFilter;
 
-public class CarrinhoDAO extends DAO<Carrinho> {
+public class CarrinhoDAO extends DAO {
 
 	public void save(Carrinho item) throws PersistenciaDacException {
 		EntityManager em = getEntityManager();

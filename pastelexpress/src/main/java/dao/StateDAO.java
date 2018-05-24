@@ -11,7 +11,7 @@ import entities.State;
 import exception.PersistenciaDacException;
 
 
-public class StateDAO extends DAO<State> {
+public class StateDAO extends DAO {
 
 	public void save(State obj) throws PersistenciaDacException {
 		EntityManager em = getEntityManager();

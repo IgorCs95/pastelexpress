@@ -12,7 +12,7 @@ import entities.User;
 import exception.PersistenciaDacException;
 import filter.UserFilter;
 
-public class UserDAO extends DAO<User> {
+public class UserDAO extends DAO {
 
 	public void save(User obj) throws PersistenciaDacException {
 		EntityManager em = getEntityManager();

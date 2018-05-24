@@ -1,7 +1,6 @@
 package entities;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -15,7 +14,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "TB_CARRINHO")
-public class Carrinho implements Serializable{
+public class Carrinho implements Serializable {
 
 	/**
 	 * 
@@ -24,13 +23,13 @@ public class Carrinho implements Serializable{
 
 	@Id
 	private Integer id;
-	
+
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "carrinho_id")
-	private Collection<ItemPedido> items;
-	
+	private List<ItemPedido> items;
+
 	private Date data;
-	
+
 	public Integer getId() {
 		return id;
 	}
@@ -39,18 +38,18 @@ public class Carrinho implements Serializable{
 		this.id = id;
 	}
 
-	public Collection<ItemPedido> getItems() {
+	public List<ItemPedido> getItems() {
 		return items;
 	}
 
-	public void setItems(Collection<ItemPedido> items) {
+	public void setItems(List<ItemPedido> items) {
 		this.items = items;
 	}
 
-	public void addItemPedido(Item item,int qtd) {
+	public void addItemPedido(Item item, int qtd) {
 		items.add(new ItemPedido(item, qtd));
 	}
-	
+
 	public void removerItem(ItemPedido item) {
 		items.remove(item);
 	}
@@ -62,16 +61,14 @@ public class Carrinho implements Serializable{
 	public void setData(Date data) {
 		this.data = data;
 	}
-	
+
 	public float total() {
 		float soma = 0;
 		for (ItemPedido itemPedido : items) {
-			soma +=itemPedido.subTotal();
+			soma += itemPedido.subTotal();
 		}
 		return soma;
 	}
-	
-	
 
 	@Override
 	public int hashCode() {
@@ -109,19 +106,15 @@ public class Carrinho implements Serializable{
 			return false;
 		return true;
 	}
-	
+
 	public Carrinho clone() {
 		Carrinho clone = new Carrinho();
-		
+
 		clone.setData(data);
 		clone.setId(id);
 		clone.setItems(items);
-		
+
 		return clone;
 	}
-	
-	
-	
-	
 
 }

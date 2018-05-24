@@ -4,35 +4,35 @@
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 	xmlns:h="http://xmlns.jcp.org/jsf/html"
 	xmlns:p="http://primefaces.org/ui">
-	
-	
+
+
 
 <ui:composition>
 	<h:form>
 
-		<p:panelGrid columns="2">
+		<h:panelGrid columns="2">
 
-			<p:graphicImage library="img" name="logo.png" style="width:50%" />
+			<p:graphicImage library="img" name="logo.png" style="width:30%" />
 
 			<p:outputPanel style="text-align:center">
 
 
 				<p:outputLabel value="Id:" />
-				<p:outputLabel value=" #{teste.item.id}" />
+				<p:outputLabel value=" #{editItem.item.id}" />
 				<br />
 
 				<p:outputLabel for="nome" value="Nome:" />
-				<p:outputLabel id="nome" value=" #{teste.item.nome}" label="Nome"
+				<p:outputLabel id="nome" value=" #{editItem.item.nome}" label="Nome"
 					style="width:350px ; font-weight: bolder" />
 				<br />
 
 				<p:outputLabel for="valor" value="Valor: " />
-				<p:outputLabel id="valor" value=" #{teste.item.valor}" label="Valor"
+				<p:outputLabel id="valor" value=" #{editItem.item.valor}" label="Valor"
 					style="width:350px ; font-weight: bolder" />
 				<br />
 
 				<p:outputLabel for="codigo" value="Codigo:" />
-				<p:outputLabel id="codigo" value=" #{teste.item.codigo}"
+				<p:outputLabel id="codigo" value=" #{editItem.item.codigo}"
 					label="Codigo" style="width:350px ; font-weight: bolder" />
 				<br />
 
@@ -40,9 +40,11 @@
 
 			</p:outputPanel>
 
-		</p:panelGrid>
+		</h:panelGrid>
 
-		<p:outputLabel id="descricao" value=" #{teste.item.descricao}"
+		<br />
+		<br />
+		<p:outputLabel id="descricao" value=" #{editItem.item.descricao}"
 			label="Descricao" style="width:350px ; font-weight: bolder" />
 	</h:form>
 

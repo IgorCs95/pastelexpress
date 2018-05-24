@@ -17,9 +17,7 @@ public class EditItem extends AbstractBean{
 	private static final long serialVersionUID = -6236852536417871637L;
 
 	private Item item;
-	
 
-	
 	private ItemService itemService = new ItemService();
 	
 	
