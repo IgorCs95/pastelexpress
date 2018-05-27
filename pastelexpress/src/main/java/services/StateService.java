@@ -3,20 +3,25 @@ package services;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
+
 import dao.StateDAO;
 import entities.State;
 import exception.PersistenciaDacException;
+import util.TransacionalCdi;
 
-
+@ApplicationScoped
 public class StateService implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -7803325791425670859L;
-	
-	private StateDAO stateDAO = new StateDAO();
-	
+	@Inject
+	private StateDAO stateDAO;
+
+	@TransacionalCdi
 	public void save(State user) throws ServiceDacException {
 		try {
 			stateDAO.save(user);
@@ -25,8 +30,9 @@ public class StateService implements Serializable {
 		}
 	}
 
+	@TransacionalCdi
 	public void update(State user) throws ServiceDacException {
-		
+
 		try {
 			stateDAO.update(user);
 		} catch (PersistenciaDacException e) {
@@ -34,6 +40,7 @@ public class StateService implements Serializable {
 		}
 	}
 
+	@TransacionalCdi
 	public void delete(State user) throws ServiceDacException {
 		try {
 			stateDAO.delete(user);
@@ -57,5 +64,5 @@ public class StateService implements Serializable {
 			throw new ServiceDacException(e.getMessage(), e);
 		}
 	}
-	
+
 }

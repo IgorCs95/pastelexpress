@@ -7,12 +7,16 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
+
 import dao.UserDAO;
 import entities.User;
 import exception.PersistenciaDacException;
 import filter.UserFilter;
+import util.TransacionalCdi;
 
-
+@ApplicationScoped
 public class CarrinhoService implements Serializable {
 
 	/**
@@ -20,8 +24,10 @@ public class CarrinhoService implements Serializable {
 	 */
 	private static final long serialVersionUID = -7803325791425670859L;
 	
-	private UserDAO userDAO = new UserDAO();
+	@Inject
+	private UserDAO userDAO;
 	
+	@TransacionalCdi
 	public void save(User user) throws ServiceDacException {
 		try {
 			// Verificar se login já existe
@@ -33,6 +39,7 @@ public class CarrinhoService implements Serializable {
 		}
 	}
 
+	@TransacionalCdi
 	public void update(User user, boolean passwordChanged) throws ServiceDacException {
 		
 		try {
@@ -47,6 +54,7 @@ public class CarrinhoService implements Serializable {
 		}
 	}
 
+	@TransacionalCdi
 	public void delete(User user) throws ServiceDacException {
 		try {
 			userDAO.delete(user);

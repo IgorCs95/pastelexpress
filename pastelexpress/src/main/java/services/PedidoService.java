@@ -3,22 +3,27 @@ package services;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
+
 import dao.PedidoDAO;
 import entities.Pedido;
 import exception.PersistenciaDacException;
 import filter.PedidoFilter;
+import util.TransacionalCdi;
 
-
+@ApplicationScoped
 public class PedidoService implements Serializable {
 
-	
-	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 4114408751146726338L;
-	private PedidoDAO userDAO = new PedidoDAO();
 	
+	@Inject
+	private PedidoDAO userDAO;
+
+	@TransacionalCdi
 	public void save(Pedido pedido) throws ServiceDacException {
 		try {
 			// Verificar se login já existe
@@ -28,8 +33,9 @@ public class PedidoService implements Serializable {
 		}
 	}
 
+	@TransacionalCdi
 	public void update(Pedido pedido, boolean passwordChanged) throws ServiceDacException {
-		
+
 		try {
 			userDAO.update(pedido);
 		} catch (PersistenciaDacException e) {
@@ -37,6 +43,7 @@ public class PedidoService implements Serializable {
 		}
 	}
 
+	@TransacionalCdi
 	public void delete(Pedido pedido) throws ServiceDacException {
 		try {
 			userDAO.delete(pedido);

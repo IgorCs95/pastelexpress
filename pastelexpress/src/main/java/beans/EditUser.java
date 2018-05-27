@@ -1,14 +1,17 @@
 package beans;
 
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
+
+import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
+import javax.inject.Named;
 
 import entities.User;
 import services.ServiceDacException;
 import services.UserService;
 
+
+@Named
 @ViewScoped
-@ManagedBean
 public class EditUser extends AbstractBean{
 	
 	
@@ -20,7 +23,8 @@ public class EditUser extends AbstractBean{
 
 	private boolean login;
 	
-	private UserService userService = new UserService();
+	@Inject
+	private UserService userService;
 	
 	
 	private User user;

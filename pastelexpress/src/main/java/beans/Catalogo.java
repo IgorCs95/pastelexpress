@@ -3,16 +3,17 @@ package beans;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
+import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
+import javax.inject.Named;
 
 import entities.Item;
 import filter.ItemFilter;
 import services.ItemService;
 import services.ServiceDacException;
 
+@Named
 @ViewScoped
-@ManagedBean
 public class Catalogo extends AbstractBean {
 
 	/**
@@ -20,10 +21,10 @@ public class Catalogo extends AbstractBean {
 	 */
 	private static final long serialVersionUID = 8598103867635945238L;
 
-
 	private List<Item> items;
 
-	private ItemService itemService = new ItemService();
+	@Inject
+	private ItemService itemService;
 
 	private ItemFilter itemFilter;
 
@@ -31,26 +32,19 @@ public class Catalogo extends AbstractBean {
 		return items;
 	}
 
-	
-
 	public ItemFilter getItemFilter() {
 		return itemFilter;
 	}
 
-
-
 	public void setItemFilter(ItemFilter itemFilter) {
 		this.itemFilter = itemFilter;
 	}
-
-
 
 	@PostConstruct
 	public void init() {
 		limpar();
 		buscarTodos();
 	}
-	
 
 	public String filtrar() {
 		try {
@@ -61,7 +55,7 @@ public class Catalogo extends AbstractBean {
 		}
 		return null;
 	}
-	
+
 	public String buscarTodos() {
 		try {
 			items = itemService.getAll();
@@ -76,7 +70,7 @@ public class Catalogo extends AbstractBean {
 		this.itemFilter = new ItemFilter();
 		return null;
 	}
-	
+
 	public String delete(Item item) {
 		try {
 			itemService.delete(item);
@@ -84,9 +78,9 @@ public class Catalogo extends AbstractBean {
 			reportarMensagemDeErro(e.getMessage());
 			return null;
 		}
-		
+
 		reportarMensagemDeSucesso("Item '" + item.getNome() + "' deletedo");
-		
+
 		return "index?faces-redirect=true";
 	}
 

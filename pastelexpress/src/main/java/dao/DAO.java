@@ -1,32 +1,29 @@
 package dao;
 
+import java.io.Serializable;
+
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 
-public abstract class DAO {
+@ApplicationScoped
+public abstract class DAO implements Serializable {
 
-	static EntityManagerFactory emf;
+	private static final long serialVersionUID = 3118037959505163320L;
 
-	static {
-		try {
-			emf = Persistence.createEntityManagerFactory("pastelexpress");
-		} catch (Throwable e) {
-			e.printStackTrace();
-			throw e;
-		}
-	}
+	@Inject
+	private EntityManager em;
 
 	protected EntityManager getEntityManager() {
-		return emf.createEntityManager();
+		return em;
 	}
-
-	public static void close() {
-		emf.close();
-	}
-
+	
 	protected boolean notEmpty(Object obj) {
 		return obj != null;
+	}
+	
+	protected boolean notEmpty(int obj) {
+		return obj != 0;
 	}
 
 	protected boolean notEmpty(String obj) {

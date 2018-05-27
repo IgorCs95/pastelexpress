@@ -7,21 +7,26 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
+
 import dao.UserDAO;
 import entities.User;
 import exception.PersistenciaDacException;
 import filter.UserFilter;
+import util.TransacionalCdi;
 
-
+@ApplicationScoped
 public class UserService implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -7803325791425670859L;
-	
-	private UserDAO userDAO = new UserDAO();
-	
+	@Inject
+	private UserDAO userDAO;
+
+	@TransacionalCdi
 	public void save(User user) throws ServiceDacException {
 		try {
 			// Verificar se login já existe
@@ -33,8 +38,9 @@ public class UserService implements Serializable {
 		}
 	}
 
+	@TransacionalCdi
 	public void update(User user, boolean passwordChanged) throws ServiceDacException {
-		
+
 		try {
 			// Verificar se login já existe
 			validarLogin(user);
@@ -47,6 +53,7 @@ public class UserService implements Serializable {
 		}
 	}
 
+	@TransacionalCdi
 	public void delete(User user) throws ServiceDacException {
 		try {
 			userDAO.delete(user);
@@ -78,14 +85,15 @@ public class UserService implements Serializable {
 			throw new ServiceDacException(e.getMessage(), e);
 		}
 	}
-	
+
 	private String calcularHashDaSenha(User user) throws ServiceDacException {
 		user.setSenha(hash(user.getSenha()));
 		return user.getSenha();
 	}
 
-	public boolean senhaAtualConfere(String passwordAtualHash, String confirmacaoPasswordAtual) throws ServiceDacException {
-		
+	public boolean senhaAtualConfere(String passwordAtualHash, String confirmacaoPasswordAtual)
+			throws ServiceDacException {
+
 		if (passwordAtualHash == null && confirmacaoPasswordAtual == null) {
 			return true;
 		}
@@ -93,9 +101,9 @@ public class UserService implements Serializable {
 		if (passwordAtualHash == null || confirmacaoPasswordAtual == null) {
 			return false;
 		}
-		
+
 		String confirmacaoPasswordAtualHash = hash(confirmacaoPasswordAtual);
-		
+
 		return passwordAtualHash.equals(confirmacaoPasswordAtualHash);
 	}
 
@@ -125,8 +133,8 @@ public class UserService implements Serializable {
 	public void validarLogin(User user) throws ServiceDacException {
 		boolean jahExiste = userDAO.existeUsuarioComLogin(user);
 		if (jahExiste) {
-			throw new ServiceDacException("Login already exists: " + user.getLogin()); 
+			throw new ServiceDacException("Login already exists: " + user.getLogin());
 		}
 	}
-	
+
 }

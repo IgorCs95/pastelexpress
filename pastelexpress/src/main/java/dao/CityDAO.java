@@ -3,7 +3,6 @@ package dao;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceException;
 import javax.persistence.TypedQuery;
 
@@ -14,54 +13,41 @@ import exception.PersistenciaDacException;
 
 public class CityDAO extends DAO {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8125884107212358354L;
+
 	public void save(City obj) throws PersistenciaDacException {
 		EntityManager em = getEntityManager();
-		EntityTransaction transaction = em.getTransaction();
-		transaction.begin();
 		try {
 			em.persist(obj);
-			transaction.commit();
 		} catch (PersistenceException pe) {
 			pe.printStackTrace();
-			transaction.rollback();
 			throw new PersistenciaDacException("Ocorreu algum erro ao tentar salvar a cidade.", pe);
-		} finally {
-			em.close();
 		}
 	}
 
 	public City update(City obj) throws PersistenciaDacException {
 		EntityManager em = getEntityManager();
-		EntityTransaction transaction = em.getTransaction();
-		transaction.begin();
 		City resultado = obj;
 		try {
 			resultado = em.merge(obj);
-			transaction.commit();
 		} catch (PersistenceException pe) {
 			pe.printStackTrace();
-			transaction.rollback();
 			throw new PersistenciaDacException("Ocorreu algum erro ao tentar atualizar a cidade.", pe);
-		} finally {
-			em.close();
 		}
 		return resultado;
 	}
 
 	public void delete(City obj) throws PersistenciaDacException {
 		EntityManager em = getEntityManager();
-		EntityTransaction transaction = em.getTransaction();
-		transaction.begin();
 		try {
 			obj = em.find(City.class, obj.getId());
 			em.remove(obj);
-			transaction.commit();
 		} catch (PersistenceException pe) {
 			pe.printStackTrace();
-			transaction.rollback();
 			throw new PersistenciaDacException("Ocorreu algum erro ao tentar remover a cidade.", pe);
-		} finally {
-			em.close();
 		}
 	}
 
@@ -73,8 +59,6 @@ public class CityDAO extends DAO {
 		} catch (PersistenceException pe) {
 			pe.printStackTrace();
 			throw new PersistenciaDacException("Ocorreu algum erro ao tentar recuperar a cidade com base no ID.", pe);
-		} finally {
-			em.close();
 		}
 
 		return resultado;
@@ -89,8 +73,6 @@ public class CityDAO extends DAO {
 		} catch (PersistenceException pe) {
 			pe.printStackTrace();
 			throw new PersistenciaDacException("Ocorreu algum erro ao tentar recuperar todas as cidades.", pe);
-		} finally {
-			em.close();
 		}
 		return resultado;
 	}

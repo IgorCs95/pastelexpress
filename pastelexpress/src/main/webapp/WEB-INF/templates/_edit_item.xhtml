@@ -7,29 +7,50 @@
 
 <ui:composition>
 
+	<p:growl id="messages" showDetail="true" />
 	<h:panelGrid id="edititem" columns="2" styleClass="ui-noborder">
-		<f:facet name="header">Item</f:facet>
+
+
+
+
 
 		<p:outputLabel value="Id:" rendered="#{edtiItem.isEdicao()}" />
-		<p:outputLabel value="#{editItem.item.id}"	rendered="#{edtiItem.isEdicao()}" />
+		<p:outputLabel value="#{editItem.item.id}"
+			rendered="#{edtiItem.isEdicao()}" />
 
 		<p:outputLabel for="nome" value="Nome:" />
-		<p:inputText id="nome" value="#{editItem.item.nome}" label="Nome" style="width:350px" required="true" />
-
-		<p:outputLabel for="valor" value="Valor" />
-		<p:inputText id="valor" value="#{editItem.item.valor}" label="Valor"
+		<p:inputText id="nome" value="#{editItem.item.nome}" label="Nome"
 			style="width:350px" required="true" />
 
+		<p:outputLabel for="valor" value="Valor" />
+		<p:inputNumber id="valor" value="#{editItem.item.valor}" symbol="R$"
+			style="width:350px" decimalSeparator="," thousandSeparator="." />
+
+
+
 		<p:outputLabel for="codigo" value="Codigo:" />
-		<p:inputText id="codigo" value="#{editItem.item.codigo}" label="Codigo" style="width:350px" required="true" />
+
+		<p:inputNumber id="codigo" value="#{editItem.item.codigo}"
+			style="width:350px" required="true" />
+
 
 		<p:outputLabel for="descricao" value="Descrição:" />
 		<p:inputTextarea id="descricao" value="#{editItem.item.descricao}"
 			label="Descricao" style="width:350px" required="true" />
 
 
+
+		<p:outputLabel for="foto" value="Foto:" />
+		<p:fileUpload id="foto" value="#{fileUploadView.file}" mode="simple"
+			skinSimple="true" />
+
+
+
+
+
+
 	</h:panelGrid>
-	
-	
+
+
 </ui:composition>
 </html>

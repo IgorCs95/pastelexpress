@@ -40,46 +40,47 @@
 
 				<p:panel header="#{item.nome}"
 					style="text-align:center ; weight:125px">
+					<h:panelGrid columns="1" style="width:175px">
+						<p:graphicImage library="img" name="erro.jpg"
+							style="text-align:center" />
 
-					<p:graphicImage library="img" name="erro.jpg"
-						style="text-align:center" />
-
-					<br />
-					<h:outputText value="R$#{item.valor}" style="color:red ; text-align:center;font-size: 20px; font-weight:bolder ;" >
-						<f:convertNumber></f:convertNumber>
-					</h:outputText>
-					
-					
-					<br />
-					<br />
-					<h:panelGrid columns="2" style="aling-items:center">
-						<p:commandButton id="editItemDialogCommand" icon="fa fa-edit"
-							oncomplete="if (!args.validationFailed) { PF('editItemDialog').show() }"
-							update=":edtiItemDialogId">
-							<f:setPropertyActionListener value="#{item}"
-								target="#{editItem.item}" />
-							<p:resetInput target="edtiItemDialogId" />
-						</p:commandButton>
+						<br />
+						<h:outputText value="#{item.valor}"
+							style="color:red ; text-align:center;font-size: 20px; font-weight:bolder ;">
+							<f:convertNumber currencySymbol="R$" type="currency" />
+						</h:outputText>
 
 
+						<br />
+						<br />
+						<h:panelGrid columns="2" style="aling-items:center">
+							<p:commandButton id="editItemDialogCommand" icon="fa fa-edit"
+								oncomplete="if (!args.validationFailed) { PF('editItemDialog').show() }"
+								update=":edtiItemDialogId">
+								<f:setPropertyActionListener value="#{item}"
+									target="#{editItem.item}" />
+								<p:resetInput target="edtiItemDialogId" />
+							</p:commandButton>
 
-						<p:commandButton id="detalhesItemDialogCommand" icon="fa fa-edit"
-							oncomplete="if (!args.validationFailed) { PF('detalhesItemDialog').show() }"
-							update=":detalhesItemDialogId">
-							<f:setPropertyActionListener value="#{item}"
-								target="#{editItem.item}" />
-							<p:resetInput target="detalhesItemDialogId" />
-						</p:commandButton>
+
+
+							<p:commandButton id="detalhesItemDialogCommand" icon="fa fa-edit"
+								oncomplete="if (!args.validationFailed) { PF('detalhesItemDialog').show() }"
+								update=":detalhesItemDialogId">
+								<f:setPropertyActionListener value="#{item}"
+									target="#{editItem.item}" />
+								<p:resetInput target="detalhesItemDialogId" />
+							</p:commandButton>
+						</h:panelGrid>
+
+						<p:tooltip id="toolTipEdittemDialog" for="editItemDialogCommand"
+							value="Editar Item" position="up" />
+
+						<p:tooltip id="toolTipdetalhesItemDialog"
+							for="detalhesItemDialogCommand" value="Detalhes" position="up" />
+
+
 					</h:panelGrid>
-
-					<p:tooltip id="toolTipEdittemDialog" for="editItemDialogCommand"
-						value="Editar Item" position="up" />
-
-					<p:tooltip id="toolTipdetalhesItemDialog"
-						for="detalhesItemDialogCommand" value="Detalhes" position="up" />
-
-
-
 				</p:panel>
 			</p:dataGrid>
 

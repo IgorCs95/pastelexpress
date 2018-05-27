@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceException;
 import javax.persistence.TypedQuery;
 
@@ -14,54 +13,41 @@ import filter.UserFilter;
 
 public class UserDAO extends DAO {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8544940108094464776L;
+
 	public void save(User obj) throws PersistenciaDacException {
 		EntityManager em = getEntityManager();
-		EntityTransaction transaction = em.getTransaction();
-		transaction.begin();
 		try {
 			em.persist(obj);
-			transaction.commit();
 		} catch (PersistenceException pe) {
 			pe.printStackTrace();
-			transaction.rollback();
 			throw new PersistenciaDacException("Ocorreu algum erro ao tentar salvar o usuário.", pe);
-		} finally {
-			em.close();
 		}
 	}
 
 	public User update(User obj) throws PersistenciaDacException {
 		EntityManager em = getEntityManager();
-		EntityTransaction transaction = em.getTransaction();
-		transaction.begin();
 		User resultado = obj;
 		try {
 			resultado = em.merge(obj);
-			transaction.commit();
 		} catch (PersistenceException pe) {
 			pe.printStackTrace();
-			transaction.rollback();
 			throw new PersistenciaDacException("Ocorreu algum erro ao tentar atualizar o usuário.", pe);
-		} finally {
-			em.close();
 		}
 		return resultado;
 	}
 
 	public void delete(User obj) throws PersistenciaDacException {
 		EntityManager em = getEntityManager();
-		EntityTransaction transaction = em.getTransaction();
-		transaction.begin();
 		try {
 			obj = em.find(User.class, obj.getId());
 			em.remove(obj);
-			transaction.commit();
 		} catch (PersistenceException pe) {
 			pe.printStackTrace();
-			transaction.rollback();
-			throw new PersistenciaDacException("Ocorreu algum erro ao tentar remover o usuário.", pe);
-		} finally {
-			em.close();
+			throw new PersistenciaDacException("erro ao remover o Usuario", pe);
 		}
 	}
 
@@ -72,16 +58,23 @@ public class UserDAO extends DAO {
 			resultado = em.find(User.class, objId);
 		} catch (PersistenceException pe) {
 			pe.printStackTrace();
-			throw new PersistenciaDacException("Ocorreu algum erro ao tentar recuperar o usuário com base no ID.", pe);
-		} finally {
-			em.close();
+			throw new PersistenciaDacException("Nao foi possivel encontrar o Usuario pelo id fornecido", pe);
 		}
 
 		return resultado;
 	}
 
 	public List<User> getAll() throws PersistenciaDacException {
-		return findBy(null);
+		EntityManager em = getEntityManager();
+		List<User> resultado = null;
+		try {
+			TypedQuery<User> query = em.createQuery("SELECT u FROM User u", User.class);
+			resultado = query.getResultList();
+		} catch (PersistenceException pe) {
+			pe.printStackTrace();
+			throw new PersistenciaDacException("Nao foi possivel buscar todos os usuarios.", pe);
+		}
+		return resultado;
 	}
 
 	public List<User> findBy(UserFilter filter) throws PersistenciaDacException {
@@ -90,9 +83,9 @@ public class UserDAO extends DAO {
 		List<User> resultado = new ArrayList<>();
 
 		try {
-			
+
 			String jpql = "SELECT u FROM User u WHERE 1 = 1 ";
-			
+
 			// First name
 			if (notEmpty(filter.getNome())) {
 				jpql += "AND u.nome LIKE :firstName ";
@@ -114,7 +107,7 @@ public class UserDAO extends DAO {
 			}
 
 			TypedQuery<User> query = em.createQuery(jpql, User.class);
-			
+
 			// First name
 			if (notEmpty(filter.getNome())) {
 				query.setParameter("nome", "%" + filter.getNome() + "%");
@@ -134,7 +127,7 @@ public class UserDAO extends DAO {
 			if (notEmpty(filter.getTipo())) {
 				query.setParameter("tipo", filter.getTipo());
 			}
-			
+
 			resultado = query.getResultList();
 		} catch (PersistenceException pe) {
 			pe.printStackTrace();
@@ -149,12 +142,14 @@ public class UserDAO extends DAO {
 		if (user == null || !notEmpty(user.getLogin())) {
 			return false;
 		}
-		
-		// Usar estratégia de contabilizar quantos usuários existem com o dado login, e que não seja ele mesmo.
+
+		// Usar estratégia de contabilizar quantos usuários existem com o dado login, e
+		// que não seja ele mesmo.
 		// Existe algum usuário com o login caso a contagem seja diferente de zero.
-		// Usar COUNT(*), já que cláusula EXISTS não pode ser usada no SELECT pela BNF do JPQL:
+		// Usar COUNT(*), já que cláusula EXISTS não pode ser usada no SELECT pela BNF
+		// do JPQL:
 		// https://docs.oracle.com/html/E13946_01/ejb3_langref.html#ejb3_langref_bnf
-		
+
 		EntityManager em = getEntityManager();
 
 		String jpql = "SELECT COUNT(*) FROM User u WHERE u.login = :login ";
@@ -168,10 +163,10 @@ public class UserDAO extends DAO {
 		if (user.getId() != null) {
 			query.setParameter("user", user);
 		}
-		
+
 		Long count = query.getSingleResult();
 		return count > 0;
-		
+
 	}
 
 }

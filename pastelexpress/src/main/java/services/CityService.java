@@ -3,21 +3,26 @@ package services;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
+
 import dao.CityDAO;
 import entities.City;
 import entities.State;
 import exception.PersistenciaDacException;
+import util.TransacionalCdi;
 
-
+@ApplicationScoped
 public class CityService implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -7803325791425670859L;
-	
-	private CityDAO cityDAO = new CityDAO();
-	
+	@Inject
+	private CityDAO cityDAO;
+
+	@TransacionalCdi
 	public void save(City user) throws ServiceDacException {
 		try {
 			cityDAO.save(user);
@@ -26,8 +31,9 @@ public class CityService implements Serializable {
 		}
 	}
 
+	@TransacionalCdi
 	public void update(City user) throws ServiceDacException {
-		
+
 		try {
 			cityDAO.update(user);
 		} catch (PersistenciaDacException e) {
@@ -35,6 +41,7 @@ public class CityService implements Serializable {
 		}
 	}
 
+	@TransacionalCdi
 	public void delete(City user) throws ServiceDacException {
 		try {
 			cityDAO.delete(user);
@@ -74,5 +81,5 @@ public class CityService implements Serializable {
 			throw new ServiceDacException(e.getMessage(), e);
 		}
 	}
-	
+
 }

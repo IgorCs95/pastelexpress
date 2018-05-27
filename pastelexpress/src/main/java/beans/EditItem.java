@@ -1,16 +1,19 @@
 package beans;
 
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
+import java.util.ArrayList;
+
+import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
+import javax.inject.Named;
 
 import entities.Item;
 import services.ItemService;
 import services.ServiceDacException;
 
+@Named
 @ViewScoped
-@ManagedBean
-public class EditItem extends AbstractBean{
-	
+public class EditItem extends AbstractBean {
+
 	/**
 	 * 
 	 */
@@ -18,14 +21,16 @@ public class EditItem extends AbstractBean{
 
 	private Item item;
 
-	private ItemService itemService = new ItemService();
-	
-	
+	@Inject
+	private ItemService itemService;
+
 	public void init() {
 		if (item == null) {
 			item = new Item();
 		}
 	}
+	
+
 	public String saveItem() {
 		try {
 			if (isEdicao()) {
@@ -42,23 +47,18 @@ public class EditItem extends AbstractBean{
 
 		return "index.xhtml?faces-redirect=true";
 	}
-	
+
 	public Item getItem() {
 		return item;
 	}
+	
+
 	public void setItem(Item item) {
 		this.item = item;
 	}
-	
-	
+
 	public boolean isEdicao() {
 		return item != null && item.getId() != null;
 	}
-	
-	
-
-	
-	
-	
 
 }

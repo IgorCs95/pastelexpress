@@ -3,20 +3,27 @@ package services;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
+
 import dao.ItemDAO;
 import entities.Item;
 import exception.PersistenciaDacException;
 import filter.ItemFilter;
+import util.TransacionalCdi;
 
-
+@ApplicationScoped
 public class ItemService implements Serializable {
-	
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -4301929765413536058L;
-	private ItemDAO itemDAO = new ItemDAO();
-	
+
+	@Inject
+	private ItemDAO itemDAO;
+
+	@TransacionalCdi
 	public void save(Item item) throws ServiceDacException {
 		try {
 			itemDAO.save(item);
@@ -25,8 +32,9 @@ public class ItemService implements Serializable {
 		}
 	}
 
+	@TransacionalCdi
 	public void update(Item item) throws ServiceDacException {
-		
+
 		try {
 			itemDAO.update(item);
 		} catch (PersistenciaDacException e) {
@@ -34,6 +42,7 @@ public class ItemService implements Serializable {
 		}
 	}
 
+	@TransacionalCdi
 	public void delete(Item item) throws ServiceDacException {
 		try {
 			itemDAO.delete(item);
@@ -65,6 +74,5 @@ public class ItemService implements Serializable {
 			throw new ServiceDacException(e.getMessage(), e);
 		}
 	}
-	
 
 }

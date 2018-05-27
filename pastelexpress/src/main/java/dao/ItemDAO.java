@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceException;
 import javax.persistence.TypedQuery;
 
@@ -14,56 +13,38 @@ import filter.ItemFilter;
 
 public class ItemDAO extends DAO {
 	
-	
+	private static final long serialVersionUID = -2373193930046892744L;
 
 	public void save(Item item) throws PersistenciaDacException {
 		EntityManager em = getEntityManager();
-		EntityTransaction transaction = em.getTransaction();
-		transaction.begin();
 		try {
 			em.persist(item);
-			transaction.commit();
 		} catch (PersistenceException pe) {
 			pe.printStackTrace();
-			transaction.rollback();
-			throw new PersistenciaDacException("Ocorreu algum erro ao tentar salvar o Item.", pe);
-		} finally {
-			em.close();
+			throw new PersistenciaDacException("Problemas ao cadastrar o Item ", pe);
 		}
 	}
 
 	public Item update(Item item) throws PersistenciaDacException {
 		EntityManager em = getEntityManager();
-		EntityTransaction transaction = em.getTransaction();
-		transaction.begin();
 		Item resultado = item;
 		try {
 			resultado = em.merge(item);
-			transaction.commit();
 		} catch (PersistenceException pe) {
 			pe.printStackTrace();
-			transaction.rollback();
-			throw new PersistenciaDacException("Ocorreu algum erro ao tentar atualizar o Item.", pe);
-		} finally {
-			em.close();
+			throw new PersistenciaDacException("Problema na atualização do Item ", pe);
 		}
 		return resultado;
 	}
 
 	public void delete(Item item) throws PersistenciaDacException {
 		EntityManager em = getEntityManager();
-		EntityTransaction transaction = em.getTransaction();
-		transaction.begin();
 		try {
 			item = em.find(Item.class, item.getId());
 			em.remove(item);
-			transaction.commit();
 		} catch (PersistenceException pe) {
 			pe.printStackTrace();
-			transaction.rollback();
-			throw new PersistenciaDacException("Ocorreu algum erro ao tentar remover o Item.", pe);
-		} finally {
-			em.close();
+			throw new PersistenciaDacException("erro ao remover o Item", pe);
 		}
 	}
 
@@ -74,9 +55,7 @@ public class ItemDAO extends DAO {
 			resultado = em.find(Item.class, itemId);
 		} catch (PersistenceException pe) {
 			pe.printStackTrace();
-			throw new PersistenciaDacException("Ocorreu algum erro ao tentar recuperar o Item com base no ID.", pe);
-		} finally {
-			em.close();
+			throw new PersistenciaDacException("Nao foi possivel encontrar o item pelo id fornecido", pe);
 		}
 
 		return resultado;
@@ -91,10 +70,8 @@ public class ItemDAO extends DAO {
 		} catch (PersistenceException pe) {
 			pe.printStackTrace();
 			throw new PersistenciaDacException("Ocorreu algum erro ao tentar recuperar todos os Item.", pe);
-		} finally {
-			em.close();
 		}
-		
+
 		return resultado;
 	}
 
@@ -150,7 +127,7 @@ public class ItemDAO extends DAO {
 			}
 
 			resultado = query.getResultList();
-			
+
 		} catch (PersistenceException pe) {
 			pe.printStackTrace();
 			throw new PersistenciaDacException("Ocorreu algum erro ao tentar recuperar os Item.", pe);
@@ -159,6 +136,31 @@ public class ItemDAO extends DAO {
 		}
 		return resultado;
 
+	}
+
+	public boolean existeCodigo(Item item) {
+
+		if (item == null || !notEmpty(item.getCodigo())) {
+			return false;
+		}
+
+		EntityManager em = getEntityManager();
+
+		String jpql = "SELECT COUNT(*) FROM Item u WHERE u.cadigo = :cadigo ";
+		if (item.getId() != null) {
+			jpql += "AND u != :item ";
+		}
+
+		TypedQuery<Long> query = em.createQuery(jpql, Long.class);
+
+		query.setParameter("cadigo", item.getCodigo());
+
+		if (item.getId() != null) {
+			query.setParameter("item", item);
+		}
+
+		Long count = query.getSingleResult();
+		return count > 0;
 	}
 
 }

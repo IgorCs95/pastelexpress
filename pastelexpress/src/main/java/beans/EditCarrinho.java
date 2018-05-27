@@ -3,8 +3,9 @@ package beans;
 
 import java.util.Date;
 
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
+import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
+import javax.inject.Named;
 
 import entities.Carrinho;
 import entities.Item;
@@ -13,9 +14,8 @@ import entities.Pedido;
 import services.PedidoService;
 import services.ServiceDacException;
 
-
+@Named
 @ViewScoped
-@ManagedBean
 public class EditCarrinho extends AbstractBean{
 	
 	/**
@@ -23,6 +23,8 @@ public class EditCarrinho extends AbstractBean{
 	 */
 	private static final long serialVersionUID = 1651571553470606055L;
 	private Carrinho carrinho;
+	
+	@Inject
 	private PedidoService serverPedido;
 	
 	public void addItem(Item item,int qtd){
