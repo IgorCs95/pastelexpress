@@ -1,6 +1,5 @@
 package beans;
 
-import java.util.ArrayList;
 
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;

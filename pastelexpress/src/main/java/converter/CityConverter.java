@@ -1,20 +1,24 @@
 package converter;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.convert.FacesConverter;
+import javax.inject.Inject;
 
 import entities.City;
 import services.CityService;
 import services.ServiceDacException;
 
+@ApplicationScoped
 @FacesConverter(forClass = City.class)
 public class CityConverter implements Converter {
 
-	private CityService citys = new CityService();
+	@Inject
+	private CityService citys;
 
 	@Override
 	public Object getAsObject(FacesContext context, UIComponent component, String value) {
@@ -40,7 +44,7 @@ public class CityConverter implements Converter {
 		if (!(value instanceof City)) {
 			return null;
 		}
-		
+
 		Integer id = ((City) value).getId();
 		return (id != null) ? id.toString() : null;
 	}

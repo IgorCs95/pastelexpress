@@ -7,47 +7,19 @@
 	xmlns:p="http://primefaces.org/ui">
 
 <h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link href="css/estilo.css" rel="stylesheet" type="text/css" />
+	<link href="css/estilo.css" rel="stylesheet" type="text/css" />
 	<title><ui:insert name="title">Pagina principal</ui:insert></title>
 </h:head>
+
 
 <h:body>
 
 	<ui:debug hotkey="z" />
 
 	<div id="header">
-		<h:form>
-			<p:growl id="messages" showDetail="true" />
-			<h:panelGrid columns="2" style="width : 100%; text-align:center">
-
-				<p:graphicImage library="img" name="logo.png" height="75px" />
-				<p:menubar>
-
-
-					<p:submenu label="Edit" icon="ui-icon-pencil">
-					</p:submenu>
-
-					<p:submenu label="Help" icon="ui-icon-help">
-					</p:submenu>
-
-					<p:submenu label="Actions" icon="ui-icon-gear">
-					</p:submenu>
-
-					<p:menuitem value="Quit" url="http://www.primefaces.org"
-						icon="ui-icon-close" />
-
-					<f:facet name="options">
-						<p:inputText style="margin-right:10px" placeholder="Search" />
-						<p:commandButton type="button" value="Logout"
-							icon="ui-icon-extlink" />
-					</f:facet>
-				</p:menubar>
-
-			</h:panelGrid>
-
-
-
-
-		</h:form>
+		<ui:include src="/WEB-INF/templates/_barra_menu.xhtml" />
 	</div>
 
 	<div id="content" style="width: 100%; align: center">

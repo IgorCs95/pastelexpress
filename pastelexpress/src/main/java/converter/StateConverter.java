@@ -1,20 +1,24 @@
 package converter;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.convert.FacesConverter;
+import javax.inject.Inject;
 
 import entities.State;
 import services.ServiceDacException;
 import services.StateService;
 
+@ApplicationScoped
 @FacesConverter(forClass = State.class)
 public class StateConverter implements Converter {
 
-	private StateService states = new StateService();
+	@Inject
+	private StateService states;
 
 	@Override
 	public Object getAsObject(FacesContext context, UIComponent component, String value) {

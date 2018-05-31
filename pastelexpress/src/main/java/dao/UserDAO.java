@@ -7,6 +7,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
 import javax.persistence.TypedQuery;
 
+
 import entities.User;
 import exception.PersistenciaDacException;
 import filter.UserFilter;
@@ -63,6 +64,34 @@ public class UserDAO extends DAO {
 
 		return resultado;
 	}
+	
+	public User getSenha(String login) throws PersistenciaDacException {
+		
+		if (!notEmpty(login)) {
+			return null;
+		}
+
+		EntityManager em = getEntityManager();
+
+		String jpql = "SELECT u FROM User u WHERE u.login = :login ";
+
+		TypedQuery<User> query = em.createQuery(jpql, User.class);
+
+		query.setParameter("login", login);
+
+		User user = query.getSingleResult();
+		
+		
+		
+		if(user!=null) {
+			return user;
+		}else {
+			throw new PersistenciaDacException("Usuario nao encontrado");
+		
+		}
+		
+		
+	}
 
 	public List<User> getAll() throws PersistenciaDacException {
 		EntityManager em = getEntityManager();
@@ -88,22 +117,22 @@ public class UserDAO extends DAO {
 
 			// First name
 			if (notEmpty(filter.getNome())) {
-				jpql += "AND u.nome LIKE :firstName ";
+				jpql += "AND u.nome LIKE :nome ";
 			}
 
 			// Birthday begin
 			if (notEmpty(filter.getDataNascimentoInicio())) {
-				jpql += "AND u.birthday >= :birthdayRangeBegin ";
+				jpql += "AND u.dataDeNascimento >= :dataNascimentoInicio ";
 			}
 
 			// Birthday end
 			if (notEmpty(filter.getDataNascimentoFim())) {
-				jpql += "AND u.birthday <= :birthdayRangeEnd ";
+				jpql += "AND u.dataDeNascimento <= :dataNascimentoFim ";
 			}
 
 			// Group
 			if (notEmpty(filter.getTipo())) {
-				jpql += "AND u.group = :group ";
+				jpql += "AND u.tipo = :tipo ";
 			}
 
 			TypedQuery<User> query = em.createQuery(jpql, User.class);
@@ -143,13 +172,6 @@ public class UserDAO extends DAO {
 			return false;
 		}
 
-		// Usar estratégia de contabilizar quantos usuários existem com o dado login, e
-		// que não seja ele mesmo.
-		// Existe algum usuário com o login caso a contagem seja diferente de zero.
-		// Usar COUNT(*), já que cláusula EXISTS não pode ser usada no SELECT pela BNF
-		// do JPQL:
-		// https://docs.oracle.com/html/E13946_01/ejb3_langref.html#ejb3_langref_bnf
-
 		EntityManager em = getEntityManager();
 
 		String jpql = "SELECT COUNT(*) FROM User u WHERE u.login = :login ";
@@ -168,5 +190,9 @@ public class UserDAO extends DAO {
 		return count > 0;
 
 	}
+	
+	
+	
+	
 
 }

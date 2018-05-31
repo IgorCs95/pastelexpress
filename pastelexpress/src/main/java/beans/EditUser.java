@@ -1,45 +1,84 @@
 package beans;
 
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import ennum.TipoUser;
+import entities.City;
+import entities.Endereco;
+import entities.State;
 import entities.User;
+import services.CityService;
+import services.EnderecoService;
 import services.ServiceDacException;
+import services.StateService;
 import services.UserService;
-
 
 @Named
 @ViewScoped
-public class EditUser extends AbstractBean{
-	
-	
+public class EditUser extends AbstractBean {
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -3516569960085314997L;
 
-
-	private boolean login;
-	
+	private User user;
 	@Inject
 	private UserService userService;
+
+	@Inject
+	private StateService stateService;
+
+	@Inject
+	private CityService cityService;
 	
-	
-	private User user;
-	
+	@Inject
+	private EnderecoService enderecoService;
+
+	private Endereco end;
+
+	private State selectedState;
+
+	private List<State> states;
+
+	private List<City> cities;
+
 	public void init() {
-		if (user == null) {
-			// Criando novo usuário
-			user = new User();
+		try {
+			if (user == null) {
+				// Criando novo usuário
+				user = new User();
+				end = new Endereco();
+			} else {
+				// Editando usuário já existente
+				end = user.getEndereco();
+				
+				selectedState = getState(user);
+				cities = cityService.findBy(selectedState);
+			}
+			states = stateService.getAll();
+		} catch (ServiceDacException e) {
+			reportarMensagemDeErro(e.getMessage());
 		}
 	}
+
 	public String saveUser() {
 		try {
-			if (isLogin()) {
+			if (isEdicaoDeUsuario()) {
+				if(end!=null && !user.getEndereco().equals(end)) {
+					user.setEndereco(end);
+					enderecoService.update(end);
+				}
 				userService.update(user, false);
 			} else {
+				enderecoService.save(end);
+				
+				user.setEndereco(end);
 				userService.save(user);
 			}
 		} catch (ServiceDacException e) {
@@ -47,11 +86,11 @@ public class EditUser extends AbstractBean{
 			return null;
 		}
 
-		reportarMensagemDeSucesso("Cadartro do usuario '" + user.getNome() + "' realizado com sucesso.");
+		reportarMensagemDeSucesso("Cadastro do Usuario: " + user.getNome() + " realizado com suceso.");
 
 		return "index.xhtml?faces-redirect=true";
 	}
-	
+
 	public void checarDisponibilidadeLogin() {
 		try {
 			userService.validarLogin(user);
@@ -60,13 +99,82 @@ public class EditUser extends AbstractBean{
 			reportarMensagemDeErro(e.getMessage());
 		}
 	}
+
+	public void loadCities() {
+		try {
+			if (selectedState != null) {
+				cities = this.cityService.findBy(selectedState);
+			} else {
+				cities = new ArrayList<>();
+			}
+		} catch (ServiceDacException e) {
+			reportarMensagemDeErro(e.getMessage());
+		}
+	}
+
+	private State getState(User user) {
+		if (user.getEndereco().getCidade() == null) {
+			return null;
+		}
+		return user.getEndereco().getCidade().getState();
+	}
+
+	public boolean isEdicaoDeUsuario() {
+		return user != null && user.getId() != null;
+	}
+
+	public boolean isFuncionario() {
+		return user != null && user.getTipo() == TipoUser.FUNCIONARIO;
+	}
+
+	public boolean isCliente() {
+		return user != null && user.getTipo() == TipoUser.CLIENTE;
+	}
+
+	public boolean isStateSelected() {
+		return selectedState != null;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public State getSelectedState() {
+		return selectedState;
+	}
+
+	public void setSelectedState(State selectedState) {
+		this.selectedState = selectedState;
+	}
+
+	public List<State> getStates() {
+		return states;
+	}
+
+	public void setStates(List<State> states) {
+		this.states = states;
+	}
+
+	public List<City> getCities() {
+		return cities;
+	}
+
+	public void setCities(List<City> cities) {
+		this.cities = cities;
+	}
+
+	public Endereco getEnd() {
+		return end;
+	}
+
+	public void setEnd(Endereco end) {
+		this.end = end;
+	}
+	
 	
 
-	public boolean isLogin() {
-		return login;
-	}
-	
-	public void setLogin(boolean login) {
-		this.login = login;
-	}
 }

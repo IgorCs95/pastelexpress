@@ -1,16 +1,18 @@
 package entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -19,8 +21,8 @@ import ennum.TipoPagamento;
 
 @Entity
 @Table(name = "TB_PEDIDO")
-public class Pedido implements Serializable{
-	
+public class Pedido implements Serializable {
+
 	/**
 	 * 
 	 */
@@ -29,19 +31,19 @@ public class Pedido implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
-	@SequenceGenerator(name="codigopedido",sequenceName="HIB_SEQ")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE)
+
+	@SequenceGenerator(name = "codigopedido", sequenceName = "HIB_SEQ")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private long codigo;
-	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "pedido_fk", foreignKey = @ForeignKey(name = "fk__tb_pedido__tb_carrinho"))
-	private Carrinho carrinho;
-	
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinColumn(name = "id_pedido")
+	private List<ItemPedido> items = new ArrayList<>();
+
 	private Date data;
-	
+
 	private StatusCompra estado;
-	
+
 	private TipoPagamento pagamento;
 
 	public Integer getId() {
@@ -50,16 +52,6 @@ public class Pedido implements Serializable{
 
 	public void setId(Integer id) {
 		this.id = id;
-	}
-
-	
-	
-	public Carrinho getCarrinho() {
-		return carrinho;
-	}
-
-	public void setCarrinho(Carrinho carrinho) {
-		this.carrinho = carrinho;
 	}
 
 	public Date getData() {
@@ -86,14 +78,31 @@ public class Pedido implements Serializable{
 		this.pagamento = pagamento;
 	}
 
+	public long getCodigo() {
+		return codigo;
+	}
+
+	public void setCodigo(long codigo) {
+		this.codigo = codigo;
+	}
+
+	public List<ItemPedido> getItems() {
+		return items;
+	}
+
+	public void setItems(List<ItemPedido> items) {
+		this.items = items;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((carrinho == null) ? 0 : carrinho.hashCode());
+		result = prime * result + (int) (codigo ^ (codigo >>> 32));
 		result = prime * result + ((data == null) ? 0 : data.hashCode());
 		result = prime * result + ((estado == null) ? 0 : estado.hashCode());
-		result = prime * result + Float.floatToIntBits(id);
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((items == null) ? 0 : items.hashCode());
 		result = prime * result + ((pagamento == null) ? 0 : pagamento.hashCode());
 		return result;
 	}
@@ -107,10 +116,7 @@ public class Pedido implements Serializable{
 		if (getClass() != obj.getClass())
 			return false;
 		Pedido other = (Pedido) obj;
-		if (carrinho == null) {
-			if (other.carrinho != null)
-				return false;
-		} else if (!carrinho.equals(other.carrinho))
+		if (codigo != other.codigo)
 			return false;
 		if (data == null) {
 			if (other.data != null)
@@ -119,26 +125,31 @@ public class Pedido implements Serializable{
 			return false;
 		if (estado != other.estado)
 			return false;
-		if (Float.floatToIntBits(id) != Float.floatToIntBits(other.id))
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (items == null) {
+			if (other.items != null)
+				return false;
+		} else if (!items.equals(other.items))
 			return false;
 		if (pagamento != other.pagamento)
 			return false;
 		return true;
 	}
-	
+
 	@Override
 	public Pedido clone() {
 		Pedido clone = new Pedido();
 		clone.setId(id);
-		clone.setCarrinho(carrinho);
+		clone.setItems(items);
 		clone.setData(data);
 		clone.setEstado(estado);
 		clone.setPagamento(pagamento);
-		
+
 		return clone;
 	}
-	
-	
-	
 
 }

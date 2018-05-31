@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition>
+
+	<p:panelGrid id="pgUF" columns="2" styleClass="ui-noborder">
+
+		<h:outputLabel for="idRua" value="Rua:" />
+		<p:inputText id="idRua" value="#{editUser.end.rua}"  />
+
+		<h:outputLabel for="idBairro" value="Bairro:" />
+		<p:inputText id="idBairro"  value="#{editUser.end.bairro}" />
+
+		<h:outputLabel for="idCep" value="CEP:" />
+		<p:inputMask id="idCep" value="#{editUser.end.cep}" mask="99999-999"/>
+
+		<h:outputLabel for="idNumero" value="Nº:" />
+		<p:inputMask id="idNumero" value="#{editUser.end.numero}" />
+
+		<p:outputLabel for="state" value="State:" />
+		<p:selectOneMenu id="state" value="#{editUser.selectedState}" label="State" filter="true" filterMatchMode="contains"
+			required="true">
+			<f:selectItem itemLabel="Selecione" itemValue="#{null}"	noSelectionOption="true" itemDisabled="true" />
+			<f:selectItems value="#{editUser.getStates()}" var="s"	itemLabel="#{s.name}" itemValue="#{s}" />
+			<p:ajax update=":formEdit:city" listener="#{editUser.loadCities()}" />
+		</p:selectOneMenu>
+
+		<p:outputLabel for="city" value="City:"/>
+		<p:selectOneMenu id="city" value="#{editUser.end.cidade}" label="City" filter="true" filterMatchMode="contains" required="true" disabled="#{!editUser.isStateSelected()}">
+			
+			<f:selectItem itemLabel="Selecione" itemValue="#{null}"	noSelectionOption="true" itemDisabled="true" />
+			<f:selectItems value="#{editUser.getCities()}" var="c"	itemLabel="#{c.name}" itemValue="#{c}" />
+		</p:selectOneMenu>
+	</p:panelGrid>
+	
+</ui:composition>
+</html>

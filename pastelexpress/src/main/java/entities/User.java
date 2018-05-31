@@ -12,16 +12,21 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 
 import ennum.TipoUser;
 
 @Entity
+
 @Table(name = "TB_USER", uniqueConstraints = {
 		@UniqueConstraint(name = "uk__tb_user__login", columnNames = { "login" }) })
 public class User implements Cloneable {
+
+	@Transient
+	public static final String FIND_BY_EMAIL_SENHA = "Usuario.findByEmailSenha";
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,6 +34,7 @@ public class User implements Cloneable {
 
 	private String nome;
 
+	@Column(unique = true)
 	private String login;
 
 	private String senha;
@@ -37,7 +43,8 @@ public class User implements Cloneable {
 
 	@Column(unique = true)
 	private String cpf;
-
+	
+	@OneToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "endereco_fk", foreignKey = @ForeignKey(name = "fk__tb_user__tb_endereco"))
 	private Endereco endereco;
 
@@ -92,7 +99,6 @@ public class User implements Cloneable {
 		this.cpf = cpf;
 	}
 
-
 	public TipoUser getTipo() {
 		return tipo;
 	}
@@ -100,7 +106,7 @@ public class User implements Cloneable {
 	public void setTipo(TipoUser tipo) {
 		this.tipo = tipo;
 	}
-	
+
 	public Endereco getEndereco() {
 		return endereco;
 	}
@@ -108,7 +114,6 @@ public class User implements Cloneable {
 	public void setEndereco(Endereco endereco) {
 		this.endereco = endereco;
 	}
-	
 
 	@Override
 	public int hashCode() {
@@ -133,7 +138,9 @@ public class User implements Cloneable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
+		
 		User other = (User) obj;
+		
 		if (cpf == null) {
 			if (other.cpf != null)
 				return false;

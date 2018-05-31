@@ -16,33 +16,18 @@
 
 		<p:growl id="idMessages" showDetail="true" severity="info" />
 
-		<h:panelGrid columns="2">
+		<h:panelGrid id="painelPrincipal" columns="1" style="width:100%">
 
-			<h:form>
-				<p:tieredMenu>
-					<p:submenu label="Items" icon="ui-icon-refresh">
-						<p:menuitem id="submenuActionsItemAddItem" value="Add Item"
-							action="#{editItem.init()}"
-							oncomplete="if (!args.validationFailed) { PF('editItemDialog').show() }"
-							update="edtiItemDialogId" icon="fa fa-fw fa-user"
-							rendered="#{true}">
-							<p:resetInput target="edtiItemDialogId" />
-						</p:menuitem>
-					</p:submenu>
-				</p:tieredMenu>
-			</h:form>
-
-
-			<p:dataGrid var="item" value="#{catalogo.items}" columns="7"
-				layout="grid" rows="15" paginator="true" id="dataItems"
+			<p:dataGrid var="item" value="#{catalogo.items}" columns="6"
+				layout="tabular" rows="12" paginator="true" id="dataItems"
 				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-				rowsPerPageTemplate="15,30,45" style="weight:100%">
+				rowsPerPageTemplate="12,24,48,96" style="width:100%" >
 
 				<p:panel header="#{item.nome}"
-					style="text-align:center ; weight:125px">
-					<h:panelGrid columns="1" style="width:175px">
-						<p:graphicImage library="img" name="erro.jpg"
-							style="text-align:center" />
+					style="text-align:center ; width:100%"> 
+					
+					<h:panelGrid columns="1" style="width:100%">
+						<p:graphicImage library="img" name="erro.jpg" style="text-align:center" />
 
 						<br />
 						<h:outputText value="#{item.valor}"
@@ -53,26 +38,28 @@
 
 						<br />
 						<br />
-						<h:panelGrid columns="2" style="aling-items:center">
+						<h:panelGrid columns="2" style="width:100%">
 							<p:commandButton id="editItemDialogCommand" icon="fa fa-edit"
 								oncomplete="if (!args.validationFailed) { PF('editItemDialog').show() }"
-								update=":edtiItemDialogId">
+								update=":edtiItemDialogId" style="width:100%">
 								<f:setPropertyActionListener value="#{item}"
 									target="#{editItem.item}" />
 								<p:resetInput target="edtiItemDialogId" />
 							</p:commandButton>
 
 
-
-							<p:commandButton id="detalhesItemDialogCommand" icon="fa fa-edit"
+							<p:commandButton id="detalhesItemDialogCommand" icon="fa fa-question-circle"
 								oncomplete="if (!args.validationFailed) { PF('detalhesItemDialog').show() }"
-								update=":detalhesItemDialogId">
+								update=":detalhesItemDialogId" style="width:100%">
 								<f:setPropertyActionListener value="#{item}"
 									target="#{editItem.item}" />
 								<p:resetInput target="detalhesItemDialogId" />
 							</p:commandButton>
 						</h:panelGrid>
 
+						<p:commandButton id="addItemCarrinho" icon="fa fa-plus-square"
+							actionListener="#{editCarrinho.addItem(item)}" action="carrinho.xhtml" style="width:100%" />
+						
 						<p:tooltip id="toolTipEdittemDialog" for="editItemDialogCommand"
 							value="Editar Item" position="up" />
 
@@ -88,7 +75,7 @@
 
 
 		<p:dialog id="edtiItemDialogId" widgetVar="editItemDialog"
-			header="Editar Item" modal="true" dynamic="true" closeOnEscape="true">
+			header="Editar Item"   modal="true" dynamic="true" closeOnEscape="true">
 
 			<p:messages id="idMessagesErrorsItemEdit" showDetail="true"
 				closable="true" autoUpdate="true" severity="error" />
@@ -97,13 +84,15 @@
 
 				<ui:include src="/WEB-INF/templates/_edit_item.xhtml" />
 
-				<h:panelGrid columns="2" styleClass="ui-noborder">
+				<h:panelGrid columns="2" style="float: right;"  styleClass="ui-noborder">
+				
 					<p:commandButton id="botaoSubmeter" action="#{editItem.saveItem()}"
 						value="Salvar" update="dataItems"
 						oncomplete="if (!args.validationFailed) { PF('editItemDialog').hide(); }"
-						icon="fa fa-save" />
+						icon="fa fa-save"  />
+						
 					<p:commandButton id="botaoCancelar" value="Cancelar"
-						oncomplete="PF('editItemDialog').hide();" icon="fa fa-remove" />
+						oncomplete="PF('editItemDialog').hide();" icon="fa fa-remove"/>
 				</h:panelGrid>
 
 				<p:defaultCommand target="formEdit:botaoSubmeter" />

@@ -129,12 +129,33 @@ public class UserService implements Serializable {
 			throw new ServiceDacException("Could not calculate hash!", e);
 		}
 	}
+	
+	public User isUsuarioVerificarLogin(String email, String senha) throws PersistenciaDacException {
+        try {
+               email = email.toLowerCase().trim();
+               User retorno = userDAO.getSenha(email.toLowerCase().trim());
+               
+               if(retorno.getSenha().equals(hash(senha))){
+            	   
+            	   
+               }
+               
 
-	public void validarLogin(User user) throws ServiceDacException {
+               return null;
+        } catch (PersistenciaDacException | ServiceDacException e) {
+               e.printStackTrace();
+               throw new PersistenciaDacException(e.getMessage());
+        }
+  }
+	
+	
+
+	public boolean validarLogin(User user) throws ServiceDacException {
 		boolean jahExiste = userDAO.existeUsuarioComLogin(user);
 		if (jahExiste) {
 			throw new ServiceDacException("Login already exists: " + user.getLogin());
 		}
+		return jahExiste;
 	}
 
 }

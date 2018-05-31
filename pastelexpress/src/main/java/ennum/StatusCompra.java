@@ -2,9 +2,9 @@ package ennum;
 
 public enum StatusCompra {
 
-	PENDENTE("Pagamento pendente no aguardo da liberação do pagamento."), 
-	POCESSANDO("Pagamento concluído enviando o produto ao usuário."), 
-	EM_ESPERA("Problema no recebimento ou na entrega da compra produto (on hold)."), 
+	PROCESSANDO("Pedido realizado."), 
+	PREPARO("Pedido em faze de preparo."), 
+	EM_ENTREGA("Saiu para entrega."), 
 	COMPLETO("Compra concluída faturamento efetuado"), 
 	FECHADO("Compra cancelada por falta de pagamento ou envio."), 
 	CANCELADA("Compra cancelada pelo usuário.");

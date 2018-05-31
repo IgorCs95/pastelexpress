@@ -1,21 +1,24 @@
 package converter;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.convert.FacesConverter;
+import javax.inject.Inject;
 
 import entities.User;
 import services.ServiceDacException;
 import services.UserService;
 
-
+@ApplicationScoped
 @FacesConverter(forClass = User.class)
 public class UserConverter implements Converter {
 
-	private UserService users = new UserService();
+	@Inject
+	private UserService users;
 
 	@Override
 	public Object getAsObject(FacesContext context, UIComponent component, String value) {

@@ -44,7 +44,7 @@ public abstract class AbstractBean implements Serializable {
 
 	}
 	
-	public TipoUser[] getGroups() {
+	public TipoUser[] getTiposUser() {
 		return TipoUser.values();
 	}
 }
