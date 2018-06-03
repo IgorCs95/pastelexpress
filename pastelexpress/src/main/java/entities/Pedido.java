@@ -15,7 +15,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import ennum.StatusCompra;
@@ -33,9 +32,6 @@ public class Pedido implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
-	private long codigo;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "fk_pedido")
@@ -84,13 +80,7 @@ public class Pedido implements Serializable {
 		this.pagamento = pagamento;
 	}
 
-	public long getCodigo() {
-		return codigo;
-	}
-
-	public void setCodigo(long codigo) {
-		this.codigo = codigo;
-	}
+	
 
 	public List<ItemPedido> getItems() {
 		return items;
@@ -108,6 +98,14 @@ public class Pedido implements Serializable {
 		this.user = user;
 	}
 	
+	public float valorTotal() {
+		float soma = 0;
+		for (ItemPedido i : items) {
+			soma+=i.subTotal();
+		}
+		return soma;
+	}
+	
 	
 
 	
@@ -116,7 +114,6 @@ public class Pedido implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + (int) (codigo ^ (codigo >>> 32));
 		result = prime * result + ((data == null) ? 0 : data.hashCode());
 		result = prime * result + ((estado == null) ? 0 : estado.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
@@ -135,8 +132,6 @@ public class Pedido implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Pedido other = (Pedido) obj;
-		if (codigo != other.codigo)
-			return false;
 		if (data == null) {
 			if (other.data != null)
 				return false;
@@ -167,6 +162,7 @@ public class Pedido implements Serializable {
 	@Override
 	public Pedido clone() {
 		Pedido clone = new Pedido();
+		
 		clone.setId(id);
 		clone.setItems(items);
 		clone.setData(data);

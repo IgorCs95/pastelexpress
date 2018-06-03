@@ -13,6 +13,8 @@ import filter.PedidoFilter;
 
 public class PedidoDAO extends DAO {
 
+	
+
 	/**
 	 * 
 	 */
@@ -84,9 +86,9 @@ public class PedidoDAO extends DAO {
 		try {
 
 			String jpql = "SELECT u FROM Pedido u WHERE 1 = 1 ";
-
-			if (notEmpty(filter.getCodigo())) {
-				jpql += "AND u.codigo LIKE :codigo ";
+			
+			if (notEmpty(filter.getIdUser())) {
+				jpql += "AND u.fk_user LIKE :idUser ";
 			}
 
 			if (notEmpty(filter.getDataPedidoInicio())) {
@@ -98,10 +100,11 @@ public class PedidoDAO extends DAO {
 			}
 
 			TypedQuery<Pedido> query = em.createQuery(jpql, Pedido.class);
-
-			if (notEmpty(filter.getCodigo())) {
-				query.setParameter("codigo", "%" + filter.getCodigo() + "%");
+			
+			if (notEmpty(filter.getIdUser())) {
+				query.setParameter("idUser",filter.getIdUser());
 			}
+			
 
 			if (notEmpty(filter.getDataPedidoInicio())) {
 				query.setParameter("dataInicio", filter.getDataPedidoInicio());

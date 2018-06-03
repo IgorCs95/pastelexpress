@@ -8,18 +8,26 @@ import java.util.Date;
  * @author IgorCs
  *
  */
-public class PedidoFilter implements Serializable,Filter{
+public class PedidoFilter implements Serializable, Filter {
+
+	
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -5459543345042621500L;
+	private static final long serialVersionUID = -1649567203355718464L;
 
-	private long codigo;
-	
 	private Date dataPedidoInicio, dataPedidoFim;
 
-	
+	private Integer idUser;
+
+	public Integer getIdUser() {
+		return idUser;
+	}
+
+	public void setIdUser(Integer idUser) {
+		this.idUser = idUser;
+	}
 
 	public Date getDataPedidoInicio() {
 		return dataPedidoInicio;
@@ -37,16 +45,9 @@ public class PedidoFilter implements Serializable,Filter{
 		this.dataPedidoFim = dataPedidoFim;
 	}
 
-	public long getCodigo() {
-		return codigo;
-	}
-
-	public void setCodigo(long codigo) {
-		this.codigo = codigo;
-	}
 
 	public boolean isEmpty() {
-		if (this.codigo != 0) {
+		if (this.idUser != 0) {
 			return false;
 		}
 
