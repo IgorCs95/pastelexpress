@@ -8,6 +8,9 @@
 
 <ui:composition template="/WEB-INF/templates/_componentes_basico.xhtml">
 
+	<p:growl autoUpdate="true" severity="info" showDetail="true" />
+	<p:messages severity="erro" autoUpdate="true" showDetail="true" />
+
 	<ui:define name="title">
 		Carrinho
 	</ui:define>
@@ -32,12 +35,11 @@
 						style="font-weight: bold ;text-align: center" />
 
 
-					<h:panelGrid cellpadding="5">
-						<h:outputLabel for="qtdItems" value="Qtd: " />
-						<p:spinner id="qtdItems" value="item.qtd" />
-						<p:commandButton id="botaoRemover" value="Atualizar"
-							icon="fa fa-sync-alt " />
-					</h:panelGrid>
+
+					<p:spinner id="qtdItems" value="#{item.qtd}">
+						<p:ajax update=":@form" />
+					</p:spinner>
+
 
 					<h:outputText value="#{item.subTotal()}"
 						style="color:red ; font-weight: bold ;text-align: center">
@@ -45,7 +47,7 @@
 					</h:outputText>
 
 					<p:commandButton id="removeItemDialogCommand" icon="fa fa-edit"
-						action="#{editCarrinho.removerItem(item)}"/>
+						action="#{editCarrinho.removerItem(item)}" />
 
 
 				</h:panelGrid>
@@ -68,12 +70,53 @@
 
 			</p:panelGrid>
 
-			<p:commandButton value="Finalizar Compra" style="float: right" />
+
+
+			<p:commandButton id="criarPedidoDialogCommand" icon="fa fa-edit"
+				value="Finalizar Pedido"
+				oncomplete="if (!args.validationFailed) { PF('criarPedidoDialog').show() }"
+				update=":criarPedidoDialogId" style="width:100%;float: right ">
+
+
+
+				<p:resetInput target="criarPedidoDialogId" />
+			</p:commandButton>
 
 		</h:form>
 
+		<p:dialog id="criarPedidoDialogId" widgetVar="criarPedidoDialog"
+			header="Confirmar Pedido" modal="true" dynamic="true"
+			closeOnEscape="true">
+
+			<p:messages id="idMessagesErrorsCriarPedido" showDetail="true"
+				closable="true" autoUpdate="true" severity="error" />
+
+			<h:form id="formCriarPedido">
+
+				<ui:include src="/WEB-INF/templates/_detalhes_pedido.xhtml" />
+
+				<h:panelGrid columns="2" style="float: right;"
+					styleClass="ui-noborder">
+
+					<p:commandButton id="botaoSubmeter"
+						action="#{editCarrinho.criarPedido()}" value="Salvar"
+						oncomplete="if (!args.validationFailed) { PF('criarPedidoDialog').hide(); }"
+						icon="fa fa-save" />
+
+					<p:commandButton id="botaoCancelar" value="Cancelar"
+						oncomplete="PF('criarPedidoDialog').hide();" icon="fa fa-remove" />
+				</h:panelGrid>
+
+				<p:defaultCommand target="formCriarPedido:botaoSubmeter" />
+
+			</h:form>
+		</p:dialog>
+
+
+
+
 
 	</ui:define>
-	
+
 </ui:composition>
 </html>

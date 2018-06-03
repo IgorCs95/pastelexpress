@@ -50,12 +50,13 @@ public class EditUser extends AbstractBean {
 
 	public void init() {
 		try {
+			// Criando novo usuário
 			if (user == null) {
-				// Criando novo usuário
 				user = new User();
 				end = new Endereco();
-			} else {
-				// Editando usuário já existente
+			} 
+			// Editando usuário já existente
+			else {
 				end = user.getEndereco();
 				
 				selectedState = getState(user);
@@ -67,10 +68,10 @@ public class EditUser extends AbstractBean {
 		}
 	}
 
-	public String saveUser() {
+	public void saveUser() {
 		try {
 			if (isEdicaoDeUsuario()) {
-				if(end!=null && !user.getEndereco().equals(end)) {
+				if(end!=null && user.getEndereco()!=null && !user.getEndereco().equals(end)) {
 					user.setEndereco(end);
 					enderecoService.update(end);
 				}
@@ -83,12 +84,10 @@ public class EditUser extends AbstractBean {
 			}
 		} catch (ServiceDacException e) {
 			reportarMensagemDeErro(e.getMessage());
-			return null;
 		}
 
 		reportarMensagemDeSucesso("Cadastro do Usuario: " + user.getNome() + " realizado com suceso.");
 
-		return "index.xhtml?faces-redirect=true";
 	}
 
 	public void checarDisponibilidadeLogin() {

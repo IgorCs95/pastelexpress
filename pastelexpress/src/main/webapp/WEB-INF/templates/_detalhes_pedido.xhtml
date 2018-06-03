@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+<ui:composition>
+
+	<p:panel styleClass="ui-noborder">
+
+
+		<p:panelGrid columns="2">
+			<p:outputLabel for="dataTableItemsPedido" value="Endereço da Entrega" />
+
+			<p:outputLabel for="dataTableItemsPedido" value="Lista de Items" />
+
+
+			<h:panelGrid columns="2" style="width:450px">
+
+				<h:outputText value="Contato: " style="float: right;" />
+				<h:outputText value="#{login.user.nome}" />
+
+				<h:outputText value="Rua: " style="float: right;" />
+				<h:outputText value="#{login.user.endereco.rua}" />
+
+				<h:outputText value="Bairro: " style="float: right;" />
+				<h:outputText value="#{login.user.endereco.bairro}" />
+
+				<h:outputText value="Numero: " style="float: right;" />
+				<h:outputText value="#{login.user.endereco.numero}" />
+
+				<h:outputText value="Cidade " style="float: right;" />
+				<h:outputText value="#{login.user.endereco.cidade.name}" />
+
+				<h:outputText value="Estado: " style="float: right;" />
+				<h:outputText value="#{login.user.endereco.cidade.state.name}" />
+
+			</h:panelGrid>
+
+			<p:dataTable id="dataTableItemsPedido" var="i"
+				value="#{editCarrinho.lista}">
+
+				<p:column headerText="ITEM:">
+					<h:outputText value="#{i.item.nome}" />
+				</p:column>
+
+				<p:column headerText="QUANTIDADE:">
+					<h:outputText value="#{i.qtd}" />
+				</p:column>
+
+				<p:column headerText="VALOR UN:">
+					<h:outputText value="#{i.valorItem}">
+						<f:convertNumber currencySymbol="R$" type="currency" />
+					</h:outputText>
+				</p:column>
+
+				<p:column headerText="VALOR:">
+					<h:outputText value="#{i.subTotal()}">
+						<f:convertNumber currencySymbol="R$" type="currency" />
+					</h:outputText>
+				</p:column>
+			</p:dataTable>
+
+
+
+
+		</p:panelGrid>
+
+		<div align="left">
+			<h:outputText value="Data:  " />
+			<h:outputText value="#{editCarrinho.pedido.data}">
+				<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
+			</h:outputText>
+		</div>
+
+		<div align="right">
+			<br /> <br />
+			<h:outputText value="Total:  " />
+			<h:outputText value="#{editCarrinho.valorTotal()}">
+				<f:convertNumber currencySymbol="R$" type="currency" />
+			</h:outputText>
+		</div>
+
+		<div align="right">
+			<br /> <br /> <br /> <br />
+
+
+			<p:panelGrid columnClasses="2">
+
+				<p:outputLabel for="pag" value="Forma de Pagamento:" />
+				<p:selectOneMenu id="pag" value="#{editCarrinho.pedido.pagamento}"
+					label="Tipo" required="true" requiredMessage="Vai Pagar Com?">
+					<f:selectItem itemLabel="Selecione" itemValue="#{null}"
+						noSelectionOption="true" itemDisabled="true" />
+					<f:selectItems value="#{editCarrinho.tipoCompra}" var="g"
+						itemLabel="#{g.nome}" itemValue="#{g}" />
+				</p:selectOneMenu>
+
+			</p:panelGrid>
+			<br /> <br />
+
+		</div>
+
+
+	</p:panel>
+
+
+
+
+
+
+</ui:composition>
+</html>

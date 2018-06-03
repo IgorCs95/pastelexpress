@@ -1,25 +1,15 @@
 package util;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.inject.Named;
 
 import entities.User;
 
+@Named
+@ApplicationScoped
 public class SessionContext {
-
-	private static SessionContext instance;
-
-	public static SessionContext getInstance() {
-		if (instance == null) {
-			instance = new SessionContext();
-		}
-
-		return instance;
-	}
-
-	private SessionContext() {
-
-	}
 
 	private ExternalContext currentExternalContext() {
 		if (FacesContext.getCurrentInstance() == null) {

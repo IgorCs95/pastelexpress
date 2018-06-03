@@ -10,6 +10,8 @@ import java.util.List;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
+import org.hibernate.resource.transaction.spi.TransactionCoordinatorOwner;
+
 import dao.UserDAO;
 import entities.User;
 import exception.PersistenciaDacException;
@@ -129,26 +131,22 @@ public class UserService implements Serializable {
 			throw new ServiceDacException("Could not calculate hash!", e);
 		}
 	}
-	
-	public User isUsuarioVerificarLogin(String email, String senha) throws PersistenciaDacException {
-        try {
-               email = email.toLowerCase().trim();
-               User retorno = userDAO.getSenha(email.toLowerCase().trim());
-               
-               if(retorno.getSenha().equals(hash(senha))){
-            	   
-            	   
-               }
-               
 
-               return null;
-        } catch (PersistenciaDacException | ServiceDacException e) {
-               e.printStackTrace();
-               throw new PersistenciaDacException(e.getMessage());
-        }
-  }
-	
-	
+	public User isUsuarioVerificarLogin(String email, String senha) throws PersistenciaDacException {
+		try {
+			email = email.toLowerCase().trim();
+			User retorno = userDAO.getUser(email.toLowerCase().trim());
+
+			if (retorno.getSenha().equals(hash(senha))) {
+				return retorno;
+			} else {
+				throw new ServiceDacException("Usuario Nao encontrado");
+			}
+
+		} catch (ServiceDacException | PersistenciaDacException e) {
+			throw new PersistenciaDacException(e.getMessage());
+		}
+	}
 
 	public boolean validarLogin(User user) throws ServiceDacException {
 		boolean jahExiste = userDAO.existeUsuarioComLogin(user);

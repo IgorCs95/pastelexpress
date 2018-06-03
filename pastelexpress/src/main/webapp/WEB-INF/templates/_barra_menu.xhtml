@@ -29,24 +29,22 @@
 
 
 
-				<p:menuitem value="carrino" url="carrinho.xhtml"
-					icon="ui-icon-close" />
+				
 
 
 				<f:facet name="options">
 					<p:button outcome="carrinho.xhtml" icon="fa fa-shopping-cart" />
 
 					<h:form>
-						<p:splitButton value="User"  icon="fa fa-user-circle">
-							<p:menuitem value="Logar" outcome="telaLogin.xhtml" icon="fa fa-user-circle" />
-							<p:separator />
+						<p:splitButton value="#{login.getUserName()}"  icon="fa fa-user-circle">
 							
 							<p:menuitem value="perfil" icon="fa fa-edit" />
 							<p:menuitem value="Pedidos" icon="fa fa-list" />
-							<p:separator />
-							<p:menuitem value="Exit" icon="fa fa-sign-out-alt" />
+							
 						</p:splitButton>
 					</h:form>
+					
+					<p:commandButton action="#{login.doLogout()}"  icon="fa fa-angle-double-down " />
 
 				</f:facet>
 			</p:menubar>

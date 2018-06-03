@@ -1,6 +1,6 @@
 package beans;
 
-import javax.enterprise.context.SessionScoped;
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -10,74 +10,68 @@ import services.UserService;
 import util.SessionContext;
 
 @Named
-@SessionScoped
-public class Login extends AbstractBean{
-	
+@RequestScoped
+public class Login extends AbstractBean {
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 5642208765891237498L;
 
-	
-	
 	private String senha;
-	
+
 	private String login;
-	
+
+	@Inject
+	private SessionContext ses;
+
 	@Inject
 	private UserService userService;
-	
-	
-	
 
-  
-  
-     /**
-      * Retorna usuario logado
-      * */
-     public User getUser() {
-        return (User) SessionContext.getInstance().getUsuarioLogado();
-     }
-  
-     public String doLogin() {
-    	 System.out.println(login+"---senha---"+senha);
-    	 
-        try {
-            User user = userService.isUsuarioVerificarLogin(login, senha);
-  
-            if (user == null) {
-              reportarMensagemDeErro("Login ou Senha errado, tente novamente !");
-              return "";
-            }
-  
-            SessionContext.getInstance().setAttribute("usuarioLogado", user.getNome());
-            return "/index.xhtml?faces-redirect=true";
-        } catch (PersistenciaDacException e) {
-            reportarMensagemDeErro(e.getMessage());
-            e.printStackTrace();
-            return "";
-        }
-  
-     }
-  
-     public String doLogout() {
-        SessionContext.getInstance().encerrarSessao();
-        reportarMensagemDeSucesso("Logout realizado com sucesso !");
-        return "/security/form_login.xhtml?faces-redirect=true";
-     }
-  
-     
-     public void solicitarNovaSenha() {
-       /* try {
-        	userService().gerarNovaSenha(login, email);
-            addInfoMessage("Nova Senha enviada para o email " + email);
-        } catch (BOException e) {
-            addErrorMessage(e.getMessage());
-            FacesContext.getCurrentInstance().validationFailed();
-        }*/
-     }
+	public void init() {
+		senha = "";
+		login = "";
+	}
 
+	/**
+	 * Retorna usuario logado
+	 */
+	public User getUser() {
+		return (User) ses.getUsuarioLogado();
+	}
 	
+	public String getUserName() {
+		return getUser().getNome();
+	}
+
+	public String doLogin() {
+
+		try {
+			User user = userService.isUsuarioVerificarLogin(login, senha);
+			
+			ses.setUsuarioLogado(user);
+			return "/index.xhtml?faces-redirect=true";
+		} catch (PersistenciaDacException e) {
+			reportarMensagemDeErro(e.getMessage());
+			return "";
+		}
+	}
+
+	public String doLogout() {
+		System.out.println("login - fechando  sessao");
+		ses.encerrarSessao();
+		reportarMensagemDeSucesso("Logout realizado com sucesso !");
+		return "/telaLogin.xhtml?faces-redirect=true";
+	}
+
+	public void solicitarNovaSenha() {
+		/*
+		 * try { userService().gerarNovaSenha(login, email);
+		 * addInfoMessage("Nova Senha enviada para o email " + email); } catch
+		 * (BOException e) { addErrorMessage(e.getMessage());
+		 * FacesContext.getCurrentInstance().validationFailed(); }
+		 */
+	}
 
 	public String getSenha() {
 		return senha;
@@ -94,12 +88,5 @@ public class Login extends AbstractBean{
 	public void setLogin(String login) {
 		this.login = login;
 	}
-  
-  
-    
-  
-   
-	
-	
-	
+
 }

@@ -21,7 +21,7 @@ public class PedidoDAO extends DAO {
 	public void save(Pedido obj) throws PersistenciaDacException {
 		EntityManager em = getEntityManager();
 		try {
-			em.persist(obj);
+			em.persist(obj);			
 		} catch (PersistenceException pe) {
 			pe.printStackTrace();
 			throw new PersistenciaDacException("Problemas ao cadastrar o Pedido ", pe);

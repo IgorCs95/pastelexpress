@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceException;
 import javax.persistence.TypedQuery;
-
 
 import entities.User;
 import exception.PersistenciaDacException;
@@ -64,9 +64,9 @@ public class UserDAO extends DAO {
 
 		return resultado;
 	}
-	
-	public User getSenha(String login) throws PersistenciaDacException {
-		
+
+	public User getUser(String login) throws PersistenciaDacException {
+
 		if (!notEmpty(login)) {
 			return null;
 		}
@@ -79,18 +79,14 @@ public class UserDAO extends DAO {
 
 		query.setParameter("login", login);
 
-		User user = query.getSingleResult();
-		
-		
-		
-		if(user!=null) {
-			return user;
-		}else {
-			throw new PersistenciaDacException("Usuario nao encontrado");
-		
+		List<User> user = query.getResultList();
+
+		if (user.size() == 0) {
+			throw new PersistenciaDacException("Login ou senha Invalido");
 		}
-		
-		
+
+		return user.get(0);
+
 	}
 
 	public List<User> getAll() throws PersistenciaDacException {
@@ -190,9 +186,5 @@ public class UserDAO extends DAO {
 		return count > 0;
 
 	}
-	
-	
-	
-	
 
 }

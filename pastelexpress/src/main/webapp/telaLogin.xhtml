@@ -15,89 +15,92 @@
 	<h:outputScript name="locale-primefaces.js" library="js" />
 
 
+
 	<div id="container" align="center">
 
-		<div id="login_box">
-			<div id="logo_login">
-				<p:graphicImage library="img" name="logo.png" width="80px"
-					height="80px" />
-			</div>
 
-
-			<h:form id="formLogin">
-			
-
-
-				<p:panelGrid columns="2" styleClass="ui-noborder">
-
-					<h:outputText value="Login: " />
-					<p:inputText value="#{login.login}" size="37" required="true"/>
-
-					<h:outputText value="Senha: " />
-					<p:password value="#{login.senha}" size="37" required="true"/>
-
-				</p:panelGrid>
-
-				<br />
-				<br />
-				<p:panelGrid columns="3" styleClass="ui-noborder">
-
-					<p:commandButton icon="ui-icon-unlocked" value="Entrar"	action="#{login.doLogin}" />
-
-					<p:commandButton value="Cadastrar Usuario"
-						icon="fa fa-edit" action="#{editUser.init()}"
-						oncomplete="if (!args.validationFailed) { PF('userEditDialog').show() }"
-						update=":userEditDialogId">
-						<f:setPropertyActionListener value="#{user}"
-							target="#{editUser.user}" />
-						<p:resetInput target="userEditDialogId" />
-					</p:commandButton>
-
-
-					<p:commandButton icon="ui-icon-mail-closed" value="Recuperar Senha" type="button" />
-
-				</p:panelGrid>
-
-			</h:form>
-
-
+		<div id="logo_login">
+			<p:graphicImage library="img" name="logo.png" width="80px"
+				height="80px" />
 		</div>
 
+		<p:messages id="mensagenLogin" showDetail="true" closable="true" severity="error" />
+		
+		<p:growl autoUpdate="true" severity="info" showDetail="true"/>
 
-		<p:dialog id="userEditDialogId" widgetVar="userEditDialog"
-			header="User edit" modal="true" dynamic="true" closeOnEscape="true">
+		<p:panel>
+			<h:form id="formLogin">
 
-			<p:messages id="idMessagesErrorsUserEdit" showDetail="true" closable="true" autoUpdate="true" severity="error" />
-
-			<h:form id="formEdit">
-
-				<ui:include src="/WEB-INF/templates/_cadastrar_user.xhtml" />
 
 				<p:panelGrid columns="2" styleClass="ui-noborder">
-					<p:commandButton id="botaoSubmeter" action="#{editUser.saveUser}"
-						value="Submit" update="@form"
-						oncomplete="if (!args.validationFailed) { PF('userEditDialog').hide(); }" icon="fa fa-save" />
-					<p:commandButton id="botaoCancelar" value="Cancel"
-						onclick="PF('userEditDialog').hide();" icon="fa fa-remove" />
+
+					<h:outputText for="login" value="Login: " />
+					<p:inputText id="login" value="#{login.login}" size="37" required="true"  requiredMessage="Login é Obrigatorio"/>
+
+					<h:outputText for="senha" value="Senha: " />
+					<p:password id="senha" value="#{login.senha}" size="37" required="true" requiredMessage="Senha é Obrigatorio"/>
+
 				</p:panelGrid>
 
-				<p:defaultCommand target="formEdit:botaoSubmeter" />
+				<br />
+				<br />
+
+				<p:commandButton icon="ui-icon-unlocked" value="Entrar" update="mensagenLogin"	action="#{login.doLogin}" />
 
 			</h:form>
+		</p:panel>
 
-		</p:dialog>
+		<p:panel>
+			<p:commandButton value="Cadastrar Usuario" icon="fa fa-edit"
+				action="#{editUser.init()}"
+				oncomplete="if (!args.validationFailed) { PF('userEditDialog').show() }"
+				update=":userEditDialogId">
+				<f:setPropertyActionListener value="#{user}"
+					target="#{editUser.user}" />
+				<p:resetInput target="userEditDialogId" />
+			</p:commandButton>
 
-
-
-
-
-
-
-
-
-
-
+			<p:commandButton icon="ui-icon-mail-closed" value="Recuperar Senha"
+				type="button" />
+		</p:panel>
 	</div>
+
+
+	<p:dialog id="userEditDialogId" widgetVar="userEditDialog"
+		header="User edit" modal="true" dynamic="true" closeOnEscape="true">
+
+		<p:messages id="idMessagesErrorsUserEdit" showDetail="true"
+			closable="true"  severity="error" />
+
+		<h:form id="formEdit">
+
+			<ui:include src="/WEB-INF/templates/_cadastrar_user.xhtml" />
+
+			<p:panelGrid columns="2" styleClass="ui-noborder">
+				<p:commandButton id="botaoSubmeter" action="#{editUser.saveUser}"
+					value="Submit" update="idMessagesErrorsUserEdit"
+					oncomplete="if (!args.validationFailed) { PF('userEditDialog').hide(); }"
+					icon="fa fa-save" />
+				<p:commandButton id="botaoCancelar" value="Cancel"
+					onclick="PF('userEditDialog').hide();" icon="fa fa-remove" />
+			</p:panelGrid>
+
+			<p:defaultCommand target="formEdit:botaoSubmeter" />
+
+		</h:form>
+
+	</p:dialog>
+
+
+
+
+
+
+
+
+
+
+
 	<!-- div container -->
 	<div id="footer">
 		<p:panel columns="1" style="width : 100%; text-align:center">

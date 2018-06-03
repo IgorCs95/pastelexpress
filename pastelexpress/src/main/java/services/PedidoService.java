@@ -21,13 +21,15 @@ public class PedidoService implements Serializable {
 	private static final long serialVersionUID = 4114408751146726338L;
 	
 	@Inject
-	private PedidoDAO userDAO;
+	private PedidoDAO pedidoDAO;
 
 	@TransacionalCdi
 	public void save(Pedido pedido) throws ServiceDacException {
 		try {
 			// Verificar se login já existe
-			userDAO.save(pedido);
+			pedidoDAO.save(pedido);
+			
+			
 		} catch (PersistenciaDacException e) {
 			throw new ServiceDacException(e.getMessage(), e);
 		}
@@ -37,7 +39,7 @@ public class PedidoService implements Serializable {
 	public void update(Pedido pedido, boolean passwordChanged) throws ServiceDacException {
 
 		try {
-			userDAO.update(pedido);
+			pedidoDAO.update(pedido);
 		} catch (PersistenciaDacException e) {
 			throw new ServiceDacException(e.getMessage(), e);
 		}
@@ -46,7 +48,7 @@ public class PedidoService implements Serializable {
 	@TransacionalCdi
 	public void delete(Pedido pedido) throws ServiceDacException {
 		try {
-			userDAO.delete(pedido);
+			pedidoDAO.delete(pedido);
 		} catch (PersistenciaDacException e) {
 			throw new ServiceDacException(e.getMessage(), e);
 		}
@@ -54,7 +56,7 @@ public class PedidoService implements Serializable {
 
 	public Pedido getByID(int pedidoId) throws ServiceDacException {
 		try {
-			return userDAO.getByID(pedidoId);
+			return pedidoDAO.getByID(pedidoId);
 		} catch (PersistenciaDacException e) {
 			throw new ServiceDacException(e.getMessage(), e);
 		}
@@ -62,7 +64,7 @@ public class PedidoService implements Serializable {
 
 	public List<Pedido> getAll() throws ServiceDacException {
 		try {
-			return userDAO.getAll();
+			return pedidoDAO.getAll();
 		} catch (PersistenciaDacException e) {
 			throw new ServiceDacException(e.getMessage(), e);
 		}
@@ -70,7 +72,7 @@ public class PedidoService implements Serializable {
 
 	public List<Pedido> findBy(PedidoFilter filter) throws ServiceDacException {
 		try {
-			return userDAO.findBy(filter);
+			return pedidoDAO.findBy(filter);
 		} catch (PersistenciaDacException e) {
 			throw new ServiceDacException(e.getMessage(), e);
 		}

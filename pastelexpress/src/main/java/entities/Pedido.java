@@ -8,11 +8,13 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -32,14 +34,18 @@ public class Pedido implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	@SequenceGenerator(name = "codigopedido", sequenceName = "HIB_SEQ")
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private long codigo;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@JoinColumn(name = "id_pedido")
+	@JoinColumn(name = "fk_pedido")
 	private List<ItemPedido> items = new ArrayList<>();
 
+	
+	@OneToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "fk_user", foreignKey = @ForeignKey(name = "fk__tb_pedido__tb_user"))
+	private User user;
+	
 	private Date data;
 
 	private StatusCompra estado;
@@ -93,6 +99,18 @@ public class Pedido implements Serializable {
 	public void setItems(List<ItemPedido> items) {
 		this.items = items;
 	}
+	
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+	
+	
+
+	
 
 	@Override
 	public int hashCode() {
@@ -104,6 +122,7 @@ public class Pedido implements Serializable {
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((items == null) ? 0 : items.hashCode());
 		result = prime * result + ((pagamento == null) ? 0 : pagamento.hashCode());
+		result = prime * result + ((user == null) ? 0 : user.hashCode());
 		return result;
 	}
 
@@ -137,6 +156,11 @@ public class Pedido implements Serializable {
 			return false;
 		if (pagamento != other.pagamento)
 			return false;
+		if (user == null) {
+			if (other.user != null)
+				return false;
+		} else if (!user.equals(other.user))
+			return false;
 		return true;
 	}
 
@@ -148,6 +172,7 @@ public class Pedido implements Serializable {
 		clone.setData(data);
 		clone.setEstado(estado);
 		clone.setPagamento(pagamento);
+		clone.setUser(user);
 
 		return clone;
 	}

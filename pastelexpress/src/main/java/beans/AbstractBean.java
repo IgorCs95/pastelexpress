@@ -7,6 +7,8 @@ import javax.faces.application.FacesMessage.Severity;
 import javax.faces.context.FacesContext;
 import javax.faces.context.Flash;
 
+import ennum.StatusCompra;
+import ennum.TipoPagamento;
 import ennum.TipoUser;
 
 
@@ -47,4 +49,13 @@ public abstract class AbstractBean implements Serializable {
 	public TipoUser[] getTiposUser() {
 		return TipoUser.values();
 	}
+	
+	public StatusCompra[] getStatusCompra() {
+		return StatusCompra.values();
+	}
+	
+	public TipoPagamento[] getTipoCompra() {
+		return TipoPagamento.values();
+	}
+	
 }
