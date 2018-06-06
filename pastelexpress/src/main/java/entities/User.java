@@ -43,7 +43,7 @@ public class User implements Cloneable {
 
 	@Column(unique = true)
 	private String cpf;
-	
+
 	@OneToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "endereco_fk", foreignKey = @ForeignKey(name = "fk__tb_user__tb_endereco"))
 	private Endereco endereco;
@@ -138,9 +138,9 @@ public class User implements Cloneable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		
+
 		User other = (User) obj;
-		
+
 		if (cpf == null) {
 			if (other.cpf != null)
 				return false;
@@ -194,6 +194,12 @@ public class User implements Cloneable {
 		clone.setTipo(tipo);
 
 		return clone;
+	}
+
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", nome=" + nome + ", login=" + login + ", senha=" + senha + ", dataDeNascimento="
+				+ dataDeNascimento + ", cpf=" + cpf + ", endereco=" + endereco + ", tipo=" + tipo + "]";
 	}
 
 }

@@ -42,9 +42,9 @@ public class EditItem extends AbstractBean {
 			return null;
 		}
 
-		reportarMensagemDeSucesso("Cadartro do Item '" + item.getNome() + "' realizado com sucesso.");
+		reportarMensagemDeSucesso("Cadastro do Item '" + item.getNome() + "' realizado com sucesso.");
 
-		return "index.xhtml?faces-redirect=true";
+		return "gerencia_items?faces-redirect=true";
 	}
 
 	public Item getItem() {

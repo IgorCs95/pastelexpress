@@ -65,7 +65,7 @@ public class ItemDAO extends DAO {
 		EntityManager em = getEntityManager();
 		List<Item> resultado = null;
 		try {
-			TypedQuery<Item> query = em.createQuery("SELECT u FROM Item u", Item.class);
+			TypedQuery<Item> query = em.createQuery("SELECT u FROM Item u ORDER BY id ASC", Item.class);
 			resultado = query.getResultList();
 		} catch (PersistenceException pe) {
 			pe.printStackTrace();
@@ -99,10 +99,6 @@ public class ItemDAO extends DAO {
 				jpql += "AND u.valor <= :valorMaximo ";
 			}
 
-			// Codigo
-			if (notEmpty(filter.getCodigo())) {
-				jpql += "AND u.codigo = :codigo ";
-			}
 
 			TypedQuery<Item> query = em.createQuery(jpql, Item.class);
 
@@ -121,10 +117,6 @@ public class ItemDAO extends DAO {
 				query.setParameter("valorMaximo", filter.getValorMaximo());
 			}
 
-			// Codigo
-			if (notEmpty(filter.getCodigo())) {
-				query.setParameter("codigo", filter.getCodigo());
-			}
 
 			resultado = query.getResultList();
 
@@ -138,29 +130,5 @@ public class ItemDAO extends DAO {
 
 	}
 
-	public boolean existeCodigo(Item item) {
-
-		if (item == null || !notEmpty(item.getCodigo())) {
-			return false;
-		}
-
-		EntityManager em = getEntityManager();
-
-		String jpql = "SELECT COUNT(*) FROM Item u WHERE u.cadigo = :cadigo ";
-		if (item.getId() != null) {
-			jpql += "AND u != :item ";
-		}
-
-		TypedQuery<Long> query = em.createQuery(jpql, Long.class);
-
-		query.setParameter("cadigo", item.getCodigo());
-
-		if (item.getId() != null) {
-			query.setParameter("item", item);
-		}
-
-		Long count = query.getSingleResult();
-		return count > 0;
-	}
 
 }

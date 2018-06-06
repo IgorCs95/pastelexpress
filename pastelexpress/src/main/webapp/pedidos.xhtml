@@ -1,50 +1,89 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
-	
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
 <ui:composition template="/WEB-INF/templates/_componentes_basico.xhtml">
 
 	<ui:define name="title">
 		Pedidos
 	</ui:define>
-	
-	
+
+
 	<ui:define name="content">
-	
+
 		<p:outputLabel value="Pedidos" />
 		
-		<p:dataTable id="dataTablePedidos" var="p"	value="#{statusPedido.allPedidos()}">
+		<p:messages id="erroId" autoUpdate="true" severity="erro" showDetail="true"/>
 
-				<p:column headerText="ID">
-					<h:outputText value="#{p.id}" />
-				</p:column>
-				
-				<p:column headerText="data">
-					<h:outputText value="#{p.data}" />
-				</p:column>
-				
-				<p:column headerText="Valor">
-					<h:outputText value="#{p.valorTotal()}" />
-				</p:column>
-				
-				<p:column headerText="Status da Compra">
-					<h:outputText value="#{p.estado.name()}" />
-				</p:column>
-				
-				<p:column headerText="Forma de Pagamento">
-					<h:outputText value="#{p.pagamento.name()}" />
-				</p:column>
+		<p:dataTable id="dataTablePedidos" var="p"	sortBy="#{statusPedido.pedido.data}" value="#{statusPedido.lista}">
 
-			</p:dataTable>
-	
-	
+			<p:column headerText="ID">
+				<h:outputText value="#{p.id}" />
+			</p:column>
+
+			<p:column headerText="data">
+				<h:outputText value="#{p.data}">
+					<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
+				</h:outputText>
+
+			</p:column>
+
+			<p:column headerText="Valor">
+				<h:outputText value="#{p.valorTotal()}">
+					<f:convertNumber currencySymbol="R$" type="currency" />
+				</h:outputText>
+			</p:column>
+
+			<p:column headerText="Status da Compra">
+				<h:outputText value="#{p.estado.name()}" />
+			</p:column>
+
+			<p:column headerText="Forma de Pagamento">
+				<h:outputText value="#{p.pagamento.name()}" />
+			</p:column>
+
+			<p:column headerText="Detalhes">
+				<p:commandButton id="editItemDialogCommand" icon="fa fa-search-plus"
+					oncomplete="if (!args.validationFailed) { PF('detalhesPedidoDialog').show() }"
+					update=":detalhesPedidoDialogId" style="width:100%">
+					
+					<f:setPropertyActionListener value="#{p}" target="#{statusPedido.pedido}" />
+					
+				</p:commandButton>
+
+
+			</p:column>
+
+		</p:dataTable>
+
+		<p:dialog id="detalhesPedidoDialogId" widgetVar="detalhesPedidoDialog"
+			header="Editar Item" modal="true" dynamic="true" closeOnEscape="true">
+
+			<p:messages id="idMessagesErrors" showDetail="true"
+				closable="true" autoUpdate="true" severity="error" />
+
+			<h:form id="formDetalhes">
+
+				<ui:include src="/WEB-INF/templates/_detalhes_pedido.xhtml" />
+
+				<h:panelGrid columns="2" style="float: right;"	styleClass="ui-noborder">
+
+					<p:commandButton id="botaoCancelar" value="Cancelar"
+						oncomplete="PF('detalhesPedidoDialog').hide();" icon="fa fa-remove" />
+				</h:panelGrid>
+
+
+			</h:form>
+		</p:dialog>
+
+
 
 	</ui:define>
-	
-	
+
+
 </ui:composition>
 </html>

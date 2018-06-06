@@ -3,6 +3,8 @@ package filter;
 import java.io.Serializable;
 import java.util.Date;
 
+import entities.User;
+
 
 /**
  * @author IgorCs
@@ -19,13 +21,13 @@ public class PedidoFilter implements Serializable, Filter {
 
 	private Date dataPedidoInicio, dataPedidoFim;
 
-	private Integer idUser;
+	private User idUser;
 
-	public Integer getIdUser() {
+	public User getIdUser() {
 		return idUser;
 	}
 
-	public void setIdUser(Integer idUser) {
+	public void setIdUser(User idUser) {
 		this.idUser = idUser;
 	}
 
@@ -47,7 +49,7 @@ public class PedidoFilter implements Serializable, Filter {
 
 
 	public boolean isEmpty() {
-		if (this.idUser != 0) {
+		if (this.idUser != null) {
 			return false;
 		}
 

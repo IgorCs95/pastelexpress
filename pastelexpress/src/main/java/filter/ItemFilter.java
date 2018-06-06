@@ -14,19 +14,11 @@ public class ItemFilter implements Serializable, Filter {
 	private static final long serialVersionUID = -8779495497577783872L;
 
 
-	private int codigo;
 
 	private float valorMinimo, valorMaximo;
 
 	private String nome;
 
-	public int getCodigo() {
-		return codigo;
-	}
-
-	public void setCodigo(int codigo) {
-		this.codigo = codigo;
-	}
 
 	public float getValorMinimo() {
 		return valorMinimo;
@@ -61,9 +53,6 @@ public class ItemFilter implements Serializable, Filter {
 			return false;
 		}
 		if (this.valorMaximo != 0) {
-			return false;
-		}
-		if (this.codigo != 0) {
 			return false;
 		}
 

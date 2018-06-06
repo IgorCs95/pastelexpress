@@ -21,13 +21,14 @@
 			<p:dataGrid var="item" value="#{catalogo.items}" columns="6"
 				layout="tabular" rows="12" paginator="true" id="dataItems"
 				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-				rowsPerPageTemplate="12,24,48,96" style="width:100%" >
+				rowsPerPageTemplate="12,24,48,96" style="width:100%">
 
 				<p:panel header="#{item.nome}"
-					style="text-align:center ; width:100%"> 
-					
-					<h:panelGrid columns="1" style="width:100%">
-						<p:graphicImage library="img" name="erro.jpg" style="text-align:center"/>
+					style="text-align:center ; width:210px;height:350px;text-overflow:ellipsis;">
+
+					<h:panelGrid columns="1" style="width:100%;height:100%;">
+						<p:graphicImage library="img" name="pastel.png"
+							style="text-align:center ; width:110px" />
 
 						<br />
 						<h:outputText value="#{item.valor}"
@@ -35,37 +36,25 @@
 							<f:convertNumber currencySymbol="R$" type="currency" />
 						</h:outputText>
 
-
 						<br />
 						<br />
-						<h:panelGrid columns="2" style="width:100%">
-							<p:commandButton id="editItemDialogCommand" icon="fa fa-edit"
-								oncomplete="if (!args.validationFailed) { PF('editItemDialog').show() }"
-								update=":edtiItemDialogId" style="width:100%">
-								<f:setPropertyActionListener value="#{item}"
-									target="#{editItem.item}" />
-								<p:resetInput target="edtiItemDialogId" />
-							</p:commandButton>
+
+						<p:commandButton id="detalhesItemDialogCommand"
+							icon="fa fa-question-circle" value="Detalhes"
+							oncomplete="if (!args.validationFailed) { PF('detalhesItemDialog').show() }"
+							update=":detalhesItemDialogId" style="width:100%">
+							<f:setPropertyActionListener value="#{item}"
+								target="#{editItem.item}" />
+							<p:resetInput target="detalhesItemDialogId" />
+						</p:commandButton>
 
 
-							<p:commandButton id="detalhesItemDialogCommand" icon="fa fa-question-circle"
-								oncomplete="if (!args.validationFailed) { PF('detalhesItemDialog').show() }"
-								update=":detalhesItemDialogId" style="width:100%">
-								<f:setPropertyActionListener value="#{item}"
-									target="#{editItem.item}" />
-								<p:resetInput target="detalhesItemDialogId" />
-							</p:commandButton>
-						</h:panelGrid>
-
-						<p:commandButton id="addItemCarrinho" icon="fa fa-plus-square"
-							actionListener="#{editCarrinho.addItem(item)}" action="carrinho.xhtml" style="width:100%" />
-						
-						<p:tooltip id="toolTipEdittemDialog" for="editItemDialogCommand"
-							value="Editar Item" position="up" />
-
-						<p:tooltip id="toolTipdetalhesItemDialog"
-							for="detalhesItemDialogCommand" value="Detalhes" position="up" />
-
+						<p:commandButton icon="fa fa-plus-square" value="Comprar"
+							update=":idMessages" action="#{editCarrinho.addItem(item)}" style="width:100%" >
+							
+							<p:confirm header="Confirmar" message="Deseja adicionar o Item ' #{item.nome} ' no Carrinho?" />
+							
+						</p:commandButton>
 
 					</h:panelGrid>
 				</p:panel>
@@ -74,31 +63,13 @@
 		</h:panelGrid>
 
 
-		<p:dialog id="edtiItemDialogId" widgetVar="editItemDialog"
-			header="Editar Item"   modal="true" dynamic="true" closeOnEscape="true">
 
-			<p:messages id="idMessagesErrorsItemEdit" showDetail="true"
-				closable="true" autoUpdate="true" severity="error" />
-
-			<h:form id="formEdit">
-
-				<ui:include src="/WEB-INF/templates/_edit_item.xhtml" />
-
-				<h:panelGrid columns="2" style="float: right;"  styleClass="ui-noborder">
-				
-					<p:commandButton id="botaoSubmeter" action="#{editItem.saveItem()}"
-						value="Salvar" update="dataItems"
-						oncomplete="if (!args.validationFailed) { PF('editItemDialog').hide(); }"
-						icon="fa fa-save"  />
-						
-					<p:commandButton id="botaoCancelar" value="Cancelar"
-						oncomplete="PF('editItemDialog').hide();" icon="fa fa-remove"/>
-				</h:panelGrid>
-
-				<p:defaultCommand target="formEdit:botaoSubmeter" />
-
-			</h:form>
-		</p:dialog>
+		<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+			<p:commandButton value="Sim" type="button"
+				styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+			<p:commandButton value="Não" type="button"
+				styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+		</p:confirmDialog>
 
 		<p:dialog id="detalhesItemDialogId" widgetVar="detalhesItemDialog"
 			header="Editar Item" modal="true" dynamic="true" closeOnEscape="true">
@@ -111,9 +82,6 @@
 
 				<ui:include src="/WEB-INF/templates/_detalhes_item.xhtml" />
 
-
-
-				<p:defaultCommand target="formEdit:botaoSubmeter" />
 
 			</h:form>
 		</p:dialog>

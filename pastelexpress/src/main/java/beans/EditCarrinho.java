@@ -1,6 +1,5 @@
 package beans;
 
-import java.util.ArrayList;
 import java.util.Date;
 
 import javax.annotation.PostConstruct;
@@ -25,7 +24,6 @@ public class EditCarrinho extends AbstractBean {
 	 */
 	private static final long serialVersionUID = 1651571553470606055L;
 
-	private ArrayList<ItemPedido> lista;
 
 	private Pedido pedido;
 
@@ -37,7 +35,6 @@ public class EditCarrinho extends AbstractBean {
 
 	@PostConstruct
 	public void init() {
-		lista = new ArrayList<>();
 		pedido = new Pedido();
 		pedido.setUser(ses.getUsuarioLogado());
 	}
@@ -45,7 +42,7 @@ public class EditCarrinho extends AbstractBean {
 	public void addItem(Item item) {
 		boolean cont = true;
 
-		for (ItemPedido i : lista) {
+		for (ItemPedido i : pedido.getItems()) {
 			if (i.getItem().getId() == item.getId()) {
 				i.setQtd(i.getQtd() + 1);
 				cont = false;
@@ -58,75 +55,58 @@ public class EditCarrinho extends AbstractBean {
 			i.setQtd(1);
 			i.setValorItem(item.getValor());
 
-			lista.add(i);
+			pedido.addItem(i);
 		}
+		reportarMensagemDeSucesso(item.getNome()+" Adicoonado No carrinho.");
 
 	}
 
-	public boolean carrinhoVazio() {
-		if (qtdItems() == 0)
-			return false;
-		else
-			return true;
-	}
+	
 
-	public int qtdItems() {
-		int cont = 0;
+	
 
-		for (int j = 0; j < lista.size(); j++) {
-			cont++;
-		}
-		return cont;
-	}
-
-	public float valorTotal() {
-		float soma = 0;
-
-		for (int j = 0; j < lista.size(); j++) {
-			soma += lista.get(j).subTotal();
-		}
-		return soma;
-	}
+	
 
 	public String removerItem(ItemPedido item) {
 		reportarMensagemDeSucesso(item.getItem().getNome() + " removido.");
-		lista.remove(item);
+		pedido.romoverItem(item);
 
 		return "carrinho?faces-redirect=true";
 
 	}
 
-	/**Metodo para salvar o pedido na base de dados.
-	 * adicionamos a lista de items
-	 * salvamos a hora que o pedido foi realizado.
-	 * iniciado o estado primario do pedido.
+	/**
+	 * Metodo para salvar o pedido na base de dados. adicionamos a lista de items
+	 * salvamos a hora que o pedido foi realizado. iniciado o estado primario do
+	 * pedido.
 	 * 
 	 * @return
 	 */
 	public String criarPedido() {
-		try {
-			pedido.setItems(lista);
-			pedido.setData(new Date());
-			pedido.setEstado(StatusCompra.PROCESSANDO);
 
-			serverPedido.save(pedido);
+		if (pedido.getUser() != null) {
+			if (!pedido.isListaVazia()) {
+				try {
+					pedido.setData(new Date());
+					pedido.setEstado(StatusCompra.PROCESSANDO);
+					
+					serverPedido.save(pedido);
 
-			init();
-		} catch (ServiceDacException e) {
-			e.printStackTrace();
+					init();
+				} catch (ServiceDacException e) {
+					e.printStackTrace();
+				}
+				reportarMensagemDeSucesso("Pedido criado com sucesso.");
+				return "index?faces-redirect=true";
+			} else {
+				reportarMensagemDeErro("Lista Vazia");
+				return "";
+			}
+		} else {
+			reportarMensagemDeErro("Usuario deve estar Logado");
+			return "";
+
 		}
-
-		reportarMensagemDeSucesso("Pedido criado com sucesso.");
-
-		return "index?faces-redirect=true";
-	}
-
-	public ArrayList<ItemPedido> getLista() {
-		return lista;
-	}
-
-	public void setLista(ArrayList<ItemPedido> lista) {
-		this.lista = lista;
 	}
 
 	public Pedido getPedido() {

@@ -118,4 +118,9 @@ public class ItemPedido implements Cloneable {
 		return clone;
 	}
 
+	@Override
+	public String toString() {
+		return "ItemPedido [id=" + id + ", item=" + item + ", valorItem=" + valorItem + ", qtd=" + qtd + "]";
+	}
+
 }

@@ -39,16 +39,18 @@ public class Login extends AbstractBean {
 	public User getUser() {
 		return (User) ses.getUsuarioLogado();
 	}
-	
+
 	public String getUserName() {
-		return getUser().getNome();
+		if (getUser() == null)
+			return "VISITANTE";
+		else
+			return getUser().getNome();
 	}
 
 	public String doLogin() {
 
 		try {
 			User user = userService.isUsuarioVerificarLogin(login, senha);
-			
 			ses.setUsuarioLogado(user);
 			return "/index.xhtml?faces-redirect=true";
 		} catch (PersistenciaDacException e) {
@@ -58,7 +60,6 @@ public class Login extends AbstractBean {
 	}
 
 	public String doLogout() {
-		System.out.println("login - fechando  sessao");
 		ses.encerrarSessao();
 		reportarMensagemDeSucesso("Logout realizado com sucesso !");
 		return "/telaLogin.xhtml?faces-redirect=true";

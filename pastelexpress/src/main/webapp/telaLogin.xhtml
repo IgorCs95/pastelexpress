@@ -24,9 +24,10 @@
 				height="80px" />
 		</div>
 
-		<p:messages id="mensagenLogin" showDetail="true" closable="true" severity="error" />
-		
-		<p:growl autoUpdate="true" severity="info" showDetail="true"/>
+		<p:messages id="mensagenLogin" showDetail="true" closable="true"
+			severity="error" />
+
+		<p:growl autoUpdate="true" severity="info" showDetail="true" />
 
 		<p:panel>
 			<h:form id="formLogin">
@@ -35,26 +36,34 @@
 				<p:panelGrid columns="2" styleClass="ui-noborder">
 
 					<h:outputText for="login" value="Login: " />
-					<p:inputText id="login" value="#{login.login}" size="37" required="true"  requiredMessage="Login é Obrigatorio"/>
+					<p:inputText id="login" value="#{login.login}" size="37"
+						required="true" requiredMessage="Login é Obrigatorio" />
 
 					<h:outputText for="senha" value="Senha: " />
-					<p:password id="senha" value="#{login.senha}" size="37" required="true" requiredMessage="Senha é Obrigatorio"/>
+					<p:password id="senha" value="#{login.senha}" size="37"
+						required="true" requiredMessage="Senha é Obrigatorio" />
 
 				</p:panelGrid>
 
 				<br />
 				<br />
 
-				<p:commandButton icon="ui-icon-unlocked" value="Entrar" update="mensagenLogin"	action="#{login.doLogin}" />
+				<p:commandButton icon="ui-icon-unlocked" value="Entrar"
+					update="mensagenLogin" action="#{login.doLogin}" />
 
 			</h:form>
 		</p:panel>
 
+
+
+	</div>
+
+	<div id="container" align="center">
 		<p:panel>
 			<p:commandButton value="Cadastrar Usuario" icon="fa fa-edit"
 				action="#{editUser.init()}"
 				oncomplete="if (!args.validationFailed) { PF('userEditDialog').show() }"
-				update=":userEditDialogId">
+				update=":userEditDialogId :mensagenLogin">
 				<f:setPropertyActionListener value="#{user}"
 					target="#{editUser.user}" />
 				<p:resetInput target="userEditDialogId" />
@@ -65,16 +74,20 @@
 		</p:panel>
 	</div>
 
-
 	<p:dialog id="userEditDialogId" widgetVar="userEditDialog"
 		header="User edit" modal="true" dynamic="true" closeOnEscape="true">
 
 		<p:messages id="idMessagesErrorsUserEdit" showDetail="true"
-			closable="true"  severity="error" />
+			closable="true" severity="error" />
 
 		<h:form id="formEdit">
+			<p:panelGrid columns="2">
 
-			<ui:include src="/WEB-INF/templates/_cadastrar_user.xhtml" />
+				<ui:include src="/WEB-INF/templates/_cadastrar_user.xhtml" />
+
+				<ui:include src="/WEB-INF/templates/_cadastrar_endereco.xhtml" />
+
+			</p:panelGrid>
 
 			<p:panelGrid columns="2" styleClass="ui-noborder">
 				<p:commandButton id="botaoSubmeter" action="#{editUser.saveUser}"

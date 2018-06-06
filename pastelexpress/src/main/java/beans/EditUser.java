@@ -17,6 +17,7 @@ import services.EnderecoService;
 import services.ServiceDacException;
 import services.StateService;
 import services.UserService;
+import util.SessionContext;
 
 @Named
 @ViewScoped
@@ -28,6 +29,7 @@ public class EditUser extends AbstractBean {
 	private static final long serialVersionUID = -3516569960085314997L;
 
 	private User user;
+	
 	@Inject
 	private UserService userService;
 
@@ -47,6 +49,14 @@ public class EditUser extends AbstractBean {
 	private List<State> states;
 
 	private List<City> cities;
+	
+	@Inject
+	private SessionContext ses;
+	
+	public String carregarPerfil() {
+		this.user = ses.getUsuarioLogado();
+		return "perfil?faces-redirect=true";
+	}
 
 	public void init() {
 		try {

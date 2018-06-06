@@ -18,8 +18,7 @@
 	<ui:define name="content">
 
 		<h:form id="form">
-			<p:dataScroller id="listacarrinho" value="#{editCarrinho.lista}"
-				var="item" chunkSize="5">
+			<p:dataScroller id="listacarrinho" value="#{editCarrinho.pedido.items}" var="item" chunkSize="5">
 
 				<f:facet name="header">
            			 Items no Carrinho
@@ -55,7 +54,7 @@
 
 			<p:panelGrid id="panelResultado" width="100%">
 
-				<h:outputText value="#{editCarrinho.valorTotal()}"
+				<h:outputText value="#{editCarrinho.pedido.valorTotal()}"
 					style="color: red;font-size: 25px;float: right; font-weight: bolder; -webkit-text-stroke-width: 1px; -webkit-text-stroke-color: #000;">
 					<f:convertNumber currencySymbol="R$" type="currency" />
 				</h:outputText>
@@ -93,7 +92,7 @@
 
 			<h:form id="formCriarPedido">
 
-				<ui:include src="/WEB-INF/templates/_detalhes_pedido.xhtml" />
+				<ui:include src="/WEB-INF/templates/_finalizar_pedido.xhtml" />
 
 				<h:panelGrid columns="2" style="float: right;"
 					styleClass="ui-noborder">

@@ -10,8 +10,6 @@ import java.util.List;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
-import org.hibernate.resource.transaction.spi.TransactionCoordinatorOwner;
-
 import dao.UserDAO;
 import entities.User;
 import exception.PersistenciaDacException;
@@ -21,9 +19,6 @@ import util.TransacionalCdi;
 @ApplicationScoped
 public class UserService implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -7803325791425670859L;
 	@Inject
 	private UserDAO userDAO;

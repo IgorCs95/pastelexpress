@@ -88,7 +88,7 @@ public class PedidoDAO extends DAO {
 			String jpql = "SELECT u FROM Pedido u WHERE 1 = 1 ";
 			
 			if (notEmpty(filter.getIdUser())) {
-				jpql += "AND u.fk_user LIKE :idUser ";
+				jpql += "AND u.user = :idUser ";
 			}
 
 			if (notEmpty(filter.getDataPedidoInicio())) {
@@ -119,9 +119,7 @@ public class PedidoDAO extends DAO {
 		} catch (PersistenceException pe) {
 			pe.printStackTrace();
 			throw new PersistenciaDacException("Ocorreu algum erro ao tentar recuperar os pedidos.", pe);
-		} finally {
-			em.close();
-		}
+		} 
 		return resultado;
 
 	}

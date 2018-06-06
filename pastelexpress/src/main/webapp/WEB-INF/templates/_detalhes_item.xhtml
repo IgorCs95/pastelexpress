@@ -10,9 +10,9 @@
 <ui:composition>
 	<h:form>
 
-		<h:panelGrid columns="2">
+		<h:panelGrid columns="2" border="1">
 
-			<p:graphicImage library="img" name="logo.png" style="width:30%" />
+			<p:graphicImage library="img" name="pastel.png" style="width:30%" />
 
 			<p:outputPanel style="text-align:center">
 
@@ -27,14 +27,11 @@
 				<br />
 
 				<p:outputLabel for="valor" value="Valor: " />
-				<p:outputLabel id="valor" value=" #{editItem.item.valor}" label="Valor"
-					style="width:350px ; font-weight: bolder" />
+				<p:outputLabel id="valor" value="#{editItem.item.valor}" label="Valor" style="width:350px ; font-weight: bolder" >
+					<f:convertNumber currencySymbol="R$" type="currency" />
+				</p:outputLabel>
 				<br />
 
-				<p:outputLabel for="codigo" value="Codigo:" />
-				<p:outputLabel id="codigo" value=" #{editItem.item.codigo}"
-					label="Codigo" style="width:350px ; font-weight: bolder" />
-				<br />
 
 
 

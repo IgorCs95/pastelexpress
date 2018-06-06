@@ -16,43 +16,43 @@
 
 			<p:menubar>
 
-				<p:submenu label="Cadastrar" icon="ui-icon-pencil">
-					<p:menuitem id="submenuActionsItemAddItem" value="Add Item"
-						action="#{editItem.init()}"
-						oncomplete="if (!args.validationFailed) { PF('criarItemDialog').show() }"
-						update="criarItemDialogId" icon="fa fa-fw fa-user"
-						rendered="#{true}">
-						<p:resetInput target="edtiItemDialogId" />
+				<p:submenu label="Gerencia" icon="ui-icon-pencil">
+					
+					
+					<p:menuitem id="gerenciarItems" value="Gerenciar Items"	 url="gerencia_item.xhtml">
 					</p:menuitem>
 
 				</p:submenu>
 
 
 
-				
+
 
 
 				<f:facet name="options">
 					<p:button outcome="carrinho.xhtml" icon="fa fa-shopping-cart" />
 
+					
+
+
 					<h:form>
-						<p:splitButton value="#{login.getUserName()}"  icon="fa fa-user-circle">
+						<p:splitButton value="#{login.getUserName()}" icon="fa fa-user-circle" actionListener="#{editUser.carregarPerfil()}" action="perfil.xhtml">
+						
+							<p:menuitem value="perfil" icon="fa fa-edit" action="#{editUser.carregarPerfil()}" url="perfil.xhtml" />
 							
-							<p:menuitem value="perfil" icon="fa fa-edit" />
-							<p:menuitem value="Pedidos" icon="fa fa-list" outcome="pedidos.xhtml" />
+							<p:menuitem value="Pedidos" icon="fa fa-list" url="pedidos.xhtml" />
+							
 							
 						</p:splitButton>
 					</h:form>
-					
-					<p:commandButton action="#{login.doLogout()}"  icon="fa fa-angle-double-down " />
+
+					<p:commandButton action="#{login.doLogout()}"
+						icon="fa fa-angle-double-down " />
 
 				</f:facet>
 			</p:menubar>
 
 		</h:panelGrid>
-
-
-
 
 	</h:form>
 
@@ -72,7 +72,7 @@
 				styleClass="ui-noborder">
 
 				<p:commandButton id="botaoSalvar" action="#{editItem.saveItem()}"
-					value="Salvar" update="dataItems"
+					value="Salvar"
 					oncomplete="if (!args.validationFailed) { PF('editItemDialog').hide(); }"
 					icon="fa fa-save" />
 

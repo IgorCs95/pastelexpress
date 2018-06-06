@@ -37,11 +37,10 @@ public class Pedido implements Serializable {
 	@JoinColumn(name = "fk_pedido")
 	private List<ItemPedido> items = new ArrayList<>();
 
-	
 	@OneToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "fk_user", foreignKey = @ForeignKey(name = "fk__tb_pedido__tb_user"))
+	@JoinColumn(name = "fk_user", foreignKey = @ForeignKey(name = "fk__tb_pedido__tb_user"), nullable = false)
 	private User user;
-	
+
 	private Date data;
 
 	private StatusCompra estado;
@@ -80,8 +79,6 @@ public class Pedido implements Serializable {
 		this.pagamento = pagamento;
 	}
 
-	
-
 	public List<ItemPedido> getItems() {
 		return items;
 	}
@@ -89,7 +86,7 @@ public class Pedido implements Serializable {
 	public void setItems(List<ItemPedido> items) {
 		this.items = items;
 	}
-	
+
 	public User getUser() {
 		return user;
 	}
@@ -97,18 +94,30 @@ public class Pedido implements Serializable {
 	public void setUser(User user) {
 		this.user = user;
 	}
-	
+
 	public float valorTotal() {
 		float soma = 0;
 		for (ItemPedido i : items) {
-			soma+=i.subTotal();
+			soma += i.subTotal();
 		}
 		return soma;
 	}
-	
-	
 
-	
+	public void addItem(ItemPedido item) {
+		items.add(item);
+	}
+
+	public void romoverItem(ItemPedido item) {
+		items.remove(item);
+	}
+
+	public boolean isListaVazia() {
+		if (items.size() == 0)
+			return true;
+		else
+			return false;
+
+	}
 
 	@Override
 	public int hashCode() {
@@ -162,7 +171,7 @@ public class Pedido implements Serializable {
 	@Override
 	public Pedido clone() {
 		Pedido clone = new Pedido();
-		
+
 		clone.setId(id);
 		clone.setItems(items);
 		clone.setData(data);
@@ -171,6 +180,12 @@ public class Pedido implements Serializable {
 		clone.setUser(user);
 
 		return clone;
+	}
+
+	@Override
+	public String toString() {
+		return "Pedido [id=" + id + ", items=" + items + ", user=" + user + ", data=" + data + ", estado=" + estado
+				+ ", pagamento=" + pagamento + "]";
 	}
 
 }

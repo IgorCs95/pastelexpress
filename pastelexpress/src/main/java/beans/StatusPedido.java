@@ -1,9 +1,10 @@
 package beans;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.RequestScoped;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -15,7 +16,7 @@ import services.ServiceDacException;
 import util.SessionContext;
 
 @Named
-@RequestScoped
+@ViewScoped
 public class StatusPedido extends AbstractBean {
 	private static final long serialVersionUID = -3364766664352990789L;
 
@@ -27,26 +28,26 @@ public class StatusPedido extends AbstractBean {
 
 	private Pedido pedido;
 
+	List<Pedido> lista = new ArrayList<>();
+
 	private PedidoFilter pfilter;
 
 	@PostConstruct
 	public void init() {
 		pedido = new Pedido();
 		pfilter = new PedidoFilter();
-	}
 
-	public List<Pedido> allPedidos() {
 		try {
 			User user = ses.getUsuarioLogado();
 
-			pfilter.setIdUser(user.getId());
+			pfilter.setIdUser(user);
 
-			pedidosService.findBy(pfilter);
+			lista = pedidosService.findBy(pfilter);
+			
 		} catch (ServiceDacException e) {
 			e.printStackTrace();
+			reportarMensagemDeErro("Erro ao buscar pedidos");
 		}
-
-		return null;
 	}
 
 	// ------------------------------------------------
@@ -56,6 +57,30 @@ public class StatusPedido extends AbstractBean {
 
 	public void setPedido(Pedido pedido) {
 		this.pedido = pedido;
+	}
+
+	public PedidoService getPedidosService() {
+		return pedidosService;
+	}
+
+	public void setPedidosService(PedidoService pedidosService) {
+		this.pedidosService = pedidosService;
+	}
+
+	public List<Pedido> getLista() {
+		return lista;
+	}
+
+	public void setLista(List<Pedido> lista) {
+		this.lista = lista;
+	}
+
+	public PedidoFilter getPfilter() {
+		return pfilter;
+	}
+
+	public void setPfilter(PedidoFilter pfilter) {
+		this.pfilter = pfilter;
 	}
 
 }
