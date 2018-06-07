@@ -36,7 +36,7 @@ public class PedidoService implements Serializable {
 	}
 
 	@TransacionalCdi
-	public void update(Pedido pedido, boolean passwordChanged) throws ServiceDacException {
+	public void update(Pedido pedido) throws ServiceDacException {
 
 		try {
 			pedidoDAO.update(pedido);

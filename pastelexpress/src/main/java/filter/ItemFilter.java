@@ -13,8 +13,6 @@ public class ItemFilter implements Serializable, Filter {
 	 */
 	private static final long serialVersionUID = -8779495497577783872L;
 
-
-
 	private float valorMinimo, valorMaximo;
 
 	private String nome;

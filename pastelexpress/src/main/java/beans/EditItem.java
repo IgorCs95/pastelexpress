@@ -1,9 +1,10 @@
 package beans;
 
-
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+
+import org.primefaces.component.fileupload.FileUpload;
 
 import entities.Item;
 import services.ItemService;
@@ -20,6 +21,8 @@ public class EditItem extends AbstractBean {
 
 	private Item item;
 
+	private FileUpload foto;
+
 	@Inject
 	private ItemService itemService;
 
@@ -28,7 +31,6 @@ public class EditItem extends AbstractBean {
 			item = new Item();
 		}
 	}
-	
 
 	public String saveItem() {
 		try {
@@ -44,13 +46,22 @@ public class EditItem extends AbstractBean {
 
 		reportarMensagemDeSucesso("Cadastro do Item '" + item.getNome() + "' realizado com sucesso.");
 
+		init();
+
 		return "gerencia_items?faces-redirect=true";
+	}
+
+	public FileUpload getFoto() {
+		return foto;
+	}
+
+	public void setFoto(FileUpload foto) {
+		this.foto = foto;
 	}
 
 	public Item getItem() {
 		return item;
 	}
-	
 
 	public void setItem(Item item) {
 		this.item = item;

@@ -10,6 +10,7 @@
 	<ui:define name="title">
 		Item list
 	</ui:define>
+	
 
 	<ui:define name="content">
 		<h:outputScript name="locale-primefaces.js" library="js" />
@@ -43,8 +44,7 @@
 							icon="fa fa-question-circle" value="Detalhes"
 							oncomplete="if (!args.validationFailed) { PF('detalhesItemDialog').show() }"
 							update=":detalhesItemDialogId" style="width:100%">
-							<f:setPropertyActionListener value="#{item}"
-								target="#{editItem.item}" />
+							<f:setPropertyActionListener value="#{item}" target="#{editItem.item}" />
 							<p:resetInput target="detalhesItemDialogId" />
 						</p:commandButton>
 

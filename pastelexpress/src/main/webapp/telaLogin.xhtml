@@ -61,11 +61,10 @@
 	<div id="container" align="center">
 		<p:panel>
 			<p:commandButton value="Cadastrar Usuario" icon="fa fa-edit"
-				action="#{editUser.init()}"
+				action="#{editUser.init()}" process="@this"
 				oncomplete="if (!args.validationFailed) { PF('userEditDialog').show() }"
 				update=":userEditDialogId :mensagenLogin">
-				<f:setPropertyActionListener value="#{user}"
-					target="#{editUser.user}" />
+				<f:setPropertyActionListener value="#{user}" target="#{editUser.user}" />
 				<p:resetInput target="userEditDialogId" />
 			</p:commandButton>
 
@@ -77,7 +76,7 @@
 	<p:dialog id="userEditDialogId" widgetVar="userEditDialog"
 		header="User edit" modal="true" dynamic="true" closeOnEscape="true">
 
-		<p:messages id="idMessagesErrorsUserEdit" showDetail="true"
+		<p:messages id="idMessagesErrorsUserEdit" showDetail="true" autoUpdate="true"
 			closable="true" severity="error" />
 
 		<h:form id="formEdit">

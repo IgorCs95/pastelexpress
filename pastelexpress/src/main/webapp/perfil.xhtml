@@ -6,7 +6,6 @@
 	xmlns:h="http://xmlns.jcp.org/jsf/html"
 	xmlns:p="http://primefaces.org/ui">
 
-<f:metadata></f:metadata>
 
 <ui:composition template="/WEB-INF/templates/_componentes_basico.xhtml">
 
@@ -14,37 +13,141 @@
 		Perfil do Usuario
 	</ui:define>
 
+	<f:metadata>
+		<f:viewAction action="#{editUser.carregarPerfil()}" />
+	</f:metadata>
+
+
 	<ui:define name="content">
 
+		<p:messages id="idErro" autoUpdate="true" severity="erro" />
+
+		<p:growl id="idSucess" autoUpdate="true" severity="info" />
+
 		<div align="center">
-			<h:panelGrid columns="2">
 
-				<p:outputLabel value="Id:" />
-				<p:outputLabel value="#{editUser.user.nome}" />
+			<p:panelGrid id="dados" columns="2" style="width:100%">
+				<h:panelGrid columns="2">
 
-				<p:outputLabel value="Nome:" />
-				<p:outputLabel value="#{editUser.user.nome}" />
+					<p:outputLabel value="Id:" style="float: right;" />
+					<p:outputLabel value="#{editUser.user.id}" />
 
-				<p:outputLabel value="Login" />
-				<p:outputLabel value="#{editUser.user.login}" />
+					<p:outputLabel value="Nome:" style="float: right;" />
+					<p:outputLabel value="#{editUser.user.nome}" />
 
-
-				<p:outputLabel value="CPF" />
-				<p:outputLabel value="#{editUser.user.cpf}" />
+					<p:outputLabel value="Login:" style="float: right;" />
+					<p:outputLabel value="#{editUser.user.login}" />
 
 
-				<p:outputLabel value="Data de Nascimento" />
-				<p:outputLabel value="#{editUser.user.dataDeNascimento}" />
+					<p:outputLabel value="CPF:" style="float: right;" />
+					<p:outputLabel value="#{editUser.user.cpf}" />
 
-				<p:outputLabel value="Tipo:" />
-				<p:outputLabel value="#{editUser.user.tipo}" />
 
-			</h:panelGrid>
+					<p:outputLabel value="Data de Nascimento:" style="float: right;" />
+					<p:outputLabel value="#{editUser.user.dataDeNascimento}">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</p:outputLabel>
+
+					<p:outputLabel value="Tipo:" style="float: right;" />
+					<p:outputLabel value="#{editUser.user.tipo}" />
+
+				</h:panelGrid>
+
+				<h:panelGrid columns="2">
+
+					<p:outputLabel value="Rua:" style="float: right;" />
+					<p:outputLabel value="#{editUser.user.endereco.rua}" />
+
+					<p:outputLabel value="Bairro:" style="float: right;" />
+					<p:outputLabel value="#{editUser.user.endereco.bairro}" />
+
+					<p:outputLabel value="CEP:" style="float: right;" />
+					<p:outputLabel value="#{editUser.user.endereco.cep}" />
+
+					<p:outputLabel value="Cidade:" style="float: right;" />
+					<p:outputLabel value="#{editUser.user.endereco.cidade.name}" />
+
+					<p:outputLabel value="Estado:" style="float: right;" />
+					<p:outputLabel value="#{editUser.user.endereco.cidade.state.name}" />
+
+
+				</h:panelGrid>
+			</p:panelGrid>
+
+			<p:commandButton value="Editar Usuario" icon="fa fa-edit"
+				process="@this"
+				oncomplete="if (!args.validationFailed) { PF('userEditDialog').show() }"
+				update=":userEditDialogId">
+				<p:resetInput target="userEditDialogId" />
+			</p:commandButton>
+
+			<p:commandButton value="Alterar Senha" icon="fa fa-edit"
+				process="@this"
+				oncomplete="if (!args.validationFailed) { PF('editSenhaDialog').show() }"
+				update="editSenhaDialogId">
+				<p:resetInput target="editSenhaDialogId" />
+			</p:commandButton>
+
+
 
 		</div>
 
+		<p:dialog id="userEditDialogId" widgetVar="userEditDialog"
+			header="User edit" modal="true" dynamic="true" closeOnEscape="true">
+
+			<p:messages id="idMessagesErrorsUserEdit" showDetail="true"
+				autoUpdate="true" closable="true" severity="error" />
+
+			<h:form id="formEdit">
+				<p:panelGrid columns="2">
+
+					<ui:include src="/WEB-INF/templates/_cadastrar_user.xhtml" />
+
+					<ui:include src="/WEB-INF/templates/_cadastrar_endereco.xhtml" />
+
+				</p:panelGrid>
+
+				<p:panelGrid columns="2" styleClass="ui-noborder">
+					<p:commandButton id="botaoSubmeter" action="#{editUser.saveUser}"
+						value="Submit" update="idMessagesErrorsUserEdit :dados"
+						oncomplete="if (!args.validationFailed) { PF('userEditDialog').hide(); }"
+						icon="fa fa-save" />
+
+					<p:commandButton id="botaoCancelar" value="Cancel"
+						onclick="PF('userEditDialog').hide();" icon="fa fa-remove" />
+				</p:panelGrid>
+
+				<p:defaultCommand target="formEdit:botaoSubmeter" />
+
+			</h:form>
+
+		</p:dialog>
 
 
+		<p:dialog id="editSenhaDialogId" widgetVar="editSenhaDialog"
+			header="User edit" modal="true" dynamic="true" closeOnEscape="true">
+
+			<p:messages id="idMessagesErrorsEditSenha" showDetail="true"
+				autoUpdate="true" closable="true" severity="error" />
+
+			<h:form id="formEditSenha">
+				
+
+				<p:panelGrid columns="2" styleClass="ui-noborder">
+					<p:commandButton id="botaoSubmeter" action="#{editUser.saveUser}"
+						value="Submit" update="idMessagesErrorsEditSenha :dados"
+						oncomplete="if (!args.validationFailed) { PF('editSenhaDialog').hide(); }"
+						icon="fa fa-save" />
+
+					<p:commandButton id="botaoCancelar" value="Cancel"
+						onclick="PF('userEditDialog').hide();" icon="fa fa-remove" />
+				</p:panelGrid>
+
+				<p:defaultCommand target="formEditSenha:botaoSubmeter" />
+
+			</h:form>
+
+		</p:dialog>
 
 
 

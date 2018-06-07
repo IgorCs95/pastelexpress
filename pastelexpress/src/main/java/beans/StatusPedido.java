@@ -3,7 +3,6 @@ package beans;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -28,12 +27,12 @@ public class StatusPedido extends AbstractBean {
 
 	private Pedido pedido;
 
-	List<Pedido> lista = new ArrayList<>();
+	List<Pedido> lista;
 
 	private PedidoFilter pfilter;
 
-	@PostConstruct
-	public void init() {
+	public void initClient() {
+		lista = new ArrayList<>();
 		pedido = new Pedido();
 		pfilter = new PedidoFilter();
 
@@ -43,11 +42,52 @@ public class StatusPedido extends AbstractBean {
 			pfilter.setIdUser(user);
 
 			lista = pedidosService.findBy(pfilter);
-			
+
 		} catch (ServiceDacException e) {
 			e.printStackTrace();
 			reportarMensagemDeErro("Erro ao buscar pedidos");
 		}
+	}
+
+	public void initFunc() {
+		try {
+			lista = new ArrayList<>();
+			lista = pedidosService.getAll();
+		} catch (ServiceDacException e) {
+			e.printStackTrace();
+			reportarMensagemDeErro(e.getMessage());
+		}
+		if (pedido == null) {
+			pedido = new Pedido();
+		}
+		pfilter = new PedidoFilter();
+	}
+
+	public String salvarPedidos() {
+		if (pedido != null) {
+			try {
+				pedidosService.update(pedido);
+				
+				reportarMensagemDeSucesso("Estado Alterado");
+				
+				return "lista_pedidos?faces-redirect=true";
+			} catch (ServiceDacException e) {
+				e.printStackTrace();
+				reportarMensagemDeErro(e.getMessage());
+			}
+		}else {
+			try {
+				pedidosService.save(pedido);
+				reportarMensagemDeSucesso("Pedidos Salvo com Sucesso.");
+				
+				return "lista_pedidos?faces-redirect=true";
+			} catch (ServiceDacException e) {
+				e.printStackTrace();
+				reportarMensagemDeErro(e.getMessage());
+			}
+		}
+		return "";
+
 	}
 
 	// ------------------------------------------------

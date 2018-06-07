@@ -2,17 +2,17 @@ package entities;
 
 import java.io.Serializable;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+
 @Entity
 @Table(name = "TB_ITEM")
-public class Item implements Serializable{
-	
+public class Item implements Serializable {
+
 	/**
 	 * 
 	 */
@@ -21,24 +21,23 @@ public class Item implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
-	
+
 	private String nome;
 
 	private float valor;
-	
+
 	private String descricao;
-	
+
 	public Item() {
 	}
 
-	public Item(int id,String nome,float valor,String descricao) {
+	public Item(int id, String nome, float valor, String descricao) {
 		this.id = id;
 		this.nome = nome;
 		this.valor = valor;
 		this.descricao = descricao;
 	}
-	
+
 	public Integer getId() {
 		return id;
 	}
@@ -46,7 +45,6 @@ public class Item implements Serializable{
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	
 
 	public float getValor() {
 		return valor;
@@ -72,8 +70,7 @@ public class Item implements Serializable{
 		this.descricao = descricao;
 	}
 
-	
-	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -120,19 +117,15 @@ public class Item implements Serializable{
 		clone.setId(id);
 		clone.setNome(nome);
 		clone.setValor(valor);
-		
+
 		return clone;
-		
+
 	}
 
 	@Override
 	public String toString() {
-		return "Item [id=" + id + ", nome=" + nome + ", valor=" + valor + ", descricao="
-				+ descricao + "]";
+		return "Item [id=" + id + ", nome=" + nome + ", valor=" + valor + ", descricao=" + descricao
+				+ "]";
 	}
-	
-	
-	
-	
 
 }

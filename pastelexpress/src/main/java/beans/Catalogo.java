@@ -3,7 +3,7 @@ package beans;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.RequestScoped;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -13,7 +13,7 @@ import services.ItemService;
 import services.ServiceDacException;
 
 @Named
-@RequestScoped
+@ViewScoped
 public class Catalogo extends AbstractBean {
 
 	/**

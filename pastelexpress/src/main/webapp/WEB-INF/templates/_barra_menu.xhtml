@@ -17,32 +17,27 @@
 			<p:menubar>
 
 				<p:submenu label="Gerencia" icon="ui-icon-pencil">
+					<p:menuitem id="gerenciarItems" value="Gerenciar Items"
+						url="gerencia_item.xhtml">
+					</p:menuitem>
 					
-					
-					<p:menuitem id="gerenciarItems" value="Gerenciar Items"	 url="gerencia_item.xhtml">
+					<p:menuitem id="gerenciarPedidos" value="Gerenciar Pedidos"
+						url="lista_pedidos.xhtml">
 					</p:menuitem>
 
 				</p:submenu>
 
-
-
-
-
-
 				<f:facet name="options">
 					<p:button outcome="carrinho.xhtml" icon="fa fa-shopping-cart" />
 
-					
-
-
 					<h:form>
-						<p:splitButton value="#{login.getUserName()}" icon="fa fa-user-circle" actionListener="#{editUser.carregarPerfil()}" action="perfil.xhtml">
-						
-							<p:menuitem value="perfil" icon="fa fa-edit" action="#{editUser.carregarPerfil()}" url="perfil.xhtml" />
-							
+						<p:splitButton value="#{login.getUserName()}" icon="fa fa-user-circle">
+
+							<p:menuitem value="perfil" icon="fa fa-edit" url="perfil.xhtml" />
+
 							<p:menuitem value="Pedidos" icon="fa fa-list" url="pedidos.xhtml" />
-							
-							
+
+
 						</p:splitButton>
 					</h:form>
 

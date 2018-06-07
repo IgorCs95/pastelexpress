@@ -38,7 +38,8 @@
 
 			</h:panelGrid>
 
-			<p:dataTable id="dataTableItemsPedido" var="i"	value="#{statusPedido.pedido.items}">
+			<p:dataTable id="dataTableItemsPedido" var="i"
+				value="#{statusPedido.pedido.items}">
 
 				<p:column headerText="ITEM:">
 					<h:outputText value="#{i.item.nome}" />
@@ -71,7 +72,7 @@
 		</div>
 
 		<div align="right">
-			<br /> <br />
+			<br />
 			<h:outputText value="Total:  " />
 			<h:outputText value="#{statusPedido.pedido.valorTotal()}">
 				<f:convertNumber currencySymbol="R$" type="currency" />
@@ -79,18 +80,14 @@
 		</div>
 
 		<div align="right">
-			<br /> <br />
+			<br />
 			<h:outputText value="Forma de Pagamento:  " />
 			<h:outputText value="#{statusPedido.pedido.pagamento.name()}" />
 		</div>
-		
-		<div align="right">
-			<br /> <br />
-			<h:outputText value="Stado do Pedido:  " />
-			<h:outputText value="#{statusPedido.pedido.estado.name()}" />
-		</div>
 
-		
+		<br />
+
+
 
 
 	</p:panel>

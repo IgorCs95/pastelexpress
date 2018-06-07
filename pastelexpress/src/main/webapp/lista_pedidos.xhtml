@@ -8,59 +8,63 @@
 
 <ui:composition template="/WEB-INF/templates/_componentes_basico.xhtml">
 
-	<f:metadata>
-		<f:viewAction action="#{statusPedido.initClient()}" />
-	</f:metadata>
-
 	<ui:define name="title">
-		Pedidos
+		Relação de Pedidos
 	</ui:define>
+
+	<f:metadata>
+		<f:viewAction action="#{statusPedido.initFunc()}" />
+	</f:metadata>
 
 
 	<ui:define name="content">
-
-		<p:outputLabel value="Pedidos" />
 
 		<p:messages id="erroId" autoUpdate="true" severity="erro"
 			showDetail="true" />
 
 		<p:dataTable id="dataTablePedidos" var="p"
-			sortBy="#{statusPedido.pedido.data}" value="#{statusPedido.lista}">
+			value="#{statusPedido.lista}">
 
-			<p:column headerText="ID">
+			<p:column headerText="ID" sortBy="#{p.id}">
 				<h:outputText value="#{p.id}" />
 			</p:column>
 
-			<p:column headerText="data">
+			<p:column headerText="Cliente" sortBy="#{p.user.nome}">
+				<h:outputText value="#{p.user.nome}" />
+			</p:column>
+
+			<p:column headerText="data" sortBy="#{p.data}">
 				<h:outputText value="#{p.data}">
 					<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
 				</h:outputText>
-
 			</p:column>
 
-			<p:column headerText="Valor">
+			<p:column headerText="Valor" sortBy="#{p.valorTotal()}">
 				<h:outputText value="#{p.valorTotal()}">
 					<f:convertNumber currencySymbol="R$" type="currency" />
 				</h:outputText>
 			</p:column>
 
-			<p:column headerText="Status da Compra">
+			<p:column headerText="Status da Compra" sortBy="#{p.estado.name()}">
 				<h:outputText value="#{p.estado.name()}" />
 			</p:column>
 
-			<p:column headerText="Forma de Pagamento">
+			<p:column headerText="Forma de Pagamento"
+				sortBy="#{p.pagamento.name()}">
 				<h:outputText value="#{p.pagamento.name()}" />
 			</p:column>
 
 			<p:column headerText="Detalhes">
-				<p:commandButton id="editItemDialogCommand" icon="fa fa-search-plus"
+
+				<p:commandButton id="editItemDialogCommand" value="Editar Pedido"
+					icon="fa fa-search-plus"
 					oncomplete="if (!args.validationFailed) { PF('detalhesPedidoDialog').show() }"
 					update=":detalhesPedidoDialogId" style="width:100%">
 
 					<f:setPropertyActionListener value="#{p}"
 						target="#{statusPedido.pedido}" />
-
 				</p:commandButton>
+
 
 
 			</p:column>
@@ -77,22 +81,42 @@
 
 				<ui:include src="/WEB-INF/templates/_detalhes_pedido.xhtml" />
 
-				<h:panelGrid columns="2" styleClass="ui-noborder" style="width:100%">
-				
-					<p:outputLabel value="#{statusPedido.pedido.estado.name()}" style="float: left;" />
+				<h:panelGrid columns="3" style="width:100%" styleClass="ui-noborder">
 
-					<p:commandButton id="botaoCancelar" value="Cancelar"
-						oncomplete="PF('detalhesPedidoDialog').hide();"
-						icon="fa fa-remove"  style="float: right;"/>
+					<p:selectOneMenu id="estado" value="#{statusPedido.pedido.estado}"
+						style="float: left;">
+						<f:selectItem itemLabel="Selecione" itemValue="#{null}"
+							noSelectionOption="true" itemDisabled="true" />
+						<f:selectItems value="#{statusPedido.statusCompra}" var="g"
+							itemLabel="#{g.nome}" itemValue="#{g}" />
+					</p:selectOneMenu>
+
+					<p:outputLabel style="float: right;">
+						<p:commandButton id="botaoSubmeter"
+							action="#{statusPedido.salvarPedidos()}" value="Salvar"
+							update="idMessagesErrors"
+							oncomplete="if (!args.validationFailed) { PF('mudarEstadoPedidoDialog').hide(); }"
+							icon="fa fa-save" />
+
+						<p:commandButton id="botaoCancelar" value="Cancelar"
+							oncomplete="PF('detalhesPedidoDialog').hide();"
+							icon="fa fa-remove" />
+
+						<p:defaultCommand target="formDetalhes:botaoSubmeter" />
+
+					</p:outputLabel>
 				</h:panelGrid>
+
 
 			</h:form>
 		</p:dialog>
-		
+
+
+
+
+
 
 
 	</ui:define>
-
-
 </ui:composition>
 </html>

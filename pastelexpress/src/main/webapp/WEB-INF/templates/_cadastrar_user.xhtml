@@ -9,16 +9,18 @@
 <ui:composition>
 
 	<h:panelGrid columns="2">
-
 		<p:outputLabel for="name" value="Nome:" />
 		<p:inputText id="name" label="Nome" value="#{editUser.user.nome}"
 			required="true" requiredMessage="Nome Completo é obrigatorio" />
 
-		<p:outputLabel for="username" value="Login" />
-		<p:inputText id="username" label="Usuario"
-			value="#{editUser.user.login}" required="true"
-			requiredMessage="Escolha um Login para o Usuario" />
-
+	
+		<p:outputLabel for="login" value="Login:" />
+		<p:outputPanel>
+			<p:inputText id="login" value="#{editUser.user.login}" label="Login" required="true" />
+			<p:commandButton id="checarDisponibilidadeLogin" icon="fa fa-question" process="@this formEdit:login" action="#{editUser.checarDisponibilidadeLogin()}" />
+			<p:tooltip id="checarDisponibilidadeLoginTooltip" value="Este Login é valido?" for="checarDisponibilidadeLogin" />
+		</p:outputPanel>
+	
 
 		<p:outputLabel for="cpf" value="CPF" />
 		<p:inputMask id="cpf" value="#{editUser.user.cpf}" required="true"
@@ -45,22 +47,20 @@
 			rendered="#{!editUser.edicaoDeUsuario}" />
 		<p:password id="confirmacaoSenha" value="#{editUser.user.senha}"
 			label="Confirmar Senha" feedback="true" required="true"
-			rendered="#{!userEdit.edicaoDeUsuario}"
+			rendered="#{!editUser.edicaoDeUsuario}"
 			requiredMessage="Confirme a senha" />
 
-		<p:outputLabel for="tipo" value="Tipo:" />
-		<p:selectOneMenu id="tipo" value="#{editUser.user.tipo}" label="Tipo"
-			required="true" requiredMessage="Escolha o tipo de Usuario">
+		<p:outputLabel for="tipo" value="Tipo:" rendered="#{!editUser.userLogado()}"/>
+		<p:selectOneMenu id="tipo" value="#{editUser.user.tipo}" label="Tipo" 
+			required="true" requiredMessage="Escolha o tipo de Usuario" rendered="#{!editUser.userLogado()}">
 			<f:selectItem itemLabel="Selecione" itemValue="#{null}"
 				noSelectionOption="true" itemDisabled="true" />
 			<f:selectItems value="#{editUser.getTiposUser()}" var="g"
 				itemLabel="#{g.nome}" itemValue="#{g}" />
 		</p:selectOneMenu>
 
-
-
 	</h:panelGrid>
-
+	
 
 
 

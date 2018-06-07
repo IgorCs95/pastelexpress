@@ -81,16 +81,14 @@
 			<p:panelGrid columnClasses="2">
 
 				<p:outputLabel for="pag" value="Forma de Pagamento:" />
-				<p:selectOneMenu id="pag" value="#{editCarrinho.pedido.pagamento}"
-					label="Tipo" required="true" requiredMessage="Vai Pagar Com?">
-					<f:selectItem itemLabel="Selecione" itemValue="#{null}"
-						noSelectionOption="true" itemDisabled="true" />
+				<p:selectOneButton id="pag" value="#{editCarrinho.pedido.pagamento}">
 					<f:selectItems value="#{editCarrinho.tipoCompra}" var="g"
 						itemLabel="#{g.nome}" itemValue="#{g}" />
-				</p:selectOneMenu>
+				</p:selectOneButton>
+
 
 			</p:panelGrid>
-
+			<br />
 
 		</div>
 

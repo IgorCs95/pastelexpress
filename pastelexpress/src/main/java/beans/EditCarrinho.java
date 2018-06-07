@@ -24,7 +24,6 @@ public class EditCarrinho extends AbstractBean {
 	 */
 	private static final long serialVersionUID = 1651571553470606055L;
 
-
 	private Pedido pedido;
 
 	@Inject
@@ -57,15 +56,9 @@ public class EditCarrinho extends AbstractBean {
 
 			pedido.addItem(i);
 		}
-		reportarMensagemDeSucesso(item.getNome()+" Adicoonado No carrinho.");
+		reportarMensagemDeSucesso(item.getNome() + " Adicoonado No carrinho.");
 
 	}
-
-	
-
-	
-
-	
 
 	public String removerItem(ItemPedido item) {
 		reportarMensagemDeSucesso(item.getItem().getNome() + " removido.");
@@ -89,7 +82,7 @@ public class EditCarrinho extends AbstractBean {
 				try {
 					pedido.setData(new Date());
 					pedido.setEstado(StatusCompra.PROCESSANDO);
-					
+
 					serverPedido.save(pedido);
 
 					init();

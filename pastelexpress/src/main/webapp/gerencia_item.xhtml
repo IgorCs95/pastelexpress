@@ -11,6 +11,9 @@
 	<ui:define name="title">
 		GerenciarItems
 	</ui:define>
+	
+	
+	
 
 
 	<ui:define name="content">
@@ -27,8 +30,7 @@
 			<p:resetInput target="edtiItemDialogId" />
 		</p:commandButton>
 
-		<p:dataTable id="dataItems" var="p" sortMode="multiple"
-			value="#{catalogo.items}">
+		<p:dataTable id="dataItems" var="p"	value="#{catalogo.items}">
 
 			<p:column headerText="ID" sortBy="#{p.id}">
 				<h:outputText value="#{p.id}" />
@@ -44,19 +46,15 @@
 				</h:outputText>
 			</p:column>
 
-			<p:column headerText="Descrição">
-				<h:outputText value="#{p.descricao}" />
-			</p:column>
-
-
-			<p:column headerText="Opcoes" sortBy="">
+			<p:column headerText="Opcoes">
 				<p:commandButton id="editItemDialogCommand" icon="fa fa-edit"
 					oncomplete="if (!args.validationFailed) { PF('editItemDialog').show() }"
 					update=":edtiItemDialogId" style="width:100%">
 					<f:setPropertyActionListener value="#{p}" target="#{editItem.item}" />
-					<p:resetInput target="edtiItemDialogId" />
+					
 				</p:commandButton>
 			</p:column>
+			
 		</p:dataTable>
 
 

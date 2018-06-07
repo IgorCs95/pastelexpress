@@ -53,9 +53,14 @@ public class EditUser extends AbstractBean {
 	@Inject
 	private SessionContext ses;
 	
-	public String carregarPerfil() {
-		this.user = ses.getUsuarioLogado();
-		return "perfil?faces-redirect=true";
+	public void carregarPerfil() {
+		user = ses.getUsuarioLogado();
+		init();
+		
+	}
+	
+	public boolean userLogado() {
+		return user!=null;
 	}
 
 	public void init() {
@@ -87,6 +92,7 @@ public class EditUser extends AbstractBean {
 				}
 				userService.update(user, false);
 			} else {
+				
 				enderecoService.save(end);
 				
 				user.setEndereco(end);
