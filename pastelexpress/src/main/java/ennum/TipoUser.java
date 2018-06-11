@@ -2,7 +2,10 @@ package ennum;
 
 public enum TipoUser {
 	
-	CLIENTE("Cliente"), FUNCIONARIO("Funcionario");
+	CLIENTE("Cliente"), 
+	COZINHEIRO("Cozinheiro"), 
+	ENTREGADOR("Entregador"),
+	ADMIN("Administrador");
 	
 	private String nome;
 

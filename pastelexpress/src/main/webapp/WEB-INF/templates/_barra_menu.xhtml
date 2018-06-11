@@ -7,42 +7,58 @@
 
 <ui:composition>
 	<h:form>
+
+		<h:outputScript name="locale-primefaces.js" library="js" />
 		<h:panelGrid columns="2" style="width:100%; text-align:center">
 
-			<p:link id="idHome" href="index.xhtml">
+			<p:link id="idHome" href="/paginas/protegido/index.xhtml">
 				<p:graphicImage library="img" name="logo.png" width="80px"
 					height="80px" />
 			</p:link>
 
 			<p:menubar>
 
-				<p:submenu label="Gerencia" icon="ui-icon-pencil">
-					<p:menuitem id="gerenciarItems" value="Gerenciar Items"
-						url="gerencia_item.xhtml">
-					</p:menuitem>
+				<p:submenu label="Gerencia" icon="ui-icon-pencil"
+					rendered="#{menu.userFunc}">
 					
+					<p:menuitem id="gerenciarItems" value="Gerenciar Items"
+						rendered="#{menu.isUserInRole('ADMIN')}"
+						url="/paginas/protegido/gerencia/gerencia_item.xhtml">
+					</p:menuitem>
+
+					<p:menuitem id="gerenciarFuncionarios" value="Gerenciar Usuarios"
+						rendered="#{menu.isUserInRole('ADMIN')}"
+						url="/paginas/protegido/gerencia/gerencia_user.xhtml">
+					</p:menuitem>
+
 					<p:menuitem id="gerenciarPedidos" value="Gerenciar Pedidos"
-						url="lista_pedidos.xhtml">
+						rendered="#{menu.userFunc}"
+						url="/paginas/protegido/funcionarios/lista_pedidos.xhtml">
 					</p:menuitem>
 
 				</p:submenu>
 
 				<f:facet name="options">
-					<p:button outcome="carrinho.xhtml" icon="fa fa-shopping-cart" />
+					<p:button outcome="/paginas/protegido/carrinho.xhtml"
+						icon="fa fa-shopping-cart" />
 
 					<h:form>
-						<p:splitButton value="#{login.getUserName()}" icon="fa fa-user-circle">
+						<p:splitButton value="#{menu.usuarioLogado.nome}" icon="fa fa-user-circle"
+							action="/paginas/protegido/perfil.xhtml">
 
-							<p:menuitem value="perfil" icon="fa fa-edit" url="perfil.xhtml" />
+							<p:menuitem value="perfil" icon="fa fa-edit"
+								url="/paginas/protegido/perfil.xhtml" />
 
-							<p:menuitem value="Pedidos" icon="fa fa-list" url="pedidos.xhtml" />
+							<p:menuitem value="Pedidos" icon="fa fa-list"
+								url="/paginas/protegido/pedidos.xhtml" />
 
 
 						</p:splitButton>
 					</h:form>
 
-					<p:commandButton action="#{login.doLogout()}"
-						icon="fa fa-angle-double-down " />
+					<p:commandButton id="menuItemLogout" value="Logout"
+						icon="fa fa-fw fa-sign-out" action="#{logout.efetuarLogout}"
+						ajax="false" />
 
 				</f:facet>
 			</p:menubar>

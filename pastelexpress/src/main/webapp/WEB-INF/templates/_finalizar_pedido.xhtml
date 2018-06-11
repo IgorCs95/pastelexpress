@@ -19,22 +19,22 @@
 			<h:panelGrid columns="2" style="width:450px">
 
 				<h:outputText value="Contato: " style="float: right;" />
-				<h:outputText value="#{login.user.nome}" />
+				<h:outputText value="#{menu.usuarioLogado.nome}" />
 
 				<h:outputText value="Rua: " style="float: right;" />
-				<h:outputText value="#{login.user.endereco.rua}" />
+				<h:outputText value="#{menu.usuarioLogado.endereco.rua}" />
 
 				<h:outputText value="Bairro: " style="float: right;" />
-				<h:outputText value="#{login.user.endereco.bairro}" />
+				<h:outputText value="#{menu.usuarioLogado.endereco.bairro}" />
 
 				<h:outputText value="Numero: " style="float: right;" />
-				<h:outputText value="#{login.user.endereco.numero}" />
+				<h:outputText value="#{menu.usuarioLogado.endereco.numero}" />
 
 				<h:outputText value="Cidade " style="float: right;" />
-				<h:outputText value="#{login.user.endereco.cidade.name}" />
+				<h:outputText value="#{menu.usuarioLogado.endereco.cidade.name}" />
 
 				<h:outputText value="Estado: " style="float: right;" />
-				<h:outputText value="#{login.user.endereco.cidade.state.name}" />
+				<h:outputText value="#{menu.usuarioLogado.endereco.cidade.state.name}" />
 
 			</h:panelGrid>
 
@@ -81,7 +81,7 @@
 			<p:panelGrid columnClasses="2">
 
 				<p:outputLabel for="pag" value="Forma de Pagamento:" />
-				<p:selectOneButton id="pag" value="#{editCarrinho.pedido.pagamento}">
+				<p:selectOneButton id="pag" value="#{editCarrinho.pedido.pagamento}" required="true" requiredMessage="Selecione a forma de Pagamento.">
 					<f:selectItems value="#{editCarrinho.tipoCompra}" var="g"
 						itemLabel="#{g.nome}" itemValue="#{g}" />
 				</p:selectOneButton>

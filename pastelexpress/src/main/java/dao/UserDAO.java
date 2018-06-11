@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
 import javax.persistence.PersistenceException;
 import javax.persistence.TypedQuery;
 
@@ -93,7 +92,7 @@ public class UserDAO extends DAO {
 		EntityManager em = getEntityManager();
 		List<User> resultado = null;
 		try {
-			TypedQuery<User> query = em.createQuery("SELECT u FROM User u", User.class);
+			TypedQuery<User> query = em.createQuery("SELECT u FROM User u ORDER BY id ASC", User.class);
 			resultado = query.getResultList();
 		} catch (PersistenceException pe) {
 			pe.printStackTrace();
@@ -111,44 +110,64 @@ public class UserDAO extends DAO {
 
 			String jpql = "SELECT u FROM User u WHERE 1 = 1 ";
 
-			// First name
+			// nome
 			if (notEmpty(filter.getNome())) {
 				jpql += "AND u.nome LIKE :nome ";
 			}
 
-			// Birthday begin
+			// login
+			if (notEmpty(filter.getLogin())) {
+				jpql += "AND u.login LIKE :login ";
+			}
+
+			// cpf
+			if (notEmpty(filter.getCpf())) {
+				jpql += "AND u.cpf LIKE :cpf ";
+			}
+
+			// data Inicio
 			if (notEmpty(filter.getDataNascimentoInicio())) {
 				jpql += "AND u.dataDeNascimento >= :dataNascimentoInicio ";
 			}
 
-			// Birthday end
+			// data Fim
 			if (notEmpty(filter.getDataNascimentoFim())) {
 				jpql += "AND u.dataDeNascimento <= :dataNascimentoFim ";
 			}
 
-			// Group
+			// tipo
 			if (notEmpty(filter.getTipo())) {
 				jpql += "AND u.tipo = :tipo ";
 			}
 
 			TypedQuery<User> query = em.createQuery(jpql, User.class);
 
-			// First name
+			// nome
 			if (notEmpty(filter.getNome())) {
 				query.setParameter("nome", "%" + filter.getNome() + "%");
 			}
 
-			// Birthday begin
+			// login
+			if (notEmpty(filter.getLogin())) {
+				query.setParameter("login", "%" + filter.getLogin() + "%");
+			}
+
+			// cpf
+			if (notEmpty(filter.getCpf())) {
+				query.setParameter("cpf", filter.getCpf());
+			}
+
+			// data Inicio
 			if (notEmpty(filter.getDataNascimentoInicio())) {
 				query.setParameter("dataNascimentoInicio", filter.getDataNascimentoInicio());
 			}
 
-			// Birthday end
+			// dat Fim
 			if (notEmpty(filter.getDataNascimentoFim())) {
 				query.setParameter("dataNascimentoFim", filter.getDataNascimentoFim());
 			}
 
-			// Group
+			// tipo
 			if (notEmpty(filter.getTipo())) {
 				query.setParameter("tipo", filter.getTipo());
 			}
@@ -157,8 +176,6 @@ public class UserDAO extends DAO {
 		} catch (PersistenceException pe) {
 			pe.printStackTrace();
 			throw new PersistenciaDacException("Ocorreu algum erro ao tentar recuperar os usuários.", pe);
-		} finally {
-			em.close();
 		}
 		return resultado;
 	}
@@ -181,6 +198,25 @@ public class UserDAO extends DAO {
 		if (user.getId() != null) {
 			query.setParameter("user", user);
 		}
+
+		Long count = query.getSingleResult();
+		return count > 0;
+
+	}
+	
+	public boolean existeUsuarioComCPF(User user) {
+		if (user == null || !notEmpty(user.getCpf())) {
+			return false;
+		}
+
+		EntityManager em = getEntityManager();
+
+		String jpql = "SELECT COUNT(*) FROM User u WHERE u.cpf = :cpf";
+		
+
+		TypedQuery<Long> query = em.createQuery(jpql, Long.class);
+
+		query.setParameter("cpf", user.getCpf());
 
 		Long count = query.getSingleResult();
 		return count > 0;

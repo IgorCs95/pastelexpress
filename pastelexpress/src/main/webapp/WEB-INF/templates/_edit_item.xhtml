@@ -10,18 +10,18 @@
 	<p:growl id="messages" showDetail="true" />
 	<h:panelGrid id="edititem" columns="2" styleClass="ui-noborder">
 
-		<p:outputLabel value="Id:" rendered="#{edtiItem.isEdicao()}" />
-		<p:outputLabel value="#{editItem.item.id}"	rendered="#{edtiItem.isEdicao()}" />
+		<p:outputLabel value="Id:" rendered="#{gerenciarItem.isEdicao()}" />
+		<p:outputLabel value="#{gerenciarItem.item.id}"	rendered="#{gerenciarItem.isEdicao()}" />
 
 		<p:outputLabel for="nome" value="Nome:" />
-		<p:inputText id="nome" value="#{editItem.item.nome}" label="Nome"	style="width:350px" required="true" />
+		<p:inputText id="nome" value="#{gerenciarItem.item.nome}" label="Nome"	style="width:350px" required="true" />
 
 		<p:outputLabel for="valor" value="Valor" />
-		<p:inputNumber id="valor" value="#{editItem.item.valor}" symbol="R$"
+		<p:inputNumber id="valor" value="#{gerenciarItem.item.valor}" symbol="R$"
 			style="width:350px" decimalSeparator="," thousandSeparator="." />
 
 		<p:outputLabel for="descricao" value="Descrição:" />
-		<p:inputTextarea id="descricao" value="#{editItem.item.descricao}"
+		<p:inputTextarea id="descricao" value="#{gerenciarItem.item.descricao}"
 			label="Descricao" style="width:350px" />
 
 

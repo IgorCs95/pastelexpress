@@ -11,9 +11,9 @@
 	<ui:define name="title">
 		GerenciarItems
 	</ui:define>
-	
-	
-	
+
+
+
 
 
 	<ui:define name="content">
@@ -22,15 +22,17 @@
 			showDetail="true" />
 
 		<p:growl id="sucess" autoUpdate="true" severity="info" />
+		<div align="right">
+			<p:commandButton id="botaoAddItem" value="Criar Novo Item"
+				action="#{gerenciarItem.init()}"
+				oncomplete="if (!args.validationFailed) { PF('editItemDialog').show() }"
+				update="edtiItemDialogId" icon="fa fa-fw fa-user">
+				<p:resetInput target="edtiItemDialogId" />
+			</p:commandButton>
+			<br /> <br />
+		</div>
 
-		<p:commandButton id="botaoAddItem" value="Criar Novo Item"
-			action="#{editItem.init()}"
-			oncomplete="if (!args.validationFailed) { PF('editItemDialog').show() }"
-			update="edtiItemDialogId" icon="fa fa-fw fa-user">
-			<p:resetInput target="edtiItemDialogId" />
-		</p:commandButton>
-
-		<p:dataTable id="dataItems" var="p"	value="#{catalogo.items}">
+		<p:dataTable id="dataItems" var="p" value="#{catalogo.items}">
 
 			<p:column headerText="ID" sortBy="#{p.id}">
 				<h:outputText value="#{p.id}" />
@@ -49,12 +51,21 @@
 			<p:column headerText="Opcoes">
 				<p:commandButton id="editItemDialogCommand" icon="fa fa-edit"
 					oncomplete="if (!args.validationFailed) { PF('editItemDialog').show() }"
-					update=":edtiItemDialogId" style="width:100%">
-					<f:setPropertyActionListener value="#{p}" target="#{editItem.item}" />
-					
+					update=":edtiItemDialogId">
+					<f:setPropertyActionListener value="#{p}" target="#{gerenciarItem.item}" />
 				</p:commandButton>
+				<p:tooltip id="toolTipEdtiItemDialog" for="editItemDialogCommand"
+					value="Editar" position="top" />
+
+				<p:commandButton id="deletarItem" icon="fa fa-remove" update="dataItems" action="#{gerenciarItem.delete(p)}">
+
+					<p:confirm header="Confirmar" message="Deseja deletar o Item ' #{p.nome} ' do Banco de Dados?" />
+
+				</p:commandButton>
+				<p:tooltip id="toolTipDeleteUserDialog" for="deletarItem" value="Deletar" position="top" />
+
 			</p:column>
-			
+
 		</p:dataTable>
 
 
@@ -71,7 +82,7 @@
 				<h:panelGrid columns="2" style="float: right;"
 					styleClass="ui-noborder">
 
-					<p:commandButton id="botaoSubmeter" action="#{editItem.saveItem()}"
+					<p:commandButton id="botaoSubmeter" action="#{gerenciarItem.saveItem()}"
 						value="Salvar" update="dataItems"
 						oncomplete="if (!args.validationFailed) { PF('editItemDialog').hide(); }"
 						icon="fa fa-save" />
@@ -85,7 +96,7 @@
 			</h:form>
 		</p:dialog>
 
-
+		
 
 
 	</ui:define>

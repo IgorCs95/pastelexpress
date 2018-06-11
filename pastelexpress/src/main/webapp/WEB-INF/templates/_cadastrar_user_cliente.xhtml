@@ -1,0 +1,64 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition>
+
+	<h:panelGrid columns="2">
+		<p:outputLabel for="name" value="Nome:" />
+		<p:inputText id="name" label="Nome" value="#{criarUserCliente.user.nome}"
+			required="true" requiredMessage="Nome Completo é obrigatorio" />
+
+	
+		<p:outputLabel for="login" value="Login:" />
+		<p:outputPanel>
+			<p:inputText id="login" value="#{criarUserCliente.user.login}" label="Login" required="true" />
+			<p:commandButton id="checarDisponibilidadeLogin" icon="fa fa-question" process="@this formEdit:login" action="#{criarUserCliente.checarDisponibilidadeLogin()}" />
+			<p:tooltip id="checarDisponibilidadeLoginTooltip" value="Este Login é valido?" for="checarDisponibilidadeLogin" />
+		</p:outputPanel>
+	
+
+		<p:outputLabel for="cpf" value="CPF" />
+		<p:outputPanel>
+			<p:inputMask id="cpf" value="#{criarUserCliente.user.cpf}"
+				required="true" mask="999.999.999-99"
+				requiredMessage="CPF é obrigatorio" />
+				
+			<p:commandButton id="checarDisponibilidadeCpf"
+				icon="fa fa-question" process="@this formEdit:cpf" action="#{criarUserCliente.checarcpf()}" />
+				
+			<p:tooltip id="checarDisponibilidadeCpfTooltip"	value="Este CPF é valido?" for="checarDisponibilidadeCpf" />
+		</p:outputPanel>
+
+
+		<p:outputLabel for="data" value="Data de Nascimento" />
+
+		<ui:include src="/WEB-INF/templates/_calendario.xhtml">
+			<ui:param name="id" value="data" />
+			<ui:param name="value" value="#{criarUserCliente.user.dataDeNascimento}" />
+			<ui:param name="name" value="Data Nascimento:" />
+			<ui:param name="required" value="true" />
+		</ui:include>
+
+		<p:outputLabel for="password" value="Senha:"/>
+		<p:password id="password" value="#{criarUserCliente.user.senha}" label="Senha"
+			match="confirmacaoSenha" feedback="true" required="true" requiredMessage="Senha é obrigatorio" />
+
+		<p:outputLabel for="confirmacaoSenha" value="Confirmar Senha:" />
+		<p:password id="confirmacaoSenha" value="#{criarUserCliente.user.senha}"
+			label="Confirmar Senha" feedback="true" required="true" requiredMessage="Confirme a senha" />
+
+	</h:panelGrid>
+	
+
+
+
+
+
+</ui:composition>
+
+</html>

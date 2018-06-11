@@ -4,15 +4,16 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import org.primefaces.component.fileupload.FileUpload;
 
+import beans.paginas.EnderecoPaginas;
 import entities.Item;
+import entities.User;
 import services.ItemService;
 import services.ServiceDacException;
 
 @Named
 @ViewScoped
-public class EditItem extends AbstractBean {
+public class GerenciarItem extends AbstractBean {
 
 	/**
 	 * 
@@ -20,8 +21,6 @@ public class EditItem extends AbstractBean {
 	private static final long serialVersionUID = -6236852536417871637L;
 
 	private Item item;
-
-	private FileUpload foto;
 
 	@Inject
 	private ItemService itemService;
@@ -48,16 +47,22 @@ public class EditItem extends AbstractBean {
 
 		init();
 
-		return "gerencia_items?faces-redirect=true";
+		return EnderecoPaginas.PAGINA_G_EDIT_ITEM;
+	}
+	
+	public String delete(Item item) {
+		try {
+			itemService.delete(item);
+		} catch (ServiceDacException e) {
+			reportarMensagemDeErro(e.getMessage());
+			return null;
+		}
+
+		reportarMensagemDeSucesso("Item '" + item.getNome() + "' Removido com sucesso.");
+
+		return EnderecoPaginas.PAGINA_G_EDIT_ITEM;
 	}
 
-	public FileUpload getFoto() {
-		return foto;
-	}
-
-	public void setFoto(FileUpload foto) {
-		this.foto = foto;
-	}
 
 	public Item getItem() {
 		return item;

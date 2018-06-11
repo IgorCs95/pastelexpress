@@ -13,84 +13,96 @@
 		Perfil do Usuario
 	</ui:define>
 
-	<f:metadata>
-		<f:viewAction action="#{editUser.carregarPerfil()}" />
-	</f:metadata>
-
 
 	<ui:define name="content">
 
 		<p:messages id="idErro" autoUpdate="true" severity="erro" />
 
 		<p:growl id="idSucess" autoUpdate="true" severity="info" />
+		<br />
+		<br />
 
 		<div align="center">
 
-			<p:panelGrid id="dados" columns="2" style="width:100%">
+			<h:panelGrid id="dados" columns="2" style="width:60%">
 				<h:panelGrid columns="2">
 
 					<p:outputLabel value="Id:" style="float: right;" />
-					<p:outputLabel value="#{editUser.user.id}" />
+					<p:outputLabel value="#{userDetails.usuarioDetalhes.id}" />
 
 					<p:outputLabel value="Nome:" style="float: right;" />
-					<p:outputLabel value="#{editUser.user.nome}" />
+					<p:outputLabel value="#{userDetails.usuarioDetalhes.nome}" />
 
 					<p:outputLabel value="Login:" style="float: right;" />
-					<p:outputLabel value="#{editUser.user.login}" />
+					<p:outputLabel value="#{userDetails.usuarioDetalhes.login}" />
 
 
 					<p:outputLabel value="CPF:" style="float: right;" />
-					<p:outputLabel value="#{editUser.user.cpf}" />
+					<p:outputLabel value="#{userDetails.usuarioDetalhes.cpf}" />
 
 
 					<p:outputLabel value="Data de Nascimento:" style="float: right;" />
-					<p:outputLabel value="#{editUser.user.dataDeNascimento}">
+					<p:outputLabel
+						value="#{userDetails.usuarioDetalhes.dataDeNascimento}">
 						<f:convertDateTime pattern="dd/MM/yyyy" />
 					</p:outputLabel>
 
 					<p:outputLabel value="Tipo:" style="float: right;" />
-					<p:outputLabel value="#{editUser.user.tipo}" />
+					<p:outputLabel value="#{userDetails.usuarioDetalhes.tipo}" />
 
 				</h:panelGrid>
 
 				<h:panelGrid columns="2">
 
 					<p:outputLabel value="Rua:" style="float: right;" />
-					<p:outputLabel value="#{editUser.user.endereco.rua}" />
+					<p:outputLabel value="#{userDetails.usuarioDetalhes.endereco.rua}" />
 
 					<p:outputLabel value="Bairro:" style="float: right;" />
-					<p:outputLabel value="#{editUser.user.endereco.bairro}" />
+					<p:outputLabel
+						value="#{userDetails.usuarioDetalhes.endereco.bairro}" />
 
 					<p:outputLabel value="CEP:" style="float: right;" />
-					<p:outputLabel value="#{editUser.user.endereco.cep}" />
+					<p:outputLabel value="#{userDetails.usuarioDetalhes.endereco.cep}" />
 
 					<p:outputLabel value="Cidade:" style="float: right;" />
-					<p:outputLabel value="#{editUser.user.endereco.cidade.name}" />
+					<p:outputLabel
+						value="#{userDetails.usuarioDetalhes.endereco.cidade.name}" />
 
 					<p:outputLabel value="Estado:" style="float: right;" />
-					<p:outputLabel value="#{editUser.user.endereco.cidade.state.name}" />
+					<p:outputLabel
+						value="#{userDetails.usuarioDetalhes.endereco.cidade.state.name}" />
 
 
 				</h:panelGrid>
-			</p:panelGrid>
+			</h:panelGrid>
+
+			<br /> <br /> <br /> <br /> <br /> <br /> <br />
 
 			<p:commandButton value="Editar Usuario" icon="fa fa-edit"
-				process="@this"
+				process="@this" action="#{gerenciarUser.carregarPerfilLogado()}"
 				oncomplete="if (!args.validationFailed) { PF('userEditDialog').show() }"
 				update=":userEditDialogId">
 				<p:resetInput target="userEditDialogId" />
 			</p:commandButton>
 
 			<p:commandButton value="Alterar Senha" icon="fa fa-edit"
-				process="@this"
-				oncomplete="if (!args.validationFailed) { PF('editSenhaDialog').show() }"
-				update="editSenhaDialogId">
-				<p:resetInput target="editSenhaDialogId" />
+				process="@this" action="#{userEditOwnPassword.init()}"
+				oncomplete="if (!args.validationFailed) { PF('editOwnPasswordDialog').show() }"
+				update="editOwnPasswordDialogId">
+				<p:resetInput target="editOwnPasswordDialogId" />
 			</p:commandButton>
 
 
 
 		</div>
+
+		<br />
+		<br />
+		<br />
+		<br />
+		<br />
+		<br />
+		<br />
 
 		<p:dialog id="userEditDialogId" widgetVar="userEditDialog"
 			header="User edit" modal="true" dynamic="true" closeOnEscape="true">
@@ -108,8 +120,9 @@
 				</p:panelGrid>
 
 				<p:panelGrid columns="2" styleClass="ui-noborder">
-					<p:commandButton id="botaoSubmeter" action="#{editUser.saveUser}"
-						value="Submit" update="idMessagesErrorsUserEdit :dados"
+					<p:commandButton id="botaoSubmeter"
+						action="#{gerenciarUser.saveUserPerfil()}" value="Submit"
+						update="idMessagesErrorsUserEdit :dados"
 						oncomplete="if (!args.validationFailed) { PF('userEditDialog').hide(); }"
 						icon="fa fa-save" />
 
@@ -124,33 +137,9 @@
 		</p:dialog>
 
 
-		<p:dialog id="editSenhaDialogId" widgetVar="editSenhaDialog"
-			header="User edit" modal="true" dynamic="true" closeOnEscape="true">
-
-			<p:messages id="idMessagesErrorsEditSenha" showDetail="true"
-				autoUpdate="true" closable="true" severity="error" />
-
-			<h:form id="formEditSenha">
-				
-
-				<p:panelGrid columns="2" styleClass="ui-noborder">
-					<p:commandButton id="botaoSubmeter" action="#{editUser.saveUser}"
-						value="Submit" update="idMessagesErrorsEditSenha :dados"
-						oncomplete="if (!args.validationFailed) { PF('editSenhaDialog').hide(); }"
-						icon="fa fa-save" />
-
-					<p:commandButton id="botaoCancelar" value="Cancel"
-						onclick="PF('userEditDialog').hide();" icon="fa fa-remove" />
-				</p:panelGrid>
-
-				<p:defaultCommand target="formEditSenha:botaoSubmeter" />
-
-			</h:form>
-
-		</p:dialog>
-
-
-
+		<ui:include src="/WEB-INF/templates/user_change_own_password.xhtml" />
 	</ui:define>
+
+
 </ui:composition>
 </html>

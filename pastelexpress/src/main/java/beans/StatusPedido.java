@@ -7,12 +7,12 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import beans.paginas.EnderecoPaginas;
 import entities.Pedido;
 import entities.User;
 import filter.PedidoFilter;
 import services.PedidoService;
 import services.ServiceDacException;
-import util.SessionContext;
 
 @Named
 @ViewScoped
@@ -22,8 +22,6 @@ public class StatusPedido extends AbstractBean {
 	@Inject
 	private PedidoService pedidosService;
 
-	@Inject
-	private SessionContext ses;
 
 	private Pedido pedido;
 
@@ -37,7 +35,7 @@ public class StatusPedido extends AbstractBean {
 		pfilter = new PedidoFilter();
 
 		try {
-			User user = ses.getUsuarioLogado();
+			User user = getUsuarioLogado();
 
 			pfilter.setIdUser(user);
 
@@ -70,7 +68,7 @@ public class StatusPedido extends AbstractBean {
 				
 				reportarMensagemDeSucesso("Estado Alterado");
 				
-				return "lista_pedidos?faces-redirect=true";
+				return EnderecoPaginas.PAGINA_F_LISTA_PEDIDOS;
 			} catch (ServiceDacException e) {
 				e.printStackTrace();
 				reportarMensagemDeErro(e.getMessage());
@@ -80,7 +78,7 @@ public class StatusPedido extends AbstractBean {
 				pedidosService.save(pedido);
 				reportarMensagemDeSucesso("Pedidos Salvo com Sucesso.");
 				
-				return "lista_pedidos?faces-redirect=true";
+				return EnderecoPaginas.PAGINA_F_LISTA_PEDIDOS;
 			} catch (ServiceDacException e) {
 				e.printStackTrace();
 				reportarMensagemDeErro(e.getMessage());

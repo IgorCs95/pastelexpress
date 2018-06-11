@@ -1,0 +1,133 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/WEB-INF/templates/_componentes_basico.xhtml">
+
+	<ui:define name="title">
+		Gerenciar Usuarios
+	</ui:define>
+
+	<f:metadata>
+		<f:viewAction action="#{gerenciarUser.filtrar()}" />
+	</f:metadata>
+
+	<ui:define name="content">
+
+		<p:messages id="erroId" autoUpdate="true" severity="erro"
+			showDetail="true" />
+
+		<p:growl id="sucess" autoUpdate="true" severity="info" showDetail="true"/>
+
+		<div align="right">
+			<p:commandButton id="botaoAddUser" value="Add Usuario"
+				action="#{gerenciarUser.init()}"
+				oncomplete="if (!args.validationFailed) { PF('editUserDialog').show() }"
+				update="dataUsers" icon="fa fa-fw fa-user">
+				<p:resetInput target="editUserDialogId" />
+			</p:commandButton>
+			<br /> <br />
+		</div>
+
+		<p:dataTable id="dataUsers" var="u" value="#{gerenciarUser.lista}">
+
+			<p:column headerText="ID" sortBy="#{u.id}">
+				<h:outputText value="#{u.id}" />
+			</p:column>
+
+			<p:column headerText="Nome" sortBy="#{u.nome}">
+				<h:outputText value="#{u.nome}" />
+			</p:column>
+
+
+			<p:column headerText="Login" sortBy="#{u.login}">
+				<h:outputText value="#{u.login}" />
+			</p:column>
+
+			<p:column headerText="Tipo" sortBy="#{u.tipo.name()}">
+				<h:outputText value="#{u.tipo.nome}" />
+			</p:column>
+
+			<p:column headerText="Cpf" sortBy="#{u.cpf}">
+				<h:outputText value="#{u.cpf}" />
+			</p:column>
+
+			<p:column headerText="Data nascimento" sortBy="#{u.dataDeNascimento}">
+				<h:outputText value="#{u.dataDeNascimento}">
+					<f:convertDateTime pattern="dd/MM/yyyy" />
+				</h:outputText>
+			</p:column>
+
+
+			<p:column headerText="Opcoes">
+				<div align="center">
+					<p:commandButton id="editUserDialogId" icon="fa fa-edit"
+						action="#{gerenciarUser.init()}"
+						oncomplete="if (!args.validationFailed) { PF('editUserDialog').show() }"
+						update=":editUserDialogId">
+						<f:setPropertyActionListener value="#{u}"
+							target="#{gerenciarUser.user}" />
+					</p:commandButton>
+					<p:tooltip id="toolTipEditUserDialog" for="editUserDialogId"
+						value="Editar" position="top" />
+
+					<p:commandButton id="deleUserDialogId" icon="fa fa-remove" update="dataUsers"
+						action="#{gerenciarUser.delete(u)}">
+
+						<p:confirm header="Confirmar"
+							message="Deseja remover o Usuario ' #{u.nome} ' da banco de dados?" />
+
+					</p:commandButton>
+					<p:tooltip id="toolTipDeleteUserDialog" for="deleUserDialogId"
+						value="Deletar" position="top" />
+				</div>
+
+			</p:column>
+
+		</p:dataTable>
+
+
+		<p:dialog id="editUserDialogId" widgetVar="editUserDialog"
+			header="Editar Item" modal="true" dynamic="true" closeOnEscape="true">
+
+			<p:messages id="idMessagesErrorsItemEdit" showDetail="true"
+				closable="true" autoUpdate="true" severity="error" />
+
+			<h:form id="formEdit">
+				<p:panelGrid columns="2">
+
+					<ui:include src="/WEB-INF/templates/_cadastrar_user.xhtml" />
+
+					<ui:include src="/WEB-INF/templates/_cadastrar_endereco.xhtml" />
+				</p:panelGrid>
+
+				<h:panelGrid columns="2" style="float: right;"
+					styleClass="ui-noborder">
+
+					<p:commandButton id="botaoSubmeter"
+						action="#{gerenciarUser.saveUser()}" value="Salvar"
+						update="@form"
+						oncomplete="if (!args.validationFailed) { PF('editUserDialog').hide(); }"
+						icon="fa fa-save" />
+
+					<p:commandButton id="botaoCancelar" value="Cancelar"
+						oncomplete="PF('editUserDialog').hide();" icon="fa fa-remove" />
+				</h:panelGrid>
+
+				<p:defaultCommand target="formEdit:botaoSubmeter" />
+
+			</h:form>
+		</p:dialog>
+
+
+
+
+	</ui:define>
+
+
+</ui:composition>
+</html>

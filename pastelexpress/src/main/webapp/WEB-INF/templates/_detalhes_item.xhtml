@@ -10,24 +10,26 @@
 <ui:composition>
 	<h:form>
 
-		<h:panelGrid columns="2" border="1">
+		<h:panelGrid columns="2">
 
-			<p:graphicImage library="img" name="pastel.png" style="width:30%" />
+			<p:graphicImage library="img" name="pastel.png" style="width:200px" />
+			
 
 			<p:outputPanel style="text-align:center">
 
 
 				<p:outputLabel value="Id:" />
-				<p:outputLabel value=" #{editItem.item.id}" />
+				<p:outputLabel value=" #{gerenciarItem.item.id}" />
 				<br />
 
 				<p:outputLabel for="nome" value="Nome:" />
-				<p:outputLabel id="nome" value=" #{editItem.item.nome}" label="Nome"
-					style="width:350px ; font-weight: bolder" />
+				<p:outputLabel id="nome" value=" #{gerenciarItem.item.nome}"
+					label="Nome" style="width:350px ; font-weight: bolder" />
 				<br />
 
 				<p:outputLabel for="valor" value="Valor: " />
-				<p:outputLabel id="valor" value="#{editItem.item.valor}" label="Valor" style="width:350px ; font-weight: bolder" >
+				<p:outputLabel id="valor" value="#{gerenciarItem.item.valor}"
+					label="Valor" style="width:350px ; font-weight: bolder">
 					<f:convertNumber currencySymbol="R$" type="currency" />
 				</p:outputLabel>
 				<br />
@@ -41,8 +43,14 @@
 
 		<br />
 		<br />
-		<p:outputLabel id="descricao" value=" #{editItem.item.descricao}"
-			label="Descricao" style="width:350px ; font-weight: bolder" />
+
+
+		<p:outputLabel id="descricao" value=" #{gerenciarItem.item.descricao}"
+			label="Descricao" style="font-weight: bolder" />
+
+		<br />
+		<br />
+		
 	</h:form>
 
 </ui:composition>

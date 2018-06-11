@@ -8,59 +8,72 @@
 
 <ui:composition>
 
+
 	<h:panelGrid columns="2">
 		<p:outputLabel for="name" value="Nome:" />
-		<p:inputText id="name" label="Nome" value="#{editUser.user.nome}"
+		<p:inputText id="name" label="Nome" value="#{gerenciarUser.user.nome}"
 			required="true" requiredMessage="Nome Completo é obrigatorio" />
 
-	
+
 		<p:outputLabel for="login" value="Login:" />
 		<p:outputPanel>
-			<p:inputText id="login" value="#{editUser.user.login}" label="Login" required="true" />
-			<p:commandButton id="checarDisponibilidadeLogin" icon="fa fa-question" process="@this formEdit:login" action="#{editUser.checarDisponibilidadeLogin()}" />
-			<p:tooltip id="checarDisponibilidadeLoginTooltip" value="Este Login é valido?" for="checarDisponibilidadeLogin" />
+			<p:inputText id="login" value="#{gerenciarUser.user.login}"
+				label="Login" required="true" />
+			<p:commandButton id="checarDisponibilidadeLogin"
+				icon="fa fa-question" process="@this formEdit:login"
+				action="#{gerenciarUser.checarDisponibilidadeLogin()}" />
+			<p:tooltip id="checarDisponibilidadeLoginTooltip"
+				value="Este Login é valido?" for="checarDisponibilidadeLogin" />
 		</p:outputPanel>
-	
+
 
 		<p:outputLabel for="cpf" value="CPF" />
-		<p:inputMask id="cpf" value="#{editUser.user.cpf}" required="true"
-			mask="999.999.999-99" requiredMessage="CPF é obrigatorio" />
-
+		<p:outputPanel>
+			<p:inputMask id="cpf" value="#{gerenciarUser.user.cpf}"
+				required="true" mask="999.999.999-99"
+				requiredMessage="CPF é obrigatorio" />
+				
+			<p:commandButton id="checarDisponibilidadeCpf"
+				icon="fa fa-question" process="@this formEdit:cpf" action="#{gerenciarUser.checarcpf()}" />
+				
+			<p:tooltip id="checarDisponibilidadeCpfTooltip"	value="Este CPF é valido?" for="checarDisponibilidadeCpf" />
+		</p:outputPanel>
 
 		<p:outputLabel for="data" value="Data de Nascimento" />
 
 		<ui:include src="/WEB-INF/templates/_calendario.xhtml">
 			<ui:param name="id" value="data" />
-			<ui:param name="value" value="#{editUser.user.dataDeNascimento}" />
+			<ui:param name="value" value="#{gerenciarUser.user.dataDeNascimento}" />
 			<ui:param name="name" value="Data Nascimento:" />
 			<ui:param name="required" value="true" />
 		</ui:include>
 
 		<p:outputLabel for="password" value="Senha:"
-			rendered="#{!editUser.edicaoDeUsuario}" />
-		<p:password id="password" value="#{editUser.user.senha}" label="Senha"
-			match="confirmacaoSenha" feedback="true" required="true"
-			rendered="#{!editUser.edicaoDeUsuario}"
+			rendered="#{!gerenciarUser.edicaoDeUsuario}" />
+		<p:password id="password" value="#{gerenciarUser.user.senha}"
+			label="Senha" match="confirmacaoSenha" feedback="true"
+			required="true" rendered="#{!gerenciarUser.edicaoDeUsuario}"
 			requiredMessage="Senha é obrigatorio" />
 
 		<p:outputLabel for="confirmacaoSenha" value="Confirmar Senha:"
-			rendered="#{!editUser.edicaoDeUsuario}" />
-		<p:password id="confirmacaoSenha" value="#{editUser.user.senha}"
+			rendered="#{!gerenciarUser.edicaoDeUsuario}" />
+		<p:password id="confirmacaoSenha" value="#{gerenciarUser.user.senha}"
 			label="Confirmar Senha" feedback="true" required="true"
-			rendered="#{!editUser.edicaoDeUsuario}"
+			rendered="#{!gerenciarUser.edicaoDeUsuario}"
 			requiredMessage="Confirme a senha" />
 
-		<p:outputLabel for="tipo" value="Tipo:" rendered="#{!editUser.userLogado()}"/>
-		<p:selectOneMenu id="tipo" value="#{editUser.user.tipo}" label="Tipo" 
-			required="true" requiredMessage="Escolha o tipo de Usuario" rendered="#{!editUser.userLogado()}">
+		<p:outputLabel for="tipo" value="Tipo:" />
+		<p:selectOneMenu id="tipo" value="#{gerenciarUser.user.tipo}"
+			label="Tipo" required="true"
+			requiredMessage="Escolha o tipo de Usuario">
 			<f:selectItem itemLabel="Selecione" itemValue="#{null}"
 				noSelectionOption="true" itemDisabled="true" />
-			<f:selectItems value="#{editUser.getTiposUser()}" var="g"
+			<f:selectItems value="#{gerenciarUser.getTiposUser()}" var="g"
 				itemLabel="#{g.nome}" itemValue="#{g}" />
 		</p:selectOneMenu>
 
 	</h:panelGrid>
-	
+
 
 
 

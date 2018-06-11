@@ -7,13 +7,13 @@ import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import beans.paginas.EnderecoPaginas;
 import ennum.StatusCompra;
 import entities.Item;
 import entities.ItemPedido;
 import entities.Pedido;
 import services.PedidoService;
 import services.ServiceDacException;
-import util.SessionContext;
 
 @Named
 @SessionScoped
@@ -26,8 +26,6 @@ public class EditCarrinho extends AbstractBean {
 
 	private Pedido pedido;
 
-	@Inject
-	private SessionContext ses;
 
 	@Inject
 	private PedidoService serverPedido;
@@ -35,7 +33,7 @@ public class EditCarrinho extends AbstractBean {
 	@PostConstruct
 	public void init() {
 		pedido = new Pedido();
-		pedido.setUser(ses.getUsuarioLogado());
+		pedido.setUser(getUsuarioLogado());
 	}
 
 	public void addItem(Item item) {
@@ -90,7 +88,7 @@ public class EditCarrinho extends AbstractBean {
 					e.printStackTrace();
 				}
 				reportarMensagemDeSucesso("Pedido criado com sucesso.");
-				return "index?faces-redirect=true";
+				return EnderecoPaginas.PAGINA_PRINCIPAL;
 			} else {
 				reportarMensagemDeErro("Lista Vazia");
 				return "";

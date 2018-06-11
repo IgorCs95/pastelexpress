@@ -14,8 +14,11 @@
 		<url-pattern>*.xhtml</url-pattern>
 	</servlet-mapping>
 	<welcome-file-list>
-		<welcome-file>telaLogin.xhtml</welcome-file>
+		<welcome-file>paginas/protegido/index.xhtml</welcome-file>
 	</welcome-file-list>
+	<session-config>
+		<session-timeout>60</session-timeout>
+	</session-config>
 	<context-param>
 		<param-name>javax.faces.FACELETS_SKIP_COMMENTS</param-name>
 		<param-value>true</param-value>
@@ -33,19 +36,151 @@
 		<param-value>true</param-value>
 	</context-param>
 
-	<!-- login filter -->
-	<filter>
-		<filter-name>LoginFilter</filter-name>
-		<filter-class>filter.LoginFilter</filter-class>
-	</filter>
-	<filter-mapping>
-		<filter-name>LoginFilter</filter-name>
-		<url-pattern>/restricted/*</url-pattern>
-	</filter-mapping>
+	<error-page>
+		<error-code>400</error-code>
+		<location>/paginas/publico/400.xhtml</location>
+	</error-page>
+	<error-page>
+		<error-code>403</error-code>
+		<location>/paginas/protegido/403.xhtml</location>
+	</error-page>
+	<error-page>
+		<error-code>500</error-code>
+		<location>/paginas/publico/500.xhtml</location>
+	</error-page>
 
-	<session-config>
-		<session-timeout>60</session-timeout>
-	</session-config>
+
+	<login-config>
+		<!-- NONE, BASIC, DIGEST, FORM, or CLIENT-CERT -->
+		<!-- Referência: https://docs.oracle.com/javaee/7/tutorial/security-webtier002.htm#JEETT01227 -->
+		<auth-method>FORM</auth-method>
+		<realm-name>pastelexpressJdbcRealm</realm-name>
+		<form-login-config>
+			<form-login-page>/paginas/publico/telaLogin.xhtml</form-login-page>
+			<form-error-page>/paginas/publico/telaLogin.xhtml?error=true</form-error-page>
+		</form-login-config>
+	</login-config>
+
+	<security-constraint>
+		<display-name>Páginas do administrador</display-name>
+		<web-resource-collection>
+			<web-resource-name>Área protegida do administrador</web-resource-name>
+			<description></description>
+			<url-pattern>/paginas/protegido/gerencia/*</url-pattern>
+			<url-pattern>/paginas/protegido/funcionarios/*</url-pattern>
+			<http-method>GET</http-method>
+			<http-method>POST</http-method>
+			<http-method>HEAD</http-method>
+			<http-method>PUT</http-method>
+			<http-method>OPTIONS</http-method>
+			<http-method>TRACE</http-method>
+			<http-method>DELETE</http-method>
+			<http-method>CONNECT</http-method>
+		</web-resource-collection>
+		<auth-constraint>
+			<description />
+			<role-name>ADMIN</role-name>
+		</auth-constraint>
+		
+		<user-data-constraint>
+			<!-- CONFIDENTIAL, INTEGRAL, or NONE -->
+			<!-- Referência: https://docs.oracle.com/javaee/7/tutorial/security-webtier002.htm#JEETT00775 -->
+			<transport-guarantee>NONE</transport-guarantee>
+		</user-data-constraint>
+	</security-constraint>
+
+	<security-constraint>
+		<display-name>Acesso permitido a funcionarios</display-name>
+		<web-resource-collection>
+			<web-resource-name>Área não protegida</web-resource-name>
+			<description />
+			<url-pattern>/paginas/protegido/funcionarios/*</url-pattern>
+			<http-method>GET</http-method>
+			<http-method>POST</http-method>
+			<http-method>HEAD</http-method>
+			<http-method>PUT</http-method>
+			<http-method>OPTIONS</http-method>
+			<http-method>TRACE</http-method>
+			<http-method>DELETE</http-method>
+			<http-method>CONNECT</http-method>
+		</web-resource-collection>
+		<auth-constraint>
+			<description />
+			<role-name>COZINHEIRO</role-name>
+			<role-name>ENTREGADOR</role-name>
+		</auth-constraint>
+		<user-data-constraint>
+			<transport-guarantee>NONE</transport-guarantee>
+		</user-data-constraint>
+	</security-constraint>
+
+
+	<security-constraint>
+		<display-name>Acesso permitido a todos</display-name>
+		<web-resource-collection>
+			<web-resource-name>Área não protegida</web-resource-name>
+			<description />
+			<url-pattern>/paginas/protegido/*</url-pattern>
+			<http-method>GET</http-method>
+			<http-method>POST</http-method>
+			<http-method>HEAD</http-method>
+			<http-method>PUT</http-method>
+			<http-method>OPTIONS</http-method>
+			<http-method>TRACE</http-method>
+			<http-method>DELETE</http-method>
+			<http-method>CONNECT</http-method>
+		</web-resource-collection>
+		<auth-constraint>
+			<description />
+			<role-name>ADMIN</role-name>
+			<role-name>CLIENTE</role-name>
+			<role-name>COZINHEIRO</role-name>
+			<role-name>ENTREGADOR</role-name>
+		</auth-constraint>
+		<user-data-constraint>
+			<transport-guarantee>NONE</transport-guarantee>
+		</user-data-constraint>
+	</security-constraint>
+
+
+
+
+	<security-constraint>
+		<display-name>Acesso via HTTPS em todo sistema</display-name>
+		<web-resource-collection>
+			<web-resource-name>Área de acesso via HTTPS</web-resource-name>
+			<description />
+			<url-pattern>/*</url-pattern>
+			<http-method>GET</http-method>
+			<http-method>POST</http-method>
+			<http-method>HEAD</http-method>
+			<http-method>PUT</http-method>
+			<http-method>OPTIONS</http-method>
+			<http-method>TRACE</http-method>
+			<http-method>DELETE</http-method>
+			<http-method>CONNECT</http-method>
+		</web-resource-collection>
+		<user-data-constraint>
+			<transport-guarantee>NONE</transport-guarantee>
+		</user-data-constraint>
+	</security-constraint>
+
+	<!-- Security roles used by this web application -->
+	<security-role>
+		<role-name>ADMIN</role-name>
+	</security-role>
+	<security-role>
+		<role-name>CLIENTE</role-name>
+	</security-role>
+	<security-role>
+		<role-name>COZINHEIRO</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ENTREGADOR</role-name>
+	</security-role>
+
+
+	
 
 
 </web-app>

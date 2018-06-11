@@ -7,6 +7,7 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import beans.paginas.EnderecoPaginas;
 import ennum.TipoUser;
 import entities.City;
 import entities.Endereco;
@@ -17,31 +18,17 @@ import services.EnderecoService;
 import services.ServiceDacException;
 import services.StateService;
 import services.UserService;
-import util.SessionContext;
+
 
 @Named
 @ViewScoped
-public class EditUser extends AbstractBean {
+public class CriarUserCliente extends AbstractBean {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -3516569960085314997L;
+	
+	private static final long serialVersionUID = -8084039557753245768L;
 
 	private User user;
 	
-	@Inject
-	private UserService userService;
-
-	@Inject
-	private StateService stateService;
-
-	@Inject
-	private CityService cityService;
-	
-	@Inject
-	private EnderecoService enderecoService;
-
 	private Endereco end;
 
 	private State selectedState;
@@ -51,70 +38,69 @@ public class EditUser extends AbstractBean {
 	private List<City> cities;
 	
 	@Inject
-	private SessionContext ses;
-	
-	public void carregarPerfil() {
-		user = ses.getUsuarioLogado();
-		init();
-		
-	}
-	
-	public boolean userLogado() {
-		return user!=null;
-	}
+	private EnderecoService ends;
+
+	@Inject
+	private UserService userService;
+
+	@Inject
+	private StateService stateService;
+
+	@Inject
+	private CityService cityService;
 
 	public void init() {
+		// Inicializar dados do usuário
+		user = new User();
+		end = new Endereco();
+		user.setTipo(TipoUser.CLIENTE);;
+
 		try {
-			// Criando novo usuário
-			if (user == null) {
-				user = new User();
-				end = new Endereco();
-			} 
-			// Editando usuário já existente
-			else {
-				end = user.getEndereco();
-				
-				selectedState = getState(user);
-				cities = cityService.findBy(selectedState);
-			}
 			states = stateService.getAll();
 		} catch (ServiceDacException e) {
 			reportarMensagemDeErro(e.getMessage());
 		}
 	}
 
-	public void saveUser() {
+	public String saveUser() {
 		try {
-			if (isEdicaoDeUsuario()) {
-				if(end!=null && user.getEndereco()!=null && !user.getEndereco().equals(end)) {
-					user.setEndereco(end);
-					enderecoService.update(end);
-				}
-				userService.update(user, false);
-			} else {
-				
-				enderecoService.save(end);
-				
-				user.setEndereco(end);
-				userService.save(user);
-			}
+			// Criação de novo usuário
+			
+			userService.validarCpf(user);
+			userService.validarLogin(user);
+			
+			ends.save(end);
+			
+			user.setEndereco(end);
+			
+			userService.save(user);
+			reportarMensagemDeSucesso("Usuário '" + user.getNome() + "' criado com sucesso!");
 		} catch (ServiceDacException e) {
 			reportarMensagemDeErro(e.getMessage());
+			return null;
 		}
 
-		reportarMensagemDeSucesso("Cadastro do Usuario: " + user.getNome() + " realizado com suceso.");
-
+		return EnderecoPaginas.PAGINA_PRINCIPAL;
 	}
 
 	public void checarDisponibilidadeLogin() {
 		try {
 			userService.validarLogin(user);
-			reportarMensagemDeSucesso(String.format("Login '%s' e valido.", user.getLogin()));
+			reportarMensagemDeSucesso(String.format("Login '%s' is available.", user.getLogin()));
 		} catch (ServiceDacException e) {
 			reportarMensagemDeErro(e.getMessage());
 		}
 	}
-
+	
+	public void checarcpf() {
+		try {
+			userService.validarCpf(user);
+			reportarMensagemDeSucesso(String.format("CPF '%s' é valido.", user.getCpf()));
+		} catch (ServiceDacException e) {
+			reportarMensagemDeErro(e.getMessage());
+		}
+	}
+	
 	public void loadCities() {
 		try {
 			if (selectedState != null) {
@@ -125,25 +111,6 @@ public class EditUser extends AbstractBean {
 		} catch (ServiceDacException e) {
 			reportarMensagemDeErro(e.getMessage());
 		}
-	}
-
-	private State getState(User user) {
-		if (user.getEndereco().getCidade() == null) {
-			return null;
-		}
-		return user.getEndereco().getCidade().getState();
-	}
-
-	public boolean isEdicaoDeUsuario() {
-		return user != null && user.getId() != null;
-	}
-
-	public boolean isFuncionario() {
-		return user != null && user.getTipo() == TipoUser.FUNCIONARIO;
-	}
-
-	public boolean isCliente() {
-		return user != null && user.getTipo() == TipoUser.CLIENTE;
 	}
 
 	public boolean isStateSelected() {

@@ -10,29 +10,29 @@
 	<p:panelGrid id="pgUF" columns="2" styleClass="ui-noborder">
 
 		<h:outputLabel for="idRua" value="Rua:" />
-		<p:inputText id="idRua" value="#{gerenciarUser.end.rua}"  />
+		<p:inputText id="idRua" value="#{criarUserCliente.end.rua}"  />
 
 		<h:outputLabel for="idBairro" value="Bairro:" />
-		<p:inputText id="idBairro"  value="#{gerenciarUser.end.bairro}" />
+		<p:inputText id="idBairro"  value="#{criarUserCliente.end.bairro}" />
 
 		<h:outputLabel for="idCep" value="CEP:" />
-		<p:inputMask id="idCep" value="#{gerenciarUser.end.cep}" mask="99999-999"/>
+		<p:inputMask id="idCep" value="#{criarUserCliente.end.cep}" mask="99999-999"/>
 
 		<h:outputLabel for="idNumero" value="Nº:" />
-		<p:inputMask id="idNumero" value="#{gerenciarUser.end.numero}" />
+		<p:inputMask id="idNumero" value="#{criarUserCliente.end.numero}" />
 
 		<p:outputLabel for="state" value="State:" />
-		<p:selectOneMenu id="state" value="#{gerenciarUser.selectedState}" label="State" filter="true" filterMatchMode="contains"
+		<p:selectOneMenu id="state" value="#{criarUserCliente.selectedState}" label="State" filter="true" filterMatchMode="contains"
 			required="true">
 			<f:selectItem itemLabel="Selecione" itemValue="#{null}"	noSelectionOption="true" itemDisabled="true" />
-			<f:selectItems value="#{gerenciarUser.getStates()}" var="s"	itemLabel="#{s.name}" itemValue="#{s}" />
-			<p:ajax update=":formEdit:city" listener="#{gerenciarUser.loadCities()}" />
+			<f:selectItems value="#{criarUserCliente.getStates()}" var="s"	itemLabel="#{s.name}" itemValue="#{s}" />
+			<p:ajax update=":formEdit:city" listener="#{criarUserCliente.loadCities()}" />
 		</p:selectOneMenu>
 
 		<p:outputLabel for="city" value="City:"/>
-		<p:selectOneMenu id="city" value="#{gerenciarUser.end.cidade}" label="City" filter="true" filterMatchMode="contains" required="true" disabled="#{!gerenciarUser.isStateSelected()}">
+		<p:selectOneMenu id="city" value="#{criarUserCliente.end.cidade}" label="City" filter="true" filterMatchMode="contains" required="true" disabled="#{!criarUserCliente.isStateSelected()}">
 			<f:selectItem itemLabel="Selecione" itemValue="#{null}"	noSelectionOption="true" itemDisabled="true" />
-			<f:selectItems value="#{gerenciarUser.getCities()}" var="c"	itemLabel="#{c.name}" itemValue="#{c}" />
+			<f:selectItems value="#{criarUserCliente.getCities()}" var="c"	itemLabel="#{c.name}" itemValue="#{c}" />
 		</p:selectOneMenu>
 		
 	</p:panelGrid>

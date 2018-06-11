@@ -1,0 +1,106 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+
+<h:head>
+	<title>Tela Login</title>
+</h:head>
+
+<h:body>
+	<ui:debug hotkey="z" />
+	
+	<h:outputScript name="locale-primefaces.js" library="js" />
+
+	<f:metadata>
+		<!-- TODO: Verificar se funciona usando o f:viewAction -->
+		<f:event id="postConstructorEvent"
+			type="javax.faces.event.PreRenderComponentEvent"
+			listener="#{erroPaginaLogin.dispararMensagemLoginErro(param['error'])}" />
+	</f:metadata>
+
+	<div id="container" align="center">
+
+		<p:graphicImage library="img" name="logo.png" width="80px"
+			height="80px" />
+        <br />
+        <br />
+		<p:messages id="mensagenLogin" showDetail="true" closable="true"
+			severity="error" />
+
+		<p:growl autoUpdate="true" severity="info" showDetail="true" />
+
+		<h:form id="formLogin" prependId="false"
+			onsubmit="action='j_security_check';">
+
+			<p:panelGrid columns="2" styleClass="ui-noborder">
+
+				<h:outputText for="j_username" value="Login: " />
+				<p:inputText id="j_username" size="37" />
+
+				<h:outputText for="j_password" value="Senha: " />
+				<p:password id="j_password" size="37" />
+
+			</p:panelGrid>
+
+			<br />
+			<br />
+
+			<p:commandButton icon="ui-icon-unlocked" ajax="false" value="Entrar" />
+
+			<p:commandButton value="Cadastrar Usuario" icon="fa fa-edit"
+				action="#{criarUserCliente.init()}" process="@this"
+				oncomplete="if (!args.validationFailed) { PF('userEditDialog').show() }"
+				update=":userEditDialogId :mensagenLogin">
+				<p:resetInput target="userEditDialogId" />
+			</p:commandButton>
+
+		</h:form>
+
+	</div>
+
+
+	<p:dialog id="userEditDialogId" widgetVar="userEditDialog"
+		header="User edit" modal="true" dynamic="true" closeOnEscape="true">
+
+		<p:messages id="idMessagesErrorsUserEdit" showDetail="true"
+			autoUpdate="true" closable="true" severity="error" />
+
+		<h:form id="formEdit">
+			<p:panelGrid columns="2">
+
+				<ui:include src="/WEB-INF/templates/_cadastrar_user_cliente.xhtml" />
+
+				<ui:include
+					src="/WEB-INF/templates/_cadastrar_endereco_cliente.xhtml" />
+
+			</p:panelGrid>
+
+			<p:panelGrid columns="2" styleClass="ui-noborder">
+				<p:commandButton id="botaoSubmeter" action="#{criarUserCliente.saveUser}"
+					value="Submit" update="idMessagesErrorsUserEdit"
+					oncomplete="if (!args.validationFailed) { PF('userEditDialog').hide(); }"
+					icon="fa fa-save" />
+				<p:commandButton id="botaoCancelar" value="Cancel"
+					onclick="PF('userEditDialog').hide();" icon="fa fa-remove" />
+			</p:panelGrid>
+
+			<p:defaultCommand target="formEdit:botaoSubmeter" />
+
+		</h:form>
+
+	</p:dialog>
+
+	<div id="footer" style="position:absolute;bottom:0;width:100%;">
+		<p:panel columns="1" style="width : 100%; text-align:center">
+			<h:outputLabel value="Pastel Express - v2.0" />
+		</p:panel>
+	</div>
+
+</h:body>
+</html>

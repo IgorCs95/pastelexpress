@@ -1,13 +1,19 @@
 package ennum;
 
 public enum StatusCompra {
-
+	
+//	cliente realiza Pedido
 	PROCESSANDO("Pedido realizado."), 
+	
+//	cozinheiro prepara
 	PREPARO("Pedido em faze de preparo."), 
+	
+//	entregador entrega
 	EM_ENTREGA("Saiu para entrega."), 
-	COMPLETO("Compra concluída faturamento efetuado"), 
-	FECHADO("Compra cancelada por falta de pagamento ou envio."), 
-	CANCELADA("Compra cancelada pelo usuário.");
+	
+//	entregador confirma
+	CANCELADA("Cliente recusou pedido"),
+	COMPLETO("Entrega Efetuada"); 
 	
 	private String nome;
 

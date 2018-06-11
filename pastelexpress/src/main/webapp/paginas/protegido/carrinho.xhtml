@@ -8,17 +8,19 @@
 
 <ui:composition template="/WEB-INF/templates/_componentes_basico.xhtml">
 
-	<p:growl autoUpdate="true" severity="info" showDetail="true" />
-	<p:messages severity="erro" autoUpdate="true" showDetail="true" />
 
 	<ui:define name="title">
 		Carrinho
 	</ui:define>
 
 	<ui:define name="content">
+	
+		<p:growl autoUpdate="true" severity="info" showDetail="true" />
+		<p:messages severity="erro" autoUpdate="true" showDetail="true" />
 
 		<h:form id="form">
-			<p:dataScroller id="listacarrinho" value="#{editCarrinho.pedido.items}" var="item" chunkSize="5">
+			<p:dataScroller id="listacarrinho"
+				value="#{editCarrinho.pedido.items}" var="item" chunkSize="5">
 
 				<f:facet name="header">
            			 Items no Carrinho
@@ -74,7 +76,7 @@
 			<p:commandButton id="criarPedidoDialogCommand" icon="fa fa-edit"
 				value="Finalizar Pedido"
 				oncomplete="if (!args.validationFailed) { PF('criarPedidoDialog').show() }"
-				update=":criarPedidoDialogId" style="width:100%;float: right ">
+				update=":criarPedidoDialogId" style="width:100%">
 
 
 
@@ -110,10 +112,6 @@
 
 			</h:form>
 		</p:dialog>
-
-
-
-
 
 	</ui:define>
 

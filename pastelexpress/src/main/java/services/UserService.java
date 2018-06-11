@@ -2,9 +2,9 @@ package services;
 
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
-import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
 import java.util.List;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -119,8 +119,7 @@ public class UserService implements Serializable {
 			md = MessageDigest.getInstance("SHA-256");
 			md.update(password.getBytes("UTF-8"));
 			byte[] digest = md.digest();
-			BigInteger bigInt = new BigInteger(1, digest);
-			String output = bigInt.toString(16);
+			String output = Base64.getEncoder().encodeToString(digest);
 			return output;
 		} catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
 			throw new ServiceDacException("Could not calculate hash!", e);
@@ -147,6 +146,14 @@ public class UserService implements Serializable {
 		boolean jahExiste = userDAO.existeUsuarioComLogin(user);
 		if (jahExiste) {
 			throw new ServiceDacException("Login already exists: " + user.getLogin());
+		}
+		return jahExiste;
+	}
+	
+	public boolean validarCpf(User user) throws ServiceDacException {
+		boolean jahExiste = userDAO.existeUsuarioComCPF(user);
+		if (jahExiste) {
+			throw new ServiceDacException("CPF ja existe em nosso base de dados: " + user.getCpf());
 		}
 		return jahExiste;
 	}
