@@ -82,9 +82,14 @@ public class Pedido implements Serializable {
 	public List<ItemPedido> getItems() {
 		return items;
 	}
+	
 
 	public void setItems(List<ItemPedido> items) {
 		this.items = items;
+	}
+	
+	public String qtdItems() {
+		return String.valueOf(items.size());
 	}
 
 	public User getUser() {

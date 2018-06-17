@@ -9,7 +9,7 @@
 <ui:composition template="/WEB-INF/templates/_componentes_basico.xhtml">
 
 	<ui:define name="title">
-		Relação de Pedidos
+		Gerenciar Pedidos
 	</ui:define>
 
 	<f:metadata>
@@ -19,11 +19,75 @@
 
 	<ui:define name="content">
 
+
+
+		<p:fieldset legend="Busca Rapida">
+
+
+			<h:form>
+				<div align="center">
+					<h:panelGrid columns="2" style="width:100%">
+
+						<h:panelGrid columns="4">
+							<p:outputLabel for="dataInicio" value="Data Inicio: " />
+							<ui:include src="/WEB-INF/templates/_calendario.xhtml">
+								<ui:param name="id" value="dataInicio" />
+								<ui:param name="value"
+									value="#{statusPedido.pfilter.dataPedidoInicio}" />
+								<ui:param name="name" value="Data Nascimento:" />
+							</ui:include>
+
+							<p:outputLabel for="idUser" value="Id Usuario: " />
+							
+							
+							
+							<p:outputPanel>
+							
+								<p:inputText id="idUser" value="#{statusPedido.userBuscado}">
+									<p:ajax event="keyup" update="result" listener="#{statusPedido.getUserID()}" />
+								</p:inputText>
+								
+								<p:outputLabel id="result"
+									value="#{statusPedido.pfilter.idUser.nome}" />
+							</p:outputPanel>
+
+
+							<p:outputLabel for="dataFim" value="Data Fim: " />
+							<ui:include src="/WEB-INF/templates/_calendario.xhtml">
+								<ui:param name="id" value="dataFim" />
+								<ui:param name="value"
+									value="#{statusPedido.pfilter.dataPedidoFim}" />
+								<ui:param name="name" value="Data Nascimento:" />
+							</ui:include>
+
+
+
+							<p:outputLabel for="idEstado" value="Estado do Pedido: " />
+							<p:selectOneMenu id="idEstado"
+								value="#{statusPedido.pfilter.status}" style="float: left;">
+								<f:selectItem itemLabel="Todos" itemValue="#{null}"
+									noSelectionOption="true" />
+								<f:selectItems value="#{statusPedido.statusCompra}" var="g"
+									itemLabel="#{g.nome}" itemValue="#{g}" />
+							</p:selectOneMenu>
+						</h:panelGrid>
+						<p:outputPanel>
+							<p:commandButton id="buscar" action="#{statusPedido.buscar()}"
+								value="Buscar" update=":dataTablePedidos" style="width:100%" />
+								<br/>
+							<p:commandButton id="limpar" action="#{statusPedido.limpar()}"
+								value="Limpar" update=":dataTablePedidos @form" style="width:100%" />
+						</p:outputPanel>
+					</h:panelGrid>
+				</div>
+			</h:form>
+		</p:fieldset>
 		<p:messages id="erroId" autoUpdate="true" severity="erro"
 			showDetail="true" />
+		<br />
 
 		<p:dataTable id="dataTablePedidos" var="p"
-			value="#{statusPedido.lista}">
+			value="#{statusPedido.lista}" emptyMessage="Sem Pedidos">
 
 			<p:column headerText="ID" sortBy="#{p.id}">
 				<h:outputText value="#{p.id}" />
@@ -49,8 +113,7 @@
 				<h:outputText value="#{p.estado.name()}" />
 			</p:column>
 
-			<p:column headerText="Forma de Pagamento"
-				sortBy="#{p.pagamento.name()}">
+			<p:column headerText="Pagamento" sortBy="#{p.pagamento.name()}">
 				<h:outputText value="#{p.pagamento.name()}" />
 			</p:column>
 
@@ -65,14 +128,12 @@
 						target="#{statusPedido.pedido}" />
 				</p:commandButton>
 
-
-
 			</p:column>
 
 		</p:dataTable>
 
 		<p:dialog id="detalhesPedidoDialogId" widgetVar="detalhesPedidoDialog"
-			header="Editar Item" modal="true" dynamic="true" closeOnEscape="true">
+			header="Detalhes do pedido" modal="true" dynamic="true" closeOnEscape="true">
 
 			<p:messages id="idMessagesErrors" showDetail="true" closable="true"
 				autoUpdate="true" severity="error" />

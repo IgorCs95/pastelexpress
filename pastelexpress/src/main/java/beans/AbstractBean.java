@@ -11,6 +11,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.Flash;
 import javax.inject.Inject;
 
+import ennum.OrdenarItem;
 import ennum.StatusCompra;
 import ennum.TipoPagamento;
 import ennum.TipoUser;
@@ -116,6 +117,10 @@ public abstract class AbstractBean implements Serializable {
 
 	public TipoPagamento[] getTipoCompra() {
 		return TipoPagamento.values();
+	}
+	
+	public OrdenarItem[] getOrdenarItems() {
+		return OrdenarItem.values();
 	}
 
 }

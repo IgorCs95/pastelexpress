@@ -3,16 +3,19 @@ package beans;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
 import beans.paginas.EnderecoPaginas;
+import ennum.StatusCompra;
 import entities.Pedido;
 import entities.User;
 import filter.PedidoFilter;
 import services.PedidoService;
 import services.ServiceDacException;
+import services.UserService;
 
 @Named
 @ViewScoped
@@ -22,62 +25,91 @@ public class StatusPedido extends AbstractBean {
 	@Inject
 	private PedidoService pedidosService;
 
-
 	private Pedido pedido;
 
 	List<Pedido> lista;
 
 	private PedidoFilter pfilter;
 
-	public void initClient() {
+	@Inject
+	private UserService UserService;
+
+	private int userBuscado;
+	
+	
+
+	@PostConstruct
+	public void post() {
+		userBuscado = 0;
 		lista = new ArrayList<>();
 		pedido = new Pedido();
 		pfilter = new PedidoFilter();
 
-		try {
-			User user = getUsuarioLogado();
+	}
 
-			pfilter.setIdUser(user);
-
-			lista = pedidosService.findBy(pfilter);
-
-		} catch (ServiceDacException e) {
-			e.printStackTrace();
-			reportarMensagemDeErro("Erro ao buscar pedidos");
-		}
+	public void initClient() {
+		User user = getUsuarioLogado();
+		pfilter.setIdUser(user);
+		buscar();
 	}
 
 	public void initFunc() {
+		pedido = null;
+		pfilter.setStatus(StatusCompra.PROCESSANDO);
+		buscar();
+	}
+
+	public void buscar() {
 		try {
-			lista = new ArrayList<>();
-			lista = pedidosService.getAll();
+			lista = pedidosService.findBy(pfilter);
 		} catch (ServiceDacException e) {
 			e.printStackTrace();
 			reportarMensagemDeErro(e.getMessage());
 		}
-		if (pedido == null) {
-			pedido = new Pedido();
-		}
+	}
+	
+	public void limpar() {
 		pfilter = new PedidoFilter();
+		buscar();
+	}
+
+	public void getUserID() {
+		if (userBuscado != 0) {
+			User a = null;
+			try {
+				a = UserService.getByID(userBuscado);
+				if (a == null) {
+					pfilter.setIdUser(null);
+					reportarMensagemDeErro("Usuario nao Cadastrado");
+				} else {
+					pfilter.setIdUser(a);
+				}
+			} catch (ServiceDacException e) {
+				e.printStackTrace();
+				reportarMensagemDeErro(e.getMessage());
+			}
+		} else {
+			pfilter.setIdUser(null);
+		}
 	}
 
 	public String salvarPedidos() {
 		if (pedido != null) {
 			try {
 				pedidosService.update(pedido);
-				
+
 				reportarMensagemDeSucesso("Estado Alterado");
-				
+
 				return EnderecoPaginas.PAGINA_F_LISTA_PEDIDOS;
 			} catch (ServiceDacException e) {
 				e.printStackTrace();
 				reportarMensagemDeErro(e.getMessage());
 			}
-		}else {
+		} else {
 			try {
 				pedidosService.save(pedido);
 				reportarMensagemDeSucesso("Pedidos Salvo com Sucesso.");
-				
+
 				return EnderecoPaginas.PAGINA_F_LISTA_PEDIDOS;
 			} catch (ServiceDacException e) {
 				e.printStackTrace();
@@ -120,5 +152,14 @@ public class StatusPedido extends AbstractBean {
 	public void setPfilter(PedidoFilter pfilter) {
 		this.pfilter = pfilter;
 	}
+
+	public int getUserBuscado() {
+		return userBuscado;
+	}
+
+	public void setUserBuscado(int userBuscado) {
+		this.userBuscado = userBuscado;
+	}
+	
 
 }

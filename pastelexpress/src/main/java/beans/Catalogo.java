@@ -7,6 +7,7 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import ennum.OrdenarItem;
 import entities.Item;
 import filter.ItemFilter;
 import services.ItemService;
@@ -28,8 +29,41 @@ public class Catalogo extends AbstractBean {
 
 	private ItemFilter itemFilter;
 
+
+	private String ordenado;
+
+	private void ordenando() {
+		if (ordenado != null) {
+
+			if (ordenado.equals(OrdenarItem.MAIOR.name())) {
+				itemFilter.setOrdenarMenorPreco(false);
+				itemFilter.setOrdenarMaiorPreco(true);
+			}
+			if (ordenado.equals(OrdenarItem.MENOR.name())) {
+				itemFilter.setOrdenarMaiorPreco(false);
+				itemFilter.setOrdenarMenorPreco(true);
+			}
+		} else {
+			itemFilter.setOrdenarMaiorPreco(false);
+			itemFilter.setOrdenarMenorPreco(false);
+
+		}
+	}
+
+	public String getOrdenado() {
+		return ordenado;
+	}
+
+	public void setOrdenado(String ordenado) {
+		this.ordenado = ordenado;
+	}
+
 	public List<Item> getItems() {
 		return items;
+	}
+
+	public void setItems(List<Item> items) {
+		this.items = items;
 	}
 
 	public ItemFilter getItemFilter() {
@@ -48,6 +82,7 @@ public class Catalogo extends AbstractBean {
 
 	public String filtrar() {
 		try {
+			ordenando();
 			items = itemService.findBy(getItemFilter());
 		} catch (ServiceDacException e) {
 			reportarMensagemDeErro(e.getMessage());
@@ -68,6 +103,7 @@ public class Catalogo extends AbstractBean {
 
 	public String limpar() {
 		this.itemFilter = new ItemFilter();
+		filtrar();
 		return null;
 	}
 
@@ -83,5 +119,6 @@ public class Catalogo extends AbstractBean {
 
 		return "index?faces-redirect=true";
 	}
+
 
 }

@@ -78,8 +78,7 @@
 					<p:commandButton id="deleUserDialogId" icon="fa fa-remove" update="dataUsers"
 						action="#{gerenciarUser.delete(u)}">
 
-						<p:confirm header="Confirmar"
-							message="Deseja remover o Usuario ' #{u.nome} ' da banco de dados?" />
+						<p:confirm header="Confirmar" message="Deseja remover o Usuario ' #{u.nome} ' da banco de dados? esta operação removera tambem todos os pedidos." />
 
 					</p:commandButton>
 					<p:tooltip id="toolTipDeleteUserDialog" for="deleUserDialogId"

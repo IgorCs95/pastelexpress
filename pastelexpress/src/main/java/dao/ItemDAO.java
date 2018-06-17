@@ -3,6 +3,7 @@ package dao;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.faces.el.EvaluationException;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
 import javax.persistence.TypedQuery;
@@ -86,17 +87,17 @@ public class ItemDAO extends DAO {
 
 			// Nome
 			if (notEmpty(filter.getNome())) {
-				jpql += "AND u.nome LIKE :nome ";
+				jpql += "AND LOWER(u.nome) LIKE :nome ";
 			}
 
-			// ValorMinimo
-			if (notEmpty(filter.getValorMinimo())) {
-				jpql += "AND u.valor <= :valorMinimo ";
+			// Menor Preco
+			if (filter.isOrdenarMenorPreco()) {
+				jpql += "ORDER BY valor ASC ";
 			}
-
-			// ValorMaximo
-			if (notEmpty(filter.getValorMaximo())) {
-				jpql += "AND u.valor <= :valorMaximo ";
+			
+			// Maior Preco
+			if (filter.isOrdenarMaiorPreco()) {
+				jpql += "ORDER BY valor DESC ";
 			}
 
 
@@ -107,15 +108,6 @@ public class ItemDAO extends DAO {
 				query.setParameter("nome", "%" + filter.getNome() + "%");
 			}
 
-			// Valor Minimo
-			if (notEmpty(filter.getValorMinimo())) {
-				query.setParameter("valorMinimo", filter.getValorMinimo());
-			}
-
-			// Valor Maximo
-			if (notEmpty(filter.getValorMaximo())) {
-				query.setParameter("valorMaximo", filter.getValorMaximo());
-			}
 
 
 			resultado = query.getResultList();
@@ -123,8 +115,6 @@ public class ItemDAO extends DAO {
 		} catch (PersistenceException pe) {
 			pe.printStackTrace();
 			throw new PersistenciaDacException("Ocorreu algum erro ao tentar recuperar os Item.", pe);
-		} finally {
-			em.close();
 		}
 		return resultado;
 

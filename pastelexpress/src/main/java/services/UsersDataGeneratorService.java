@@ -36,9 +36,6 @@ public class UsersDataGeneratorService implements Serializable {
 		List<User> usuarios = new ArrayList<User>();
 
 		User admin = getUsuarioAdmin();
-		User cliente = getUsuarioCliente();
-		User cozinheiro = getUsuarioCozinheiro();
-		User entregador = getUsuarioEntregador();
 
 		UserFilter filter = new UserFilter();
 
@@ -52,13 +49,13 @@ public class UsersDataGeneratorService implements Serializable {
 			usuarios.add(admin);
 		}
 
-		// cliente
-		filter.setLogin(cliente.getLogin());
-		users = userService.findBy(filter);
-		if (users.isEmpty()) {
-			cliente.setEndereco(getEndereco(city));
-			usuarios.add(cliente);
-		}
+//		// cliente
+//		filter.setLogin(cliente.getLogin());
+//		users = userService.findBy(filter);
+//		if (users.isEmpty()) {
+//			cliente.setEndereco(getEndereco(city));
+//			usuarios.add(cliente);
+//		}
 
 //		// cozinheiro
 //		filter.setLogin(cozinheiro.getLogin());

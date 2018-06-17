@@ -9,7 +9,7 @@
 	<p:panel styleClass="ui-noborder">
 
 
-		<p:panelGrid columns="2">
+		<p:panelGrid columns="2" styleClass="ui-widget-header">
 			<p:outputLabel for="dataTableItemsPedido" value="Endereço da Entrega" />
 
 			<p:outputLabel for="dataTableItemsPedido" value="Lista de Items" />
@@ -50,7 +50,7 @@
 				</p:column>
 
 				<p:column headerText="VALOR UN:">
-					<h:outputText value="#{i.valorItem}">
+					<h:outputText value="#{i.valorItem}" >
 						<f:convertNumber currencySymbol="R$" type="currency" />
 					</h:outputText>
 				</p:column>
@@ -74,7 +74,7 @@
 		<div align="right">
 			<br />
 			<h:outputText value="Total:  " />
-			<h:outputText value="#{statusPedido.pedido.valorTotal()}">
+			<h:outputText value="#{statusPedido.pedido.valorTotal()}" style="font-weight:bold;color:red;">
 				<f:convertNumber currencySymbol="R$" type="currency" />
 			</h:outputText>
 		</div>

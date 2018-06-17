@@ -13,8 +13,6 @@ import filter.PedidoFilter;
 
 public class PedidoDAO extends DAO {
 
-	
-
 	/**
 	 * 
 	 */
@@ -23,7 +21,7 @@ public class PedidoDAO extends DAO {
 	public void save(Pedido obj) throws PersistenciaDacException {
 		EntityManager em = getEntityManager();
 		try {
-			em.persist(obj);			
+			em.persist(obj);
 		} catch (PersistenceException pe) {
 			pe.printStackTrace();
 			throw new PersistenciaDacException("Problemas ao cadastrar o Pedido ", pe);
@@ -86,7 +84,7 @@ public class PedidoDAO extends DAO {
 		try {
 
 			String jpql = "SELECT u FROM Pedido u WHERE 1 = 1 ";
-			
+
 			if (notEmpty(filter.getIdUser())) {
 				jpql += "AND u.user = :idUser ";
 			}
@@ -99,27 +97,41 @@ public class PedidoDAO extends DAO {
 				jpql += "AND u.data <= :dataFim ";
 			}
 
-			TypedQuery<Pedido> query = em.createQuery(jpql, Pedido.class);
-			
-			if (notEmpty(filter.getIdUser())) {
-				query.setParameter("idUser",filter.getIdUser());
+			if (notEmpty(filter.getStatus())) {
+				jpql += "AND u.estado = :status ";
 			}
-			
+
+			if (notEmpty(filter.getTipo())) {
+				jpql += "AND u.pagamento = :tipo ";
+			}
+
+			TypedQuery<Pedido> query = em.createQuery(jpql, Pedido.class);
+
+			if (notEmpty(filter.getIdUser())) {
+				query.setParameter("idUser", filter.getIdUser());
+			}
 
 			if (notEmpty(filter.getDataPedidoInicio())) {
 				query.setParameter("dataInicio", filter.getDataPedidoInicio());
 			}
 
-			// Birthday end
 			if (notEmpty(filter.getDataPedidoFim())) {
 				query.setParameter("dataFim", filter.getDataPedidoFim());
+			}
+
+			if (notEmpty(filter.getStatus())) {
+				query.setParameter("status", filter.getStatus());
+			}
+
+			if (notEmpty(filter.getTipo())) {
+				query.setParameter("tipo", filter.getTipo());
 			}
 
 			resultado = query.getResultList();
 		} catch (PersistenceException pe) {
 			pe.printStackTrace();
 			throw new PersistenciaDacException("Ocorreu algum erro ao tentar recuperar os pedidos.", pe);
-		} 
+		}
 		return resultado;
 
 	}

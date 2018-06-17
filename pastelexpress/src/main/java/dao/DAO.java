@@ -1,6 +1,7 @@
 package dao;
 
 import java.io.Serializable;
+import java.sql.Date;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -22,7 +23,15 @@ public abstract class DAO implements Serializable {
 		return obj != null;
 	}
 	
+	protected boolean notEmpty(Date obj) {
+		return obj != null;
+	}
+	
 	protected boolean notEmpty(int obj) {
+		return obj != 0;
+	}
+	
+	protected boolean notEmpty(float obj) {
 		return obj != 0;
 	}
 

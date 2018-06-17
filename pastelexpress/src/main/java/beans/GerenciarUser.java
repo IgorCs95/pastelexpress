@@ -11,11 +11,14 @@ import beans.paginas.EnderecoPaginas;
 import ennum.TipoUser;
 import entities.City;
 import entities.Endereco;
+import entities.Pedido;
 import entities.State;
 import entities.User;
+import filter.PedidoFilter;
 import filter.UserFilter;
 import services.CityService;
 import services.EnderecoService;
+import services.PedidoService;
 import services.ServiceDacException;
 import services.StateService;
 import services.UserService;
@@ -49,6 +52,11 @@ public class GerenciarUser extends AbstractBean {
 
 	@Inject
 	private EnderecoService enderecoService;
+
+	@Inject
+	private PedidoService ps;
+
+	private PedidoFilter pf;
 
 	// listas
 	private List<State> states;
@@ -176,15 +184,36 @@ public class GerenciarUser extends AbstractBean {
 		return null;
 	}
 
-	public void delete(User user) {
+	public String delete(User user) {
 		try {
+			apagarPedidosUser(user);
+
 			userService.delete(user);
 			enderecoService.delete(user.getEndereco());
+			
+			reportarMensagemDeSucesso("User '" + user.getNome() + "' Removido com sucesso.");
+			return EnderecoPaginas.PAGINA_G_EDIT_USER;
+
 		} catch (ServiceDacException e) {
 			reportarMensagemDeErro(e.getMessage());
 		}
+		return "";
 
-		reportarMensagemDeSucesso("User '" + user.getNome() + "' Removido com sucesso.");
+	}
+
+	private void apagarPedidosUser(User user) {
+		pf = new PedidoFilter();
+		pf.setIdUser(user);
+
+		try {
+			List<Pedido> lis = ps.findBy(pf);
+			for (Pedido pedido : lis) {
+				ps.delete(pedido);
+			}
+
+		} catch (ServiceDacException e) {
+			e.printStackTrace();
+		}
 
 	}
 

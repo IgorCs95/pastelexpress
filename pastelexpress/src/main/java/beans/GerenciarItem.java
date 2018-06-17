@@ -7,7 +7,6 @@ import javax.inject.Named;
 
 import beans.paginas.EnderecoPaginas;
 import entities.Item;
-import entities.User;
 import services.ItemService;
 import services.ServiceDacException;
 
@@ -53,12 +52,12 @@ public class GerenciarItem extends AbstractBean {
 	public String delete(Item item) {
 		try {
 			itemService.delete(item);
+			reportarMensagemDeSucesso("Item '" + item.getNome() + "' Removido com sucesso.");
 		} catch (ServiceDacException e) {
 			reportarMensagemDeErro(e.getMessage());
 			return null;
 		}
 
-		reportarMensagemDeSucesso("Item '" + item.getNome() + "' Removido com sucesso.");
 
 		return EnderecoPaginas.PAGINA_G_EDIT_ITEM;
 	}

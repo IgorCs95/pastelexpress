@@ -62,10 +62,10 @@
 			rendered="#{!gerenciarUser.edicaoDeUsuario}"
 			requiredMessage="Confirme a senha" />
 
-		<p:outputLabel for="tipo" value="Tipo:" />
+		<p:outputLabel for="tipo" value="Tipo:" rendered="#{!gerenciarUser.edicaoDeUsuario}"/>
 		<p:selectOneMenu id="tipo" value="#{gerenciarUser.user.tipo}"
 			label="Tipo" required="true"
-			requiredMessage="Escolha o tipo de Usuario">
+			requiredMessage="Escolha o tipo de Usuario" rendered="#{!gerenciarUser.edicaoDeUsuario}">
 			<f:selectItem itemLabel="Selecione" itemValue="#{null}"
 				noSelectionOption="true" itemDisabled="true" />
 			<f:selectItems value="#{gerenciarUser.getTiposUser()}" var="g"

@@ -14,7 +14,7 @@
 
 <h:body>
 	<ui:debug hotkey="z" />
-	
+
 	<h:outputScript name="locale-primefaces.js" library="js" />
 
 	<f:metadata>
@@ -24,44 +24,44 @@
 			listener="#{erroPaginaLogin.dispararMensagemLoginErro(param['error'])}" />
 	</f:metadata>
 
-	<div id="container" align="center">
+	<div id="container" style="position: absolute; top: 20%;width: 100%">
+		<div align="center">
+			<p:graphicImage library="img" name="logo.png" width="80px"
+				height="80px" />
+			<br /> <br />
+			<p:messages id="mensagenLogin" showDetail="true" closable="true"
+				severity="error" />
 
-		<p:graphicImage library="img" name="logo.png" width="80px"
-			height="80px" />
-        <br />
-        <br />
-		<p:messages id="mensagenLogin" showDetail="true" closable="true"
-			severity="error" />
+			<p:growl autoUpdate="true" severity="info" showDetail="true" />
 
-		<p:growl autoUpdate="true" severity="info" showDetail="true" />
+			<h:form id="formLogin" prependId="false"
+				onsubmit="action='j_security_check';">
 
-		<h:form id="formLogin" prependId="false"
-			onsubmit="action='j_security_check';">
+				<p:panelGrid columns="2" styleClass="ui-noborder">
 
-			<p:panelGrid columns="2" styleClass="ui-noborder">
+					<h:outputText for="j_username" value="Login: " />
+					<p:inputText id="j_username" size="37" />
 
-				<h:outputText for="j_username" value="Login: " />
-				<p:inputText id="j_username" size="37" />
+					<h:outputText for="j_password" value="Senha: " />
+					<p:password id="j_password" size="37" />
 
-				<h:outputText for="j_password" value="Senha: " />
-				<p:password id="j_password" size="37" />
+				</p:panelGrid>
 
-			</p:panelGrid>
+				<br />
+				<br />
 
-			<br />
-			<br />
+				<p:commandButton icon="ui-icon-unlocked" ajax="false" value="Entrar" />
 
-			<p:commandButton icon="ui-icon-unlocked" ajax="false" value="Entrar" />
+				<p:commandButton value="Cadastrar Usuario" icon="fa fa-edit"
+					action="#{criarUserCliente.init()}" process="@this"
+					oncomplete="if (!args.validationFailed) { PF('userEditDialog').show() }"
+					update=":userEditDialogId :mensagenLogin">
+					<p:resetInput target="userEditDialogId" />
+				</p:commandButton>
 
-			<p:commandButton value="Cadastrar Usuario" icon="fa fa-edit"
-				action="#{criarUserCliente.init()}" process="@this"
-				oncomplete="if (!args.validationFailed) { PF('userEditDialog').show() }"
-				update=":userEditDialogId :mensagenLogin">
-				<p:resetInput target="userEditDialogId" />
-			</p:commandButton>
+			</h:form>
 
-		</h:form>
-
+		</div>
 	</div>
 
 
@@ -82,8 +82,9 @@
 			</p:panelGrid>
 
 			<p:panelGrid columns="2" styleClass="ui-noborder">
-				<p:commandButton id="botaoSubmeter" action="#{criarUserCliente.saveUser}"
-					value="Submit" update="idMessagesErrorsUserEdit"
+				<p:commandButton id="botaoSubmeter"
+					action="#{criarUserCliente.saveUser}" value="Submit"
+					update="idMessagesErrorsUserEdit"
 					oncomplete="if (!args.validationFailed) { PF('userEditDialog').hide(); }"
 					icon="fa fa-save" />
 				<p:commandButton id="botaoCancelar" value="Cancel"
@@ -96,7 +97,7 @@
 
 	</p:dialog>
 
-	<div id="footer" style="position:absolute;bottom:0;width:100%;">
+	<div id="footer" style="position: absolute; bottom: 0; width: 100%;">
 		<p:panel columns="1" style="width : 100%; text-align:center">
 			<h:outputLabel value="Pastel Express - v2.0" />
 		</p:panel>

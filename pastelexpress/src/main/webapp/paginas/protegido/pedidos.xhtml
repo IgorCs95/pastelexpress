@@ -13,7 +13,7 @@
 	</f:metadata>
 
 	<ui:define name="title">
-		Pedidos
+		Meus Pedidos
 	</ui:define>
 
 
@@ -68,7 +68,7 @@
 		</p:dataTable>
 
 		<p:dialog id="detalhesPedidoDialogId" widgetVar="detalhesPedidoDialog"
-			header="Editar Item" modal="true" dynamic="true" closeOnEscape="true">
+			header="Detalhes do Pedido" modal="true" dynamic="true" closeOnEscape="true">
 
 			<p:messages id="idMessagesErrors" showDetail="true" closable="true"
 				autoUpdate="true" severity="error" />
@@ -77,9 +77,12 @@
 
 				<ui:include src="/WEB-INF/templates/_detalhes_pedido.xhtml" />
 
-				<h:panelGrid columns="2" styleClass="ui-noborder" style="width:100%">
-				
-					<p:outputLabel value="#{statusPedido.pedido.estado.name()}" style="float: left;" />
+				<h:panelGrid  columns="2" styleClass="ui-noborder" style="width:100%" >
+					<p:outputPanel>
+						<p:outputLabel value="Estado do pedido: " style="float: left;" />
+
+						<p:outputLabel value="#{statusPedido.pedido.estado.nome}" style="float: left;font-weight:bold;color:red;" />
+					</p:outputPanel>
 
 					<p:commandButton id="botaoCancelar" value="Cancelar"
 						oncomplete="PF('detalhesPedidoDialog').hide();"

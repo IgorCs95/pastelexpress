@@ -13,25 +13,26 @@ public class ItemFilter implements Serializable, Filter {
 	 */
 	private static final long serialVersionUID = -8779495497577783872L;
 
-	private float valorMinimo, valorMaximo;
+	private boolean ordenarMenorPreco, ordenarMaiorPreco;
 
 	private String nome;
 
+	
 
-	public float getValorMinimo() {
-		return valorMinimo;
+	public boolean isOrdenarMenorPreco() {
+		return ordenarMenorPreco;
 	}
 
-	public void setValorMinimo(float valorMinimo) {
-		this.valorMinimo = valorMinimo;
+	public void setOrdenarMenorPreco(boolean ordenarMenorPreco) {
+		this.ordenarMenorPreco = ordenarMenorPreco;
 	}
 
-	public float getValorMaximo() {
-		return valorMaximo;
+	public boolean isOrdenarMaiorPreco() {
+		return ordenarMaiorPreco;
 	}
 
-	public void setValorMaximo(float valorMaximo) {
-		this.valorMaximo = valorMaximo;
+	public void setOrdenarMaiorPreco(boolean ordenarMaiorPreco) {
+		this.ordenarMaiorPreco = ordenarMaiorPreco;
 	}
 
 	public String getNome() {
@@ -47,12 +48,15 @@ public class ItemFilter implements Serializable, Filter {
 		if (this.nome != null && !this.nome.trim().isEmpty()) {
 			return false;
 		}
-		if (this.valorMinimo != 0) {
+		
+		if(this.ordenarMenorPreco==false) {
 			return false;
 		}
-		if (this.valorMaximo != 0) {
+		
+		if(this.ordenarMenorPreco==false) {
 			return false;
 		}
+		
 
 		return true;
 	}

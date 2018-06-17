@@ -36,7 +36,7 @@ public class EditCarrinho extends AbstractBean {
 		pedido.setUser(getUsuarioLogado());
 	}
 
-	public void addItem(Item item) {
+	public String addItem(Item item) {
 		boolean cont = true;
 
 		for (ItemPedido i : pedido.getItems()) {
@@ -53,8 +53,11 @@ public class EditCarrinho extends AbstractBean {
 			i.setValorItem(item.getValor());
 
 			pedido.addItem(i);
-		}
-		reportarMensagemDeSucesso(item.getNome() + " Adicoonado No carrinho.");
+			reportarMensagemDeSucesso(item.getNome() + " Adicionado No carrinho.");
+			return EnderecoPaginas.PAGINA_PRINCIPAL;
+		}else
+			return "";
+		
 
 	}
 

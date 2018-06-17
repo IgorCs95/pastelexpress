@@ -23,6 +23,8 @@
 		<br />
 
 		<div align="center">
+		
+			<p:graphicImage library="img" name="user.png" style="width:150px" />
 
 			<h:panelGrid id="dados" columns="2" style="width:60%">
 				<h:panelGrid columns="2">
@@ -76,7 +78,7 @@
 				</h:panelGrid>
 			</h:panelGrid>
 
-			<br /> <br /> <br /> <br /> <br /> <br /> <br />
+			<br /> <br /> <br /> 
 
 			<p:commandButton value="Editar Usuario" icon="fa fa-edit"
 				process="@this" action="#{gerenciarUser.carregarPerfilLogado()}"
@@ -105,7 +107,7 @@
 		<br />
 
 		<p:dialog id="userEditDialogId" widgetVar="userEditDialog"
-			header="User edit" modal="true" dynamic="true" closeOnEscape="true">
+			header="Editar Usuario" modal="true" dynamic="true" closeOnEscape="true">
 
 			<p:messages id="idMessagesErrorsUserEdit" showDetail="true"
 				autoUpdate="true" closable="true" severity="error" />

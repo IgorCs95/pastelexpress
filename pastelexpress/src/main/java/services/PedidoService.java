@@ -8,6 +8,7 @@ import javax.inject.Inject;
 
 import dao.PedidoDAO;
 import entities.Pedido;
+import entities.User;
 import exception.PersistenciaDacException;
 import filter.PedidoFilter;
 import util.TransacionalCdi;
@@ -53,6 +54,8 @@ public class PedidoService implements Serializable {
 			throw new ServiceDacException(e.getMessage(), e);
 		}
 	}
+	
+	
 
 	public Pedido getByID(int pedidoId) throws ServiceDacException {
 		try {

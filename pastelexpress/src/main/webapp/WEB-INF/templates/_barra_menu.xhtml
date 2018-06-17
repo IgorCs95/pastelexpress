@@ -9,7 +9,7 @@
 	<h:form>
 
 		<h:outputScript name="locale-primefaces.js" library="js" />
-		<h:panelGrid columns="2" style="width:100%; text-align:center">
+		<h:panelGrid columns="3" style="width:100%; text-align:center">
 
 			<p:link id="idHome" href="/paginas/protegido/index.xhtml">
 				<p:graphicImage library="img" name="logo.png" width="80px"
@@ -19,8 +19,8 @@
 			<p:menubar>
 
 				<p:submenu label="Gerencia" icon="ui-icon-pencil"
-					rendered="#{menu.userFunc}">
-					
+					rendered="#{menu.userFunc}" style="width:100%;height:4px">
+
 					<p:menuitem id="gerenciarItems" value="Gerenciar Items"
 						rendered="#{menu.isUserInRole('ADMIN')}"
 						url="/paginas/protegido/gerencia/gerencia_item.xhtml">
@@ -39,12 +39,11 @@
 				</p:submenu>
 
 				<f:facet name="options">
-					<p:button outcome="/paginas/protegido/carrinho.xhtml"
-						icon="fa fa-shopping-cart" />
+					<p:button outcome="/paginas/protegido/carrinho.xhtml" value="#{editCarrinho.pedido.qtdItems()}" icon="fa fa-shopping-cart" />
 
 					<h:form>
-						<p:splitButton value="#{menu.usuarioLogado.nome}" icon="fa fa-user-circle"
-							action="/paginas/protegido/perfil.xhtml">
+						<p:splitButton value="#{menu.usuarioLogado.nome}"
+							icon="fa fa-user-circle" action="/paginas/protegido/perfil.xhtml">
 
 							<p:menuitem value="perfil" icon="fa fa-edit"
 								url="/paginas/protegido/perfil.xhtml" />
@@ -56,13 +55,14 @@
 						</p:splitButton>
 					</h:form>
 
+
 					<p:commandButton id="menuItemLogout" value="Logout"
 						icon="fa fa-fw fa-sign-out" action="#{logout.efetuarLogout}"
 						ajax="false" />
 
 				</f:facet>
-			</p:menubar>
 
+			</p:menubar>
 		</h:panelGrid>
 
 	</h:form>
